@@ -14,14 +14,17 @@ class PlantEvent extends Model
     protected $fillable = [
         'plant_id',
         'event_id',
-        'owner',
+        'notification_id',
     ];
 
     public function plant()
     {
         return $this->belongsTo(Plant::class, 'plant_id');
     }
-
+    public function notification()
+    {
+        return $this->belongsTo(Notification::class, 'notification_id');
+    }
     public function event()
     {
         return $this->belongsTo(Event::class, 'event_id');

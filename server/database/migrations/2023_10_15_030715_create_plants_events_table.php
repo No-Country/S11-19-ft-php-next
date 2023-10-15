@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('plant_id');
             $table->unsignedBigInteger('event_id');
-            $table->boolean('owner');
+            $table->unsignedBigInteger('notification_id');
             $table->timestamps();
 
             $table->foreign('plant_id')->references('id')->on('plants');
             $table->foreign('event_id')->references('id')->on('events');
+            $table->foreign('notification_id')->references('id')->on('notifications');
         });
     }
 
