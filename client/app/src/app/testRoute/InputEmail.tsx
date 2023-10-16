@@ -1,29 +1,26 @@
 "use client";
 import { useState } from "react";
 import { email, minLength, object, type Output, parse, string } from 'valibot'
-import {useInput} from './useInput'
+
 interface inputemail {
 	placeholder: string;
 }
 
-function InputEmail({ placeholder }: inputemail) {
-	const {handleChange, handleBlur, input} = useInput()
-	// const initialState = {
-	// 	value:'',
-	// 	erros:false,
-	// 	blured:false,
-	// 	valid:false
-	// }
-	// const [inputValue, setInputValue] = useState("");
-	// const [inputError, setInputError] = useState(false);
-	// const [inputBlured, setInputBlured] = useState(false);
-	// const [inputValid, setInputValid] = useState(false);
-	// const [input, setInput] = useState(initialState)
+function InputEmail({ placeholder, input, setInput, handleChange }) {
 
-	// const LoginSchema = object({
-	// 	email: string([email()]),
-	// 	password: string([minLength(8)]),
-	// });
+	/* const initialState = {
+		value:'',
+		isError:false,
+		blured:false,
+		valid:false
+	} */
+
+	//const [input, setInput] = useState(initialState)
+
+	const LoginSchema = object({
+		email: string([email()]),
+		password: string([minLength(8)]),
+	});
 	
 	// const PASS_REGEX = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,8}$/;
 	// const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
@@ -34,18 +31,18 @@ function InputEmail({ placeholder }: inputemail) {
 	// 	setInput((input)=>({...input, value:e.target.value}));
 	// 	/* const testEmail = EMAIL_REGEX.test(e.target.value); */
 	// 	try{
-	// 		const testEmail = parse(LoginSchema, { email: inputValue, password: '45631lkjihi' });
-	// 		if (!testEmail && inputBlured) {
-	// 			setInputError(true);
-	// 			setInputValid(false)
+	// 		const testEmail = parse(LoginSchema, { email: input.value, password: '45631lkjihi' });
+	// 		if (!testEmail && input.blured) {
+	// 			setInput({...input, isError:true})
+	// 			setInput({...input, valid:false})
 	// 		}
 	// 		if (!testEmail) {
-	// 			setInputValid(false)
+	// 			setInput({...input, valid:false})
 	// 		}
 	// 		if (testEmail) {
-	// 			setInputError(false);
+	// 			setInput({...input, isError:false})
 	// 			console.log("inputValid");
-	// 			setInputValid(true)
+	// 			setInput({...input, valid:true})
 	// 		}
 	// 	}catch(err){
 	// 		console.log("err en handleChange",err)
@@ -53,39 +50,40 @@ function InputEmail({ placeholder }: inputemail) {
 	// };
 	// const handleBlur: React.ChangeEventHandler<HTMLInputElement> = (e) => {
 	// 	e.preventDefault()
-	// 	setInputBlured(true);
+	// 	setInput({...input, blured:true})
 	// 	/* const testEmail = EMAIL_REGEX.test(e.target.value); */
 	// 	try {
-	// 		const testEmail = parse(LoginSchema, { email: inputValue, password: '45631lkjihi' });
+	// 		const testEmail = parse(LoginSchema, { email: input.value, password: '45631lkjihi' });
 	// 		if (!testEmail) {
-	// 			setInputError(true);
+	// 			setInput({...input, isError:true})
 	// 		}
 	// 	}
 	// 	catch(err){
 	// 		console.log("error en handleBlur:", err)
 	// 	}
 	// };
-	console.log("inputBlured: ", inputBlured);
-	console.log(inputValue);
-	console.log("error: ", inputError);
+	console.log("inputBlured: ", input.blured);
+	console.log(input.value);
+	console.log("error: ", input.isError);
+	console.log("input en InputEmail: ", input)
 	return (
 		<>
 			<div className="flex relative w-72">
 				<input
 					placeholder={placeholder}
-					value={inputValue}
+					value={input.value}
 					onChange={handleChange}
 					className={
-						inputError
+						input.isError
 							? "relative w-72  border-2 border-[#FF0000] focus:border-[#FF0000] focus:border-[3px] focus:outline-none h-9 rounded-lg px-2"
 							: "relative w-72 border-[#A7A7A7] border-2 focus:border-[#000000] focus:border-[3px] focus:outline-none h-9 rounded-lg px-2"
 					}
-					onBlur={handleBlur}
+					onBlur={null}
 				/>
-			{ inputValid? 	<span className="absolute left-[90%] top-[15%] visible">✅</span> : null }
-			{ inputError && inputBlured? <span className="absolute left-[90%] top-[15%] hidden">✅</span> : null }
+			{ input.valid? 	<span className="absolute left-[90%] top-[15%] visible">✅</span> : null }
+			{ input.isError && input.blured? <span className="absolute left-[90%] top-[15%] hidden">✅</span> : null }
 			</div>
-			{inputError ? (
+			{input.isError ? (
 				<p className="text-[#FF0000] visible">
 					El email ingrasado no es válido
 				</p>
