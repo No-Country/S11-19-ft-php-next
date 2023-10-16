@@ -1,53 +1,70 @@
-"use client"
-import React from 'react'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { email, minLength, object, parse, string, required, Input } from 'valibot'
-import { valibotResolver} from '@hookform/resolvers/valibot'
+"use client";
+import { valibotResolver } from "@hookform/resolvers/valibot";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import {
+	Input as InputVali,
+	email,
+	minLength,
+	object,
+	parse,
+	required,
+	string,
+} from "valibot";
 
-const LoginSchema = required(object({
-	email: string([email()]),
-	password: string([minLength(8)]),
-}));
+import { Input } from "./InputEmaiMy";
 
-const initValues: Input<typeof LoginSchema> = {
-	email: "",
-	password: "",
-}
+const LoginSchema = object({
+	email: string([email("email no valido")]),
+	password: string([minLength(2, "minimo 2 caracteres")]),
+});
 
-export default function InputEmail({ ...props}) {
-
+export default function InputEmail({ ...props }) {
 	const {
 		register,
 		handleSubmit,
+		getValues,
+
 		formState: { errors, isSubmitted },
-
-
 	} = useForm({
-		resolver:valibotResolver(LoginSchema),
-		values: initValues,
+		resolver: valibotResolver(LoginSchema),
+		defaultValues: {
+			email: "",
+			password: "",
+		},
+	});
 
-	})
+	const onSubmit: SubmitHandler<InputVali<typeof LoginSchema>> = (data) => {
+		console.log(data);
+	};
+	console.log(getValues());
 
-	const onSubmit: SubmitHandler<Input<typeof LoginSchema>> = (data ) => {
-
-		console.log(data)
-
-	}
-	return (<>
-	<form
-		onSubmit={handleSubmit(onSubmit)}
-	>
-		<input {...register("email")}
-		mesageError={errors.email?.message}
-		isError={!!errors.email }
-		
-		/>
-		<input 
-		{...props}
-		mesageError={errors.password?.message}
-		isError={!!errors.password }
-		type="password" {...register("password")} />
-		<input type="submit" />
-	</form>
-	</>)
+	return (
+		<>
+			<form onSubmit={handleSubmit(onSubmit)}>
+				<Input
+					register={register}
+					name="email"
+					placeholder={""}
+					isError={!!errors.email}
+					messageError={errors.email?.message}
+				/>
+				<Input
+					register={register}
+					name="password"
+					messageError={errors.password?.message}
+					isError={!!errors.password}
+					type="password"
+				/>
+				<button
+					type="submit"
+					onClick={() => {
+						console.log("isSubmitted: ", isSubmitted);
+					}}
+				>
+					Submit
+				</button>
+			</form>
+		</>
+	);
 }
