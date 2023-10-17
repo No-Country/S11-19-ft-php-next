@@ -1,8 +1,9 @@
 "use client"
 import { useState } from "react";
 import InputEmail from "./InputEmail";
-import { email, minLength, object, type Output, parse, string } from 'valibot'
+/* import { email, minLength, object, type Output, parse, string } from 'valibot' */
 import "./styles.testRoute.css";
+import { handleBlur, handleChange } from "./handlers";
 
 export default function TestRoute() {
 	type inputState = {
@@ -17,74 +18,64 @@ export default function TestRoute() {
 		blured:false,
 		valid:false
 	}
+	const [name, setName] = useState(initialState)
 	const [inputEmail, setInputEmail] = useState(initialState)
 	const [password, setPassword] = useState(initialState)
+	const [repitedPassword, setRepitedPassword] = useState(initialState)
 
-	const PASS_REGEX = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,8}$/;
-	const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
 
-	type handleChangeType = {
-		e:React.SyntheticEvent,
-		input:inputState,
-		setInput:any
-	}
 
-	const LoginSchema = object({
+	
+
+	/* const LoginSchema = object({
 		email: string([email()]),
 		password: string([minLength(8)]),
-	});
+	}); */
+	console.log("email: ", inputEmail)
 
-	const handleChange = (e, input, setInput):handleChanteType => {
-		e.preventDefault();
-		/* setInputValue(e.target.value); */
-		setInput((input)=>({...input, value:e.target.value}));
-		/* const testEmail = EMAIL_REGEX.test(e.target.value); */
-		try{
-			const testEmail = parse(LoginSchema, { email: e.target.value, password: '45631lkjihi' });
-			if (!testEmail && input.blured) {
-				setInput({...input, isError:true})
-				setInput({...input, valid:false})
-			}
-			if (!testEmail) {
-				setInput({...input, valid:false})
-			}
-			if (testEmail) {
-				setInput({...input, isError:false})
-				console.log("inputValid");
-				setInput({...input, valid:true})
-			}
-		}catch(err){
-			console.log("err en handleChange",err)
-		}
-	};
-	const handleBlur: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-		e.preventDefault()
-		setInput({...input, blured:true})
-		/* const testEmail = EMAIL_REGEX.test(e.target.value); */
-		try {
-			const testEmail = parse(LoginSchema, { email: input.value, password: '45631lkjihi' });
-			if (!testEmail) {
-				setInput({...input, isError:true})
-			}
-		}
-		catch(err){
-			console.log("error en handleBlur:", err)
-		}
-	};
-
+	
 	const handleSubmit = (e:React.SyntheticEvent) => {
 		e.preventDefault();
 	}
 	return (
 		<>
-			<form onSubmit={handleSubmit} className="flex flex-col w-full">
+		<h1 className="text-center text-4xl font-Poppins font-medium pt-14 pb-14 text-[#61B78E]">Registrarse</h1>
+			<form onSubmit={handleSubmit} className="flex flex-col justify-center items-center w-full">
+			<InputEmail 
+				  placeholder="Nombre y Apellido" 
+					input={name} 
+					inputName="name"
+					setInput={setName} 
+					handleChange={(e)=>handleChange(e, "name", name, setName)}
+					handleBlur={(e)=>handleBlur(e, "name", name, setName)}
+					className="max-w-[90%]"
+				/>
 				<InputEmail 
 				  placeholder="Email" 
-					input={InputEmail} 
-					setInput={setEmail} 
-					handleChange={(e)=>handleChange(e, email, setEmail)}
+					input={inputEmail} 
+					inputName="email"
+					setInput={setInputEmail} 
+					handleChange={(e)=>handleChange(e, "email", inputEmail, setInputEmail)}
+					handleBlur={(e)=>handleBlur(e, "email", inputEmail, setInputEmail)}
+					className="max-w-[90%]"
 				/>
-				<button className="w-48 border-2" type="submit">Enviar</button>
+				<InputEmail 
+				  placeholder="Contraseña" 
+					input={password} 
+					inputName="password"
+					setInput={setPassword} 
+					handleChange={(e)=>handleChange(e, "password", password, setPassword)}
+					className="max-w-[90%]"
+				/>
+				<InputEmail 
+				  placeholder="Repetir Contraseña" 
+					input={repitedPassword} 
+					inputName="repitedPassword"
+					setInput={setRepitedPassword} 
+					handleChange={(e)=>handleChange(e, "repitedPassword", repitedPassword, setRepitedPassword)}
+					className="max-w-[90%]"
+				/>
+				<button className="w-80 lg:w-96 h-12 max-w-[80vw] border-2 bg-[#104938] text-[white] rounded-[50px] " type="submit">Enviar</button>
 			</form>
 		</>
 	);
