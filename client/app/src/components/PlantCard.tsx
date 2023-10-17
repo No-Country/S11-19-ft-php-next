@@ -7,7 +7,7 @@ interface PlantCardProps {
 // Faltan props de los datos de cada planta y probablemente una descripcion
 function PlantCard({ PlantName, PlantImg }: PlantCardProps) {
 	return (
-		<div className="bg-white flex flex-col  h-[410px] border-0.5 border-black drop-shadow-2xl ">
+		<div className="bg-white flex flex-col border-2 w-[290px]  h-[410px] border-0.5 border-black">
 			<Image
 				src={PlantImg}
 				width={290}
