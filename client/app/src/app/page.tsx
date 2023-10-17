@@ -3,8 +3,8 @@ import Header from "@/components/header";
 import CarouselContainer from "@/components/carousel";
 export default function Home() {
 	return (
-		<main className="min-h-screen ">
-			<Header/>
+		<main className="min-h-screen">
+			<Header />
 			<div className="flex flex-col ">
 				<Image src={""} className="w-full h-60 bg-slate-200 " alt="header" />
 				<p className="mx-7 mt-6">

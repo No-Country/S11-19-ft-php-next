@@ -14,7 +14,7 @@ function PlantCard({
 	PlantDate,
 }: PlantCardProps) {
 	return (
-		<div className="bg-white flex flex-col   w-[290px] h-[410px] border-0.5 border-black drop-shadow-2xl ">
+		<div className="bg-white flex flex-col   w-[290px] h-[410px] border-0.5 border-black drop-shadow-lg ">
 			<div className=" w-[290px] h-[200px] overflow-hidden">
 				<Image
 					src={PlantImg}
@@ -24,12 +24,12 @@ function PlantCard({
 					className="object-cover object-center h-full w-full"
 				/>
 			</div>
-			<div className="flex flex-col mx-1 text-lg mt-4 ml-7 justify-between">
+			<div className="flex flex-col mx-2 text-lg mt-3  justify-between ml-7 ">
 				<h3 className="text-gray-800">{PlantName}</h3>
-				<ul className="text-sm mt-3">
+				<ul className="text-sm mt-3 ">
 					<li className="flex gap-1">
 						<h2 className="font-bold">Fecha de adquisición: </h2>
-						<p> {PlantDate} 11/04/2022</p>
+						<p> {PlantDate}</p>
 					</li>
 					<li className="flex flex-wrap">
 						<h3 className="font-bold">Observaciones:</h3>
@@ -38,9 +38,15 @@ function PlantCard({
 				</ul>
 
 				{/* crear componente de tags */}
-				<div className="text-sm mt-3 flex gap-2">
-					<p className="rounded-xl px-1 w-fit bg-gray-300"> #interior </p>
-					<p className="rounded-xl px-1 w-fit bg-gray-300"> #exterior </p>
+				<div className="text-base font-semibold text-gray-700 mt-10 flex gap-2">
+					<p className="rounded-2xl px-4 py-1 w-fit bg-marron-claro">
+						{" "}
+						#interior{" "}
+					</p>
+					<p className="rounded-2xl px-4 py-1 w-fit bg-marron-claro">
+						{" "}
+						#exterior{" "}
+					</p>
 				</div>
 			</div>
 		</div>
