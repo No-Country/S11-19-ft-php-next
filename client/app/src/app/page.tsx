@@ -4,7 +4,14 @@ import CarouselContainer from "@/components/carousel";
 export default function Home() {
 	return (
 		<main className="min-h-screen ">
-			<Header />
+			<Header/>
+			<div className="flex flex-col ">
+				<Image src={""} className="w-full h-60 bg-slate-200 " alt="header" />
+				<p className="mx-7 mt-6">
+					Nombre es la app de cuidado de plantas que revolucionó la forma en que
+					las personas cuidan y mantienen sus plantas
+				</p>
+			</div>
 			<div className="mt-7">
 				<h2 className="text-lg text-center font-bold mb-4">Funciones</h2>
 				<CarouselContainer>
