@@ -3,29 +3,42 @@ import React from "react";
 interface PlantCardProps {
 	PlantName: string;
 	PlantImg: string;
+	PlantInfo: string;
+	PlantDate: string;
 }
 // Faltan props de los datos de cada planta y probablemente una descripcion
-function PlantCard({ PlantName, PlantImg }: PlantCardProps) {
+function PlantCard({
+	PlantName,
+	PlantImg,
+	PlantInfo,
+	PlantDate,
+}: PlantCardProps) {
 	return (
-		<div className="bg-white flex flex-col  w-[290px] h-[410px] border-0.5 border-black drop-shadow-2xl ">
-			<Image
-				src={PlantImg}
-				width={290}
-				height={200}
-				alt="Picture of the author"
-				className="bg-slate-300"
-			/>
-			<div className="flex flex-col text-lg mt-4 ml-7 justify-between">
-				<h3>Nombre Planta {PlantName}</h3>
+		<div className="bg-white flex flex-col   w-[290px] h-[410px] border-0.5 border-black drop-shadow-2xl ">
+			<div className=" w-[290px] h-[200px] overflow-hidden">
+				<Image
+					src={PlantImg}
+					alt={PlantName}
+					width={290}
+					height={160}
+					className="object-cover object-center h-full w-full"
+				/>
+			</div>
+			<div className="flex flex-col mx-1 text-lg mt-4 ml-7 justify-between">
+				<h3 className="text-gray-800">{PlantName}</h3>
 				<ul className="text-sm mt-3">
-					<li>Dato 1 </li>
-					<li>Dato 2 </li>
-					<li>Dato 3 </li>
-					<li>Dato 4</li>
+					<li className="flex gap-1">
+						<h2 className="font-bold">Fecha de adquisición: </h2>
+						<p> {PlantDate} 11/04/2022</p>
+					</li>
+					<li className="flex flex-wrap">
+						<h3 className="font-bold">Observaciones:</h3>
+						<p className="flex flex-wrap">{PlantInfo}</p>
+					</li>
 				</ul>
 
 				{/* crear componente de tags */}
-				<div className="text-sm mt-6 flex gap-2">
+				<div className="text-sm mt-3 flex gap-2">
 					<p className="rounded-xl px-1 w-fit bg-gray-300"> #interior </p>
 					<p className="rounded-xl px-1 w-fit bg-gray-300"> #exterior </p>
 				</div>
