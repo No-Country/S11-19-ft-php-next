@@ -1,6 +1,12 @@
 import { ReactElement } from "react";
 
+
+
 const Layout = ({ children }: { children: ReactElement }) => {
-	return <div className="bg-white h-[100vh] text-black p-12">{children}</div>;
+	return (
+		<>
+			<div className="bg-[#E3F3F0] min-h-[70vh] text-black">{children}</div>
+		</>
+	);
 };
 export default Layout;

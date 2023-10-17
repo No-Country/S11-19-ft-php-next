@@ -15,7 +15,7 @@ const config: Config = {
         navbar: "#683B11",
         "button-primary": "#104938",
         "button-secondary": "#DCBE98",
-        background: "#E3F3F0",
+        background: "#E3F3F0", 
         text: "#61B78E",
         "text-button": "",
       },

@@ -5,7 +5,7 @@ interface inputemail {
 	placeholder: string;
 }
 
-function InputEmail({ placeholder, input, setInput, handleChange, handleBlur }) {
+function InputEmail({ placeholder, label, input, inputName, setInput, handleChange, handleBlur }) {
 
 	const LoginSchema = object({
 		email: string([email()]),
@@ -22,16 +22,18 @@ function InputEmail({ placeholder, input, setInput, handleChange, handleBlur }) 
 	//console.log("input en InputEmail: ", input)
 	return (
 		<>
-			<div className="flex relative ">
+			<div className="flex flex-col relative ">
+				<label htmlFor='inputName' className='font-Poppins text-[#104938]'>{label}</label>
 				<input
+				  id={inputName}
 					placeholder={placeholder}
 					value={input.value}
 					onChange={handleChange}
 					onBlur={handleBlur}
 					className={
 						input.isError
-							? "relative w-80 lg:w-96 max-w-[80vw]  border-2 border-[#FF0000] focus:border-[#FF0000] focus:border-[3px] focus:outline-none h-12 rounded-lg px-2"
-							: "relative w-80 lg:w-96 max-w-[80vw]  border-2 border-[#A7A7A7] focus:border-[#104938] focus:border-[3px] focus:outline-none h-12 rounded-lg px-2"
+							? "relative w-80 lg:w-96 max-w-[80vw]  border-2 border-[#FF0000] focus:border-[#FF0000] focus:border-[3px] focus:outline-none h-11 rounded-lg px-2"
+							: "relative w-80 lg:w-96 max-w-[80vw]  border-2 border-[#A7A7A7] focus:border-[#104938] focus:border-[3px] focus:outline-none h-11 rounded-lg px-2"
 					}
 				/>
 			{ input.valid && <span className="absolute left-[90%] top-[20%] visible">✅</span> }
