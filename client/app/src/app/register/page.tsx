@@ -1,11 +1,8 @@
 "use client"
 import { useState } from "react";
-import InputEmail from "./InputForm";
-/* import { email, minLength, object, type Output, parse, string } from 'valibot' */
 import "./styles.register.css";
 import Image from "next/image";
 import registerFooter from "../../assets/registerFooter2.jpg"
-//import registerTop from "../../assets/registerTop.png"
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
