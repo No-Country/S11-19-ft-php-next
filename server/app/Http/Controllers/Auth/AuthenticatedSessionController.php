@@ -25,11 +25,20 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        //dd($request);
         $request->authenticate();
 
-        $request->session()->regenerate();
+        if ($request->user()->role->name == 'admin') {
+            $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+
+        //Todo agregar mensaje de que no hay acceso o crendenciales incorrectas
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
     }
 
     /**
