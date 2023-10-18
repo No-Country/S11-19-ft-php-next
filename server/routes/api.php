@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlantsController;
-use Illuminate\Database\Query\IndexHint;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,10 +21,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 /** Plants **/
 Route::middleware('auth')->group(function () {
-    Route::get('/plants', [PlantController::class, 'index']);
-    Route::post('/plants/create', [PlantController::class, 'store']);
-    Route::get('/plants/{plant}', [PlantController::class, 'show']);
-    Route::put('/plants/update/{plant}', [PlantController::class, 'update']);
-    Route::delete('/plants/delete/{plant}', [PlantController::class, 'destroy']);
+    Route::get('/plants', [PlantsController::class, 'index']);
+    Route::post('/plants/create', [PlantsController::class, 'store']);
+    Route::get('/plants/{plant}', [PlantsController::class, 'show']);
+    Route::put('/plants/update/{plant}', [PlantsController::class, 'update']);
+    Route::delete('/plants/delete/{plant}', [PlantsController::class, 'destroy']);
 });
 
