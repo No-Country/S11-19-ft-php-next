@@ -1,57 +1,65 @@
-"use client"
+"use client";
 import { useState } from "react";
 import "./styles.register.css";
 import Image from "next/image";
-import registerFooter from "../../assets/registerFooter2.jpg"
+import registerFooter from "../../assets/registerFooter2.jpg";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
 	Input as InputVali,
+	ValiError,
 	email,
 	minLength,
 	object,
 	parse,
 	required,
 	string,
+	custom
 } from "valibot";
 import { Input } from "./Input";
 
+type inputState = {
+	value: string;
+	isError: boolean;
+	blured: boolean;
+	valid: boolean;
+};
+
+const LoginSchema = object({
+	name: string(),
+	email: string([email("email no valido")]),
+	password: string([minLength(2, "minimo 2 caracteres")]),
+	repitedPassword: string([minLength(2, "minimo 2 caracteres")]),
+});
+
 export default function Register() {
-	type inputState = {
-		value:string,
-		isError:boolean,
-		blured:boolean,
-		valid:boolean
-	}
-
-	const LoginSchema = object({
-		name: string(),
-		email: string([email("email no valido")]),
-		password: string([minLength(2, "minimo 2 caracteres")]),
-		repitedPassword:string()
-	});
-
 	const {
 		register,
 		handleSubmit,
 		getValues,
+		setError,
 
 		formState: { errors, isSubmitted },
 	} = useForm({
 		resolver: valibotResolver(LoginSchema),
+
 		defaultValues: {
 			name: "",
 			email: "",
 			password: "",
-			repitedPassword: ""
+			repitedPassword: "",
 		},
 	});
 
 	const onSubmit: SubmitHandler<InputVali<typeof LoginSchema>> = (data) => {
+		if (data.password !== data.repitedPassword) {
+			setError("repitedPassword", {
+				message: "Las contraseñas no coinciden",
+			})
+		}
 		console.log(data);
 	};
-	console.log(getValues());
-	
+
 	/* const handleSubmit = (e:React.SyntheticEvent) => {
 		e.preventDefault();
 	} */
@@ -107,6 +115,7 @@ export default function Register() {
 						className="max-w-[90%]"
 						register={register}
 						name="repitedPassword"
+
 						isError={!!errors.repitedPassword}
 						messageError={errors.repitedPassword?.message}
 					/>
