@@ -17,5 +17,5 @@ use App\Http\Controllers\ReminderController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     // return $request->user();
-    Route::resource('user', ReminderController::class)->except('create', 'edit');
+    Route::resource('reminder', ReminderController::class)->except('create', 'edit');
 });

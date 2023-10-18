@@ -13,11 +13,17 @@ return new class extends Migration
     {
         Schema::create('reminders', function (Blueprint $table) {
             $table->id();
+            $table->string("name");
             $table->string("frequency");
-            $table->string("days");
-            $table->date("warning_Time");
-            $table->enum("type",['reserved', 'delivered', 'cancelled'])->default('reserved');
+            $table->date("date");
+            $table->time("time");
+            $table->enum("type",['Irrigation', 'change', 'fertilizer', 'Pruning']);
             $table->bool("repeat");
+            $table->unsignedBigInteger("Plant_id");
+            $table->foreign('Plant_id')
+            ->references('id')
+            ->on('plants')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }

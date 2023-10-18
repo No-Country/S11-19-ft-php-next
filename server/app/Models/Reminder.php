@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Reminder extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'frequency',
+        'days',
+        'warning_Time',
+        'type',
+        'repeat',
+    ];
+
+    
 }

@@ -14,7 +14,7 @@ class ReminderController extends Controller
      */
     public function index()
     {
-        $reminders = Reminder::all()
+        $reminders = Reminder::with("Plants")
         ->get();
 
         if($reminders){
@@ -32,19 +32,22 @@ class ReminderController extends Controller
         try {
             $validatedData = $request->validate([
                 'name' => 'required|string',
-                'attention' => 'required|string',
-                'plant_id' => 'required|numeric',
+                'frequency' => 'required|string',
                 'date' => 'required|date',
                 'time' => 'required|time',
-                'alert' => 'required|date'
+                'type' => 'required|string',
+                'repeat' => 'required|boolean',
+                'plant_id' => 'required|numeric',
             ]);
             $encryptedId = Auth::user()->getAuthIdentifier();
             $pack = Reminder::create([
                 'name' => $validatedData['name'],
-                'attention' => $validatedData['attention'],
-                'plant_id' => $validatedData['plant_id'],
+                'frequency' => $validatedData['frequency'],
                 'date' => $validatedData['date'],
-                'alert' => $validatedData['alert'],
+                'time' => $validatedData['time'],
+                'type' => $validatedData['type'],
+                'repeat' => $validatedData['repeat'],
+                'plant_id' => $validatedData['plant_id'],
                 'user_id' => $encryptedId,
             ]);
 
@@ -65,6 +68,7 @@ class ReminderController extends Controller
     public function show($user_id)
     {
         $reminder = Reminder::find($user_id)
+        ->with("Plants")
         ->get();
 
         if($reminder){
@@ -86,19 +90,22 @@ class ReminderController extends Controller
 
                 $validatedData = $request->validate([
                     'name' => 'required|string',
-                    'attention' => 'required|string',
-                    'plant_id' => 'required|numeric',
+                    'frequency' => 'required|string',
                     'date' => 'required|date',
                     'time' => 'required|time',
-                    'alert' => 'required|date'
+                    'type' => 'required|string',
+                    'repeat' => 'required|boolean',
+                    'plant_id' => 'required|numeric',
                 ]);
 
                 $reminder->update([
                     'name' => $validatedData['name'],
-                    'attention' => $validatedData['attention'],
-                    'plant_id' => $validatedData['plant_id'],
+                    'frequency' => $validatedData['frequency'],
                     'date' => $validatedData['date'],
-                    'alert' => $validatedData['alert'],
+                    'time' => $validatedData['time'],
+                    'type' => $validatedData['type'],
+                    'repeat' => $validatedData['repeat'],
+                    'plant_id' => $validatedData['plant_id'],
                 ]);
 
                 return response()->json(['Reminder updated' => $reminder], 200);
