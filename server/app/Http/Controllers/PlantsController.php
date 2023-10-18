@@ -13,8 +13,8 @@ class PlantsController extends Controller
     {
         $plants = Plant::
         join('environments', 'plants.environment_id', '=', 'environments.id')
-        ->join('amount_light', 'plants.light_id', '=', 'amount_light.id')
-        ->select('plants.id', 'plants.name', 'environments.name as ambient', 'amount_light.name as light', 'plants.date', 'plants.description', 'plants.image')
+        ->join('lights', 'plants.light_id', '=', 'lights.id')
+        ->select('plants.id', 'plants.name', 'environments.name as ambient', 'lights.name as light', 'plants.date', 'plants.description', 'plants.image')
         ->where('plants.user_id', '=', auth()->id())
         ->get();
         return response([
@@ -46,8 +46,8 @@ class PlantsController extends Controller
     {
         $plant = Plant::
         join('environments', 'plants.environment_id', '=', 'environments.id')
-        ->join('amount_light', 'plants.light_id', '=', 'amount_light.id')
-        ->select('plants.id', 'plants.name', 'environments.name as ambient', 'amount_light.name as light', 'plants.date', 'plants.description', 'plants.image')
+        ->join('lights', 'plants.light_id', '=', 'lights.id')
+        ->select('plants.id', 'plants.name', 'environments.name as ambient', 'lights.name as light', 'plants.date', 'plants.description', 'plants.image')
         ->where('plants.user_id', '=', auth()->id())
         ->where('plants.id', '=', $plant->id)
         ->get();
