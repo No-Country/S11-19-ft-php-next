@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\PlantsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,10 +26,10 @@ Route::post('/register', [AuthController::class, 'register'])->name('api.registe
 //Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 
 /* Plants **/
-// Route::middleware('auth')->group(function () {
-//     Route::get('/plants', [PlantController::class, 'index']);
-//     Route::post('/plants/create', [PlantController::class, 'store']);
-//     Route::get('/plants/{plant}', [PlantController::class, 'show']);
-//     Route::put('/plants/update/{plant}', [PlantController::class, 'update']);
-//     Route::delete('/plants/delete/{plant}', [PlantController::class, 'destroy']);
-// });
+Route::middleware('auth')->group(function () {
+    Route::get('/plants', [PlantsController::class, 'index']);
+    Route::post('/plants/create', [PlantsController::class, 'store']);
+    Route::get('/plants/{plant}', [PlantsController::class, 'show']);
+    Route::put('/plants/update/{plant}', [PlantsController::class, 'update']);
+    Route::delete('/plants/delete/{plant}', [PlantsController::class, 'destroy']);
+});
