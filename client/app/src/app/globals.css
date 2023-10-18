@@ -29,8 +29,7 @@ body {
 		rgb(var(--background-start-rgb));
 }
 
-.registerBgImg {
+/* .registerBgImg {
 	background: url("../assets/registerTop.png") left top no-repeat;
-  /* padding: 15px; */
   background-size: 12em;
-}
+} */

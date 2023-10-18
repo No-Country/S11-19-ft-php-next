@@ -12,14 +12,6 @@ function InputEmail({ placeholder, label, input, inputName, setInput, handleChan
 		password: string([minLength(8)]),
 	});
 	
-	// const PASS_REGEX = /^[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{6,8}$/;
-	// const EMAIL_REGEX = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-
-	
-	//console.log("inputBlured: ", input?.blured);
-	//console.log("input.value",input?.value);
-	//console.log("error: ", input?.isError);
-	//console.log("input en InputEmail: ", input)
 	return (
 		<>
 			<div className="flex flex-col relative ">
