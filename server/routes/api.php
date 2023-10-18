@@ -1,9 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PlantsController;
-use Illuminate\Database\Query\IndexHint;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +19,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-/** Plants **/
-Route::middleware('auth')->group(function () {
-    Route::get('/plants', [PlantController::class, 'index']);
-    Route::post('/plants/create', [PlantController::class, 'store']);
-    Route::get('/plants/{plant}', [PlantController::class, 'show']);
-    Route::put('/plants/update/{plant}', [PlantController::class, 'update']);
-    Route::delete('/plants/delete/{plant}', [PlantController::class, 'destroy']);
-});
+//Auth User
+Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+Route::post('/register', [AuthController::class, 'register'])->name('api.register');
+//Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 
+/* Plants **/
+// Route::middleware('auth')->group(function () {
+//     Route::get('/plants', [PlantController::class, 'index']);
+//     Route::post('/plants/create', [PlantController::class, 'store']);
+//     Route::get('/plants/{plant}', [PlantController::class, 'show']);
+//     Route::put('/plants/update/{plant}', [PlantController::class, 'update']);
+//     Route::delete('/plants/delete/{plant}', [PlantController::class, 'destroy']);
+// });

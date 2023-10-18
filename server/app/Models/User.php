@@ -50,6 +50,17 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public static $rules = [
+        'email' => 'unique:users,email,',
+        'name' => 'required',
+        'lastname' => 'required',
+        'img' => 'sometimes|required:NULL',
+        'password' => 'required',
+        'external_id' => 'sometimes|required:NULL',
+        'role_id' => 'sometimes|required|string',
+        'email_verified_at' => 'sometimes|required|date',
+    ];
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
