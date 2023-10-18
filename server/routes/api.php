@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlantsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+/** Plants **/
+Route::middleware('auth')->group(function () {
+    Route::get('/plants', [PlantsController::class, 'index']);
+    Route::post('/plants/create', [PlantsController::class, 'store']);
+    Route::get('/plants/{plant}', [PlantsController::class, 'show']);
+    Route::put('/plants/update/{plant}', [PlantsController::class, 'update']);
+    Route::delete('/plants/delete/{plant}', [PlantsController::class, 'destroy']);
+});
+
