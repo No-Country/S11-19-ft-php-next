@@ -320,7 +320,7 @@ return [
         ['header' => 'MODELOS'],
         [                                //Todo Usar traducciones de todo!
             'text' => ' Usuarios',
-            'url' => '#',  //Todo no implementada la ruta
+            'route' => 'admin.index',  //Todo no implementada la ruta
             'icon' => 'fas fa-users-cog',
         ],
         [
@@ -436,21 +436,21 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
                 ],
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
                 ],
             ],
