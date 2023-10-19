@@ -20,9 +20,9 @@ class ReminderSeeder extends Seeder
         Reminder::create([
             'name' => 'reminder1',
             'frequency' => 'Weekly',
-            'date' => '01/12/2023',
+            'date' => '2023-12-01',
             'time' => '22:00',
-            'type' => 'Weekly',
+            'type' => 'Irrigation',
             'repeat' => False,
             'Plant_id' => 1,
         ]);

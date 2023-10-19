@@ -14,7 +14,7 @@ class ReminderController extends Controller
      */
     public function index()
     {
-        $reminders = Reminder::with("Plants")
+        $reminders = Reminder::with("Plant")
         ->get();
 
         if($reminders){
@@ -34,7 +34,7 @@ class ReminderController extends Controller
                 'name' => 'required|string',
                 'frequency' => 'required|string',
                 'date' => 'required|date',
-                'time' => 'required|time',
+                'time' => 'required|date_format:H:i',
                 'type' => 'required|string',
                 'repeat' => 'required|boolean',
                 'plant_id' => 'required|numeric',
@@ -68,7 +68,7 @@ class ReminderController extends Controller
     public function show($user_id)
     {
         $reminder = Reminder::find($user_id)
-        ->with("Plants")
+        ->with("Plant")
         ->get();
 
         if($reminder){
@@ -92,7 +92,7 @@ class ReminderController extends Controller
                     'name' => 'required|string',
                     'frequency' => 'required|string',
                     'date' => 'required|date',
-                    'time' => 'required|time',
+                    'time' => 'required|date_format:H:i',
                     'type' => 'required|string',
                     'repeat' => 'required|boolean',
                     'plant_id' => 'required|numeric',

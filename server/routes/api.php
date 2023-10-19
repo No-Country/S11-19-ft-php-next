@@ -17,15 +17,15 @@ use App\Http\Controllers\ReminderController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    // return $request->user();
-    Route::resource('reminder', ReminderController::class)->except('create', 'edit');
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 //Auth User
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 Route::post('/register', [AuthController::class, 'register'])->name('api.register');
 //Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
+Route::resource('reminder', ReminderController::class)->except('create', 'edit');
 
 /* Plants **/
 Route::middleware('auth')->group(function () {

@@ -16,5 +16,7 @@ class Reminder extends Model
         'repeat',
     ];
 
-    
+    public function Plant(){
+        return $this->belongsTo(Plant::class, 'plant_id');
+    }
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date("date");
             $table->time("time");
             $table->enum("type",['Irrigation', 'change', 'fertilizer', 'Pruning']);
-            $table->bool("repeat");
+            $table->boolean("repeat");
             $table->unsignedBigInteger("Plant_id");
             $table->foreign('Plant_id')
             ->references('id')
