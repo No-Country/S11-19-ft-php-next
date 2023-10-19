@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\PlantsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ReminderController;
@@ -18,4 +20,18 @@ use App\Http\Controllers\ReminderController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     // return $request->user();
     Route::resource('reminder', ReminderController::class)->except('create', 'edit');
+});
+
+//Auth User
+Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+Route::post('/register', [AuthController::class, 'register'])->name('api.register');
+//Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
+
+/* Plants **/
+Route::middleware('auth')->group(function () {
+    Route::get('/plants', [PlantsController::class, 'index']);
+    Route::post('/plants/create', [PlantsController::class, 'store']);
+    Route::get('/plants/{plant}', [PlantsController::class, 'show']);
+    Route::put('/plants/update/{plant}', [PlantsController::class, 'update']);
+    Route::delete('/plants/delete/{plant}', [PlantsController::class, 'destroy']);
 });
