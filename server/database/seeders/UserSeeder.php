@@ -18,11 +18,10 @@ class UserSeeder extends Seeder
         User::getQuery()->delete();
 
         $adminRole = Role::whereName('admin')->firstOrFail();
-        $adminUser = User::create(['name' => 'Admin', 'lastname' => 'Principal', 'email' => 'admin@admin.com', 'password' => Hash::make('MyPassword123!'), 'email_verified_at' => Carbon::now(), 'role_id' => $adminRole->id]);
-        //$adminRole = Role::whereName('admin')->firstOrFail();
-        //$adminUser->role()->sync($adminRole->id);
+        User::create(['name' => 'Admin', 'lastname' => 'Principal', 'email' => 'admin@admin.com', 'password' => Hash::make('MyPassword123!'), 'email_verified_at' => Carbon::now(), 'role_id' => $adminRole->id]);
+        User::create(['name' => 'Yamila', 'lastname' => 'Paez', 'email' => 'yamilapaez2@gmail.com', 'password' => Hash::make('MyPassword123!'), 'email_verified_at' => Carbon::now(), 'role_id' => $adminRole->id]);
 
         // create some random users
-        User::factory(10)->create();
+        User::factory(100)->create();
     }
 }
