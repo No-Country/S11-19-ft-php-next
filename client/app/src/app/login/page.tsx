@@ -25,11 +25,11 @@ import { Input } from "./Input";
 	valid: boolean;
 }; */
 
-const LoginSchema = object({
+const RegisterSchema = object({
 	name: string([minLength(3, "minimo 3 caracteres")]),
 	email: string([email("email no valido")]),
 	password: string([minLength(6, "minimo 6 caracteres")]),
-	/* repitedPassword: string([minLength(2, "minimo 2 caracteres")]), */
+	repitedPassword: string([minLength(2, "minimo 2 caracteres")]),
 });
 
 
@@ -45,7 +45,7 @@ export default function Register() {
 
 		formState: { errors, isSubmitted },
 	} = useForm({
-		resolver: valibotResolver(LoginSchema),
+		resolver: valibotResolver(RegisterSchema),
 
 		defaultValues: {
 			name: "",
@@ -56,7 +56,7 @@ export default function Register() {
 	});
 
 
-	const onSubmit: SubmitHandler<InputVali<typeof LoginSchema>> = (data) => {
+	const onSubmit: SubmitHandler<InputVali<typeof RegisterSchema>> = (data) => {
 		/* console.log("data",data);
 		console.log("en onSubmit")
 		if (data.password !== data.repitedPassword ) {
@@ -68,7 +68,7 @@ export default function Register() {
 		console.log("STATE: ", formState.errors)
 	};
 
-	/* const onInvalid: SubmitHandler<InputVali<typeof LoginSchema>> = (error) => {
+	/* const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
 		console.log("data",error);
 		if (error.password !== error.repitedPassword || error.repitedPassword.length < 6) {
 			setError("repitedPassword", {
