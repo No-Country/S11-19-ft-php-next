@@ -25,12 +25,15 @@ import { Input } from "./Input";
 	valid: boolean;
 }; */
 
-const RegisterSchema = object({
+const LoginSchema = object({
 	name: string([minLength(3, "minimo 3 caracteres")]),
 	email: string([email("email no valido")]),
 	password: string([minLength(6, "minimo 6 caracteres")]),
-	repitedPassword: string([minLength(6, "minimo 6 caracteres")]),
+	/* repitedPassword: string([minLength(2, "minimo 2 caracteres")]), */
 });
+
+
+
 
 export default function Register() {
 	const {
@@ -42,7 +45,7 @@ export default function Register() {
 
 		formState: { errors, isSubmitted },
 	} = useForm({
-		resolver: valibotResolver(RegisterSchema),
+		resolver: valibotResolver(LoginSchema),
 
 		defaultValues: {
 			name: "",
@@ -53,26 +56,26 @@ export default function Register() {
 	});
 
 
-	const onSubmit: SubmitHandler<InputVali<typeof RegisterSchema>> = (data) => {
-		console.log("data",data);
+	const onSubmit: SubmitHandler<InputVali<typeof LoginSchema>> = (data) => {
+		/* console.log("data",data);
 		console.log("en onSubmit")
 		if (data.password !== data.repitedPassword ) {
 			console.log("en if onSubmit")
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
 			})
-		}
+		} */
 		console.log("STATE: ", formState.errors)
 	};
 
-	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
+	/* const onInvalid: SubmitHandler<InputVali<typeof LoginSchema>> = (error) => {
 		console.log("data",error);
 		if (error.password !== error.repitedPassword || error.repitedPassword.length < 6) {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
 			})
 		}
-	};
+	}; */
 
 	/* const handleSubmit = (e:React.SyntheticEvent) => {
 		e.preventDefault();
@@ -85,23 +88,13 @@ export default function Register() {
 			</div>
 			<div className="flex flex-col w-full lg:w-1/2 registerBgImg">
 				{/* <Image src={registerTop} className="w-[8em]" alt="plant image"/> */}
-				<h1 className="text-center text-4xl font-Poppins font-medium pt-16  pb-14 text-[#61B78E]">
-					Registrarse
+				<h1 className="text-center text-4xl font-Poppins font-medium mt-16 mb-24  text-[#61B78E]">
+					Iniciar sesión
 				</h1>
 				<form
 					onSubmit={handleSubmit(onSubmit)}
-					className="flex flex-col justify-center items-center w-full"
+					className="flex flex-col justify-center items-center w-full pt-2 pb-2"
 				>
-					<Input
-						placeholder="Nombre y Apellido"
-						label="Nombre y Apellido"
-						inputName="name"
-						/* className="max-w-[90%]" */
-						register={register}
-						name="name"
-						isError={!!errors.name}
-						messageError={errors.name?.message}
-					/>
 					<Input
 						placeholder="Email"
 						label="Email"
@@ -122,16 +115,6 @@ export default function Register() {
 						isError={!!errors.password}
 						messageError={errors.password?.message}
 					/>
-					<Input
-						placeholder="Repetir Contraseña"
-						label="Repetir Contraseña"
-						inputName="consfirmPassword"
-						/* className="max-w-[90%]" */
-						register={register}
-						name="repitedPassword"
-						isError={!!errors.repitedPassword}
-						messageError={errors.repitedPassword?.message}
-					/>
 					<button
 						className=" w-72 h-10 max-w-[80vw] border-2 bg-[#104938] text-[white] rounded-[50px] mt-5 "
 						type="submit"
@@ -139,7 +122,7 @@ export default function Register() {
 						Enviar
 					</button>
 				</form>
-				<Image src={registerFooter} className="w-full" alt="plant image" />
+				<Image src={registerFooter} className="w-full pt-2" alt="plant image" />
 			</div>
 		</section>
 	);
