@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('environment_id');
             $table->foreign('environment_id')->references('id')->on('environments');
             $table->unsignedBigInteger('light_id');
-            $table->foreign('light_id')->references('id')->on('amount_light');
+            $table->foreign('light_id')->references('id')->on('lights');
             $table->date('date');
             $table->string('description')->nullable();
             $table->string('image');
