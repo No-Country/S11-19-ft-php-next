@@ -26,7 +26,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('api.registe
 //Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 
 /* Plants **/
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/plants', [PlantsController::class, 'index']);
     Route::post('/plants/create', [PlantsController::class, 'store']);
     Route::get('/plants/{plant}', [PlantsController::class, 'show']);
