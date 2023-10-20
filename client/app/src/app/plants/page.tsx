@@ -36,7 +36,7 @@ function Plants() {
 						/>
 						<PlantCard
 							PlantImg="https://images.unsplash.com/photo-1610397648930-477b8c7f0943?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1930"
-							PlantInfo=" "
+							PlantInfo=""
 							PlantDate="11/02/2022"
 							PlantName="Rosa"
 						/>
