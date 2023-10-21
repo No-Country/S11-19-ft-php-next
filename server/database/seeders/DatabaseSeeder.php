@@ -26,7 +26,5 @@ class DatabaseSeeder extends Seeder
             LightSeeder::class,
             ReminderSeeder::class,
         ]);
-
-        
     }
 }
