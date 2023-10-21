@@ -28,7 +28,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('api.registe
 Route::resource('reminder', ReminderController::class)->except('create', 'edit');
 
 /* Plants **/
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/plants', [PlantsController::class, 'index']);
     Route::post('/plants/create', [PlantsController::class, 'store']);
     Route::get('/plants/{plant}', [PlantsController::class, 'show']);
