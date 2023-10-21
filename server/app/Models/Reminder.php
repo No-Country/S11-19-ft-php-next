@@ -9,14 +9,18 @@ class Reminder extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'name',
         'frequency',
-        'days',
-        'warning_Time',
+        'date',
+        'date',
+        'time',
         'type',
         'repeat',
+        'plant_id',
+        'user_id',
     ];
 
     public function Plant(){
-        return $this->belongsTo(Plant::class, 'plant_id');
+        return $this->belongsTo(Plant::class, 'Plant_id');
     }
 }

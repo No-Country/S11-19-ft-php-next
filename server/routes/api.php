@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\PlantsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlantsController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\ReminderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,8 @@ Route::post('/register', [AuthController::class, 'register'])->name('api.registe
 
 /* Rutas que requieren autenticacion */
 Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('reminder', ReminderController::class)->except('create', 'edit');
+
     Route::get('/plants', [PlantsController::class, 'index']);
     Route::post('/plants/create', [PlantsController::class, 'store']);
     Route::get('/plants/{plant}', [PlantsController::class, 'show']);

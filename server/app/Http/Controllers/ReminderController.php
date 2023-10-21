@@ -40,7 +40,7 @@ class ReminderController extends Controller
                 'plant_id' => 'required|numeric',
             ]);
             $encryptedId = Auth::user()->getAuthIdentifier();
-            $pack = Reminder::create([
+            $reminder = Reminder::create([
                 'name' => $validatedData['name'],
                 'frequency' => $validatedData['frequency'],
                 'date' => $validatedData['date'],
@@ -51,7 +51,7 @@ class ReminderController extends Controller
                 'user_id' => $encryptedId,
             ]);
 
-            return response()->json(['Reminder created' => $pack], 201);
+            return response()->json(['Reminder created' => $reminder], 201);
 
         } catch (ValidationException $e) {
             return response()->json([
