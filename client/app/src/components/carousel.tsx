@@ -29,7 +29,7 @@ export default function CarouselContainer({
 					infinite={true}
 					keyBoardControl={true}
 					removeArrowOnDeviceType={["mobile"]}
-          className='ml-7'
+          className='ml-10'
 				>	
          {children}
 				</Carousel>
