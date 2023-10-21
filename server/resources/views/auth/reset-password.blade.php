@@ -1,5 +1,21 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
+@extends('adminlte::page')
+
+@section('title', 'Cambio Contraseña')
+
+@section('css')
+
+ <!-- Scripts -->
+ @vite(['resources/css/app.css', 'resources/js/app.js'])
+@endsection
+
+@section('content_header')
+   
+
+@stop
+
+@section('content')
+
+<form method="POST" action="{{ route('password.store') }}">
         @csrf
 
         <!-- Password Reset Token -->
@@ -36,4 +52,10 @@
             </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+@stop
+
+@section('js')
+ 
+ 
+    </script>
+@stop
