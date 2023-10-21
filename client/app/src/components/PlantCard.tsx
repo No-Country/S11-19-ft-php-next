@@ -25,7 +25,7 @@ function PlantCard({
 					className="object-cover object-center h-full w-full"
 				/>
 			</div>
-			<div className="flex flex-col mx-2 text-lg mt-3 justify-between ml-7">
+			<div className="flex flex-col mx-2 text-lg mt-3 justify-between ml-7 ">
 				<h3 className="text-gray-800">{PlantName}</h3>
 				<ul className="text-sm mt-3">
 					<li className="flex gap-1">
