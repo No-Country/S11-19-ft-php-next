@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\Enum;
 use App\Models\Notification;
-use App\Enums\EventEnum;
+
 
 class NotificationController extends Controller
 {
