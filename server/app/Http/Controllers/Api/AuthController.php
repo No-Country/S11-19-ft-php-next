@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -19,13 +20,20 @@ class AuthController extends Controller
     {
         $data = $request->validated();
 
+        // Revisar validacion contraseña e email correcto
+        if (!Auth::attempt($data)) {
+            return $this->errorResponse(null, 'El email o el password son incorrectos', 422);
+        }
+
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
             return $this->errorResponse(null, 'Compruebe que los datos ingresados sean correctos');
         }
 
-        $data = ['token' => $user->createToken('token')->plainTextToken];
+        // Autenticar al usuario
+        /** @var \App\Models\User $user * */
+        $user = Auth::user();
 
         $data = ['token' => $user->createToken('token')->plainTextToken, 'user' => $user];
 
