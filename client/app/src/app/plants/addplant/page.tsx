@@ -28,43 +28,45 @@ function AddPlant() {
 							required
 							id="nombre"
 							className="px-4 py-3 w-[289px] border-2 rounded-lg border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
-							name="nombre"
 							placeholder="Ej. Margarita"
 						/>
-						<label htmlFor="nombre">Ambiente*</label>
-						<input
-							type=""
+						<label htmlFor="ambiente" className="">
+							Ambiente*
+						</label>
+						<select
+							id="ambiente"
+							name="ambiente"
 							required
-							id="nombre"
-							className="px-4 py-3 w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
-							name="nombre"
-							placeholder="Ej. Margarita"
-						/>
-						<label htmlFor="nombre">Cantidad de Luz*</label>
-						<input
-							type=""
+							className="px-4 py-3 w-[289px] border-2 rounded-lg border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						>
+							<option value="opcion1"> Interior</option>
+							<option value="opcion2"> Exterior</option>
+						</select>
+						<label htmlFor="luz">Cantidad de luz*</label>
+						<select
+							id="luz"
+							name="luz"
 							required
-							id="nombre"
-							className="px-4 py-3 w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
-							name="nombre"
-							placeholder="Ej. Margarita"
-						/>
-						<label htmlFor="nombre">Fecha de adquisición</label>
+							className="px-4 py-3 w-[289px] border-2 rounded-lg border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
+						>
+							<option value="opcion1"> Directa</option>
+							<option value="opcion2"> Indirecta</option>
+							<option value="opcion2"> Sombra</option>
+						</select>
+
+						<label htmlFor="fecha-adquisicion">Fecha de adquisición</label>
 						<input
 							type="date"
 							required
-							id="nombre"
+							id="fecha"
 							className="px-4 py-3 w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
-							name="nombre"
 							placeholder="Ej. Margarita"
 						/>
-						<label htmlFor="nombre">Observaciones</label>
+						<label htmlFor="observaciones">Observaciones</label>
 						<input
 							type="text"
 							required
-							id="nombre"
 							className="px-4 py-3 w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
-							name="nombre"
 							placeholder="Ej: Cambia de color"
 						/>
 					</div>
@@ -72,6 +74,14 @@ function AddPlant() {
 						<span className="font-bold"> Nota:</span> Los inputs marcados con *
 						son obligatorios
 					</p>
+					<input
+						type="file"
+						required
+						id="nombre"
+						className=" w-[289px] mt-8 bg-gray-400 h-[189px] flex items-center  border-2 rounded-xl   focus:outline-none focus:border-[#2DD4BF]"
+						name="file"
+						placeholder="Ej: Cambia de color"
+					/>
 				</form>
 				<div className="flex justify-center gap-2">
 					<Link
