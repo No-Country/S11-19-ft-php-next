@@ -58,12 +58,12 @@ const Header = () => {
 					<Image className="ml-2" src={""} alt="Brand" />
 
 					<div className="text-sm mr-3">
-						<Link className="mr-7 text-slate-100 text-xs" href={"/"}>
+						<Link className="mr-7" href={"/register"}>
 							Registrarme
 						</Link>
 						<Link
-							className="p-2 bg-text text-xs text-slate-100 rounded-xl"
-							href={"/"}
+							className="p-2 bg-slate-700 text-slate-100 rounded-xl"
+							href={"/login"}
 						>
 							Iniciar Sesión
 						</Link>

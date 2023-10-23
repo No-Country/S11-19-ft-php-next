@@ -1,6 +1,9 @@
+
+import { AuthContextProvider } from "@/components/authcontext";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +19,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body className="font-Poppins bg-background">{children}</body>
+			<AuthContextProvider>
+				<body className="font-Poppins bg-background">{children}</body>
+			</AuthContextProvider>
 		</html>
 	);
 }
