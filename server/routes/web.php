@@ -33,6 +33,12 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('admin.index');
+    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
+    Route::post('/users/store', [UserController::class, 'store'])->name('admin.users.store'); 
+    Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit'); 
+    Route::patch('/users/update/{id}', [UserController::class, 'update'])->name('admin.users.update'); 
+    
 });
 
 require __DIR__.'/auth.php';

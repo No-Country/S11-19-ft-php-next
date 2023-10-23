@@ -3,13 +3,13 @@
 @section('title', 'Usuarios')
 
 @section('css')
-<link rel="stylesheet" href="/css/admin_custom.css">
+<!-- <link rel="stylesheet" href="/css/admin_custom.css"> -->
 @endsection
 
 @section('content_header')
     <div class="d-flex justify-content-between px-3">
         <h1>{{ __('Usuarios') }}</h1>
-        <button type="button" class="btn btn-success rounded-pill"><i class="fas fa-plus"></i></button>
+        <button type="button" class="btn btn-success rounded-pill" onclick="window.location.href='{{ route('admin.users.create') }}'"><i class="fas fa-plus"></i></button>
     </div>
 
 @stop
@@ -52,8 +52,8 @@
                     <td>{{ date('d-m-Y', strtotime($user->created_at)) }}</td>
                     <td>
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-success rounded-pill mr-1"><i class="fas fa-edit"></i></button>
-                            <button type="button" class="btn btn-danger rounded-pill"><i class="fas fa-trash"></i></button>
+                        <button type="button" onclick="window.location.href='{{ route('admin.users.edit', ['id' => $user->id]) }}'" class="btn btn-success rounded-pill mr-1"><i class="fas fa-edit"></i></button>
+                        <button type="button" onclick="eliminarUsuario({{ $user->id }})" class="btn btn-danger rounded-pill"><i class="fas fa-trash"></i></button>
                         </div>
 
                     </td>
@@ -71,8 +71,43 @@
 @section('js')
  
     <script>
-        $('#usersTable').DataTable({
-  
-});
+        $('#usersTable').DataTable({});
+        $(document).ready(function() {
+
+    });
+        function eliminarUsuario(userId) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¡No podrás revertir esto!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: `/users/${userId}`,
+                type: 'DELETE',
+                headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                success: function (data) {
+                    if (data.success) {
+                        Swal.fire('Éxito', `${data.message} ha sido eliminado correctamente.`, 'success');
+                        window.location.reload();
+                    } else {
+                        Swal.fire('Error', `Ha ocurrido un error al eliminar ${data.message}`, 'error');
+                    }
+                },
+                error: function (e) {
+                    console.log(e)
+                    Swal.fire('Error', `Ha ocurrido un error al eliminar el usuario.`, 'error');
+                }
+            });
+        }
+    });
+}
+
     </script>
 @stop
