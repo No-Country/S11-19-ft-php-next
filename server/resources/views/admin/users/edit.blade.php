@@ -73,7 +73,12 @@
                 url: '/users/update/{{ $user->id }}',
                 data: $(this).serialize(), 
                 success: function(data) {
-                    Swal.fire('Éxito', 'El usuario ha sido creado correctamente.', 'success');
+                    Swal.fire({
+                            title: 'Éxito',
+                            text: 'El usuario ha sido actualizado correctamente.',
+                            icon: 'success',
+                            showConfirmButton: false
+                        });
                     window.location.href = '/users';
                 },
                 error: function(error) {

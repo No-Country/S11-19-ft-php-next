@@ -79,8 +79,8 @@
                 text: '¡No podrás revertir esto!',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
                 confirmButtonText: 'Sí, eliminarlo'
             }).then((result) => {
                 if (result.value) {
@@ -92,7 +92,12 @@
                                 },
                         success: function (data) {
                             if (data.success) {
-                                Swal.fire('Éxito', `${data.message} ha sido eliminado correctamente.`, 'success');
+                                Swal.fire({
+                                    title: 'Éxito',
+                                    text: 'El usuario ha sido eliminado correctamente.',
+                                    icon: 'success',
+                                    showConfirmButton: false
+                        });
                                 window.location.reload();
                             } else {
                                 Swal.fire('Error', `Ha ocurrido un error al eliminar ${data.message}`, 'error');
