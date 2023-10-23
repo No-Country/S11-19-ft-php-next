@@ -52,7 +52,7 @@ export default function CarouselPlants({
 			infinite={false}
 			keyBoardControl={true}
 			removeArrowOnDeviceType={["mobile"]}
-			className="ml-7 py-5 bg-background"
+			className="py-5 bg-background"
 		>
 			{children}
 		</Carousel>
