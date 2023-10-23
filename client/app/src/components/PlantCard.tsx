@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
-
+import { BiEdit, BiTrash } from "react-icons/bi";
 interface PlantCardProps {
 	PlantName: string;
 	PlantImg: string;
@@ -26,7 +27,17 @@ function PlantCard({
 				/>
 			</div>
 			<div className="flex flex-col mx-2 text-lg mt-3 justify-between ml-7 ">
-				<h3 className="text-gray-800">{PlantName}</h3>
+				<div className="flex justify-end text-2xl text-primary  ">
+					<Link href="">
+						<BiTrash className="hover:text-secondary ease-in-out duration-300">
+							{" "}
+						</BiTrash>
+					</Link>
+					<Link href="">
+						<BiEdit className="hover:text-secondary ease-in-out duration-300"></BiEdit>
+					</Link>
+				</div>
+				<h3 className="text-gray-800 font-medium">{PlantName}</h3>
 				<ul className="text-sm mt-3">
 					<li className="flex gap-1">
 						<h2 className="font-bold">Fecha de adquisición: </h2>
@@ -47,7 +58,7 @@ function PlantCard({
 				</ul>
 
 				{/* Contenedor de tags */}
-				<div className="text-base font-semibold text-gray-700 mt-10 flex gap-2">
+				<div className="text-base font-semibold mb-4 text-gray-700 mt-10 flex gap-2">
 					<>
 						<p className="rounded-2xl px-4 py-1 w-fit bg-marron-claro">
 							#interior
