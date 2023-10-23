@@ -32,7 +32,7 @@ const Header = () => {
 		console.log('isOpenTrue');
 	}
 	return (
-		<header>
+		<header >
 			<nav ref={menuRef}  className={`fixed  bg-slate-100 transition-transform duration-500 text-navbar text-xl text-center h-screen z-50 w-52 ${isOpen ? 'translate-x-0': '-translate-x-full'}`}>
 				<ul>
 					
@@ -43,7 +43,7 @@ const Header = () => {
 					<li className="my-10"><Link href={'/'}>Mi perfil</Link></li>
 				</ul>
 			</nav>
-			<div className="flex justify-between items-center h-20 bg-background">
+			<div className="flex justify-between items-center h-20 bg-button-primary">
 			{isLogged ? (
 				<>
 					<button id="hamburgerMenu" onClick={openTheMenu}>

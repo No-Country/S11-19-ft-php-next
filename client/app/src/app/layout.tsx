@@ -20,7 +20,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<AuthContextProvider>
-				<body className={inter.className}>{children}</body>
+				<body className="font-Poppins bg-background">{children}</body>
 			</AuthContextProvider>
 		</html>
 	);
