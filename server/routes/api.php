@@ -17,17 +17,20 @@ use App\Http\Controllers\Api\NotificationController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 //Auth User
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 Route::post('/register', [AuthController::class, 'register'])->name('api.register');
-//Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 
-/* Plants **/
+/* Rutas que requieren autenticacion */
 Route::middleware('auth:sanctum')->group(function () {
+    //Auth
+    Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
+
+    //Plants
     Route::get('/plants', [PlantsController::class, 'index']);
     Route::post('/plants/create', [PlantsController::class, 'store']);
     Route::get('/plants/{plant}', [PlantsController::class, 'show']);

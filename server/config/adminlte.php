@@ -336,12 +336,12 @@ return [
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
-            'url' => 'admin/settings',  //Todo no implementada la ruta edit profile
+            'route' => 'profile.edit',  //Todo no implementada la ruta edit profile
             'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'change_password',
-            'url' => 'admin/settings',       //Todo no implementada la ruta edit profile
+            'url' => '#',       //Todo no implementada la ruta edit profile
             'icon' => 'fas fa-fw fa-lock',
         ],
         // [
