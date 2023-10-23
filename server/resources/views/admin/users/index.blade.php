@@ -72,41 +72,39 @@
  
     <script>
         $('#usersTable').DataTable({});
-        $(document).ready(function() {
-
-    });
+        
         function eliminarUsuario(userId) {
-    Swal.fire({
-        title: '¿Estás seguro?',
-        text: '¡No podrás revertir esto!',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminarlo'
-    }).then((result) => {
-        if (result.value) {
-            $.ajax({
-                url: `/users/${userId}`,
-                type: 'DELETE',
-                headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¡No podrás revertir esto!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminarlo'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: `/users/${userId}`,
+                        type: 'DELETE',
+                        headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                        success: function (data) {
+                            if (data.success) {
+                                Swal.fire('Éxito', `${data.message} ha sido eliminado correctamente.`, 'success');
+                                window.location.reload();
+                            } else {
+                                Swal.fire('Error', `Ha ocurrido un error al eliminar ${data.message}`, 'error');
+                            }
                         },
-                success: function (data) {
-                    if (data.success) {
-                        Swal.fire('Éxito', `${data.message} ha sido eliminado correctamente.`, 'success');
-                        window.location.reload();
-                    } else {
-                        Swal.fire('Error', `Ha ocurrido un error al eliminar ${data.message}`, 'error');
-                    }
-                },
-                error: function (e) {
-                    console.log(e)
-                    Swal.fire('Error', `Ha ocurrido un error al eliminar el usuario.`, 'error');
+                        error: function (e) {
+                            console.log(e)
+                            Swal.fire('Error', `Ha ocurrido un error al eliminar el usuario.`, 'error');
+                        }
+                    });
                 }
             });
-        }
-    });
 }
 
     </script>
