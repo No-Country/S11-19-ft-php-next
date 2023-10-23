@@ -325,7 +325,7 @@ return [
         ],
         [
             'text' => ' Plantas',
-            'url' => '#',       //Todo no implementada la ruta edit profile
+            'route' => 'admin.plants.index',       //Todo no implementada la ruta edit profile
             'icon' => 'fas fa-leaf',
         ],
         [

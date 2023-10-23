@@ -26,8 +26,12 @@ Route::post('/register', [AuthController::class, 'register'])->name('api.registe
 //Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 
 /* Plants **/
+//agregado por mAIte 22-10- creando la name (admin.plants.index) vista de plants
+
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/plants', [PlantsController::class, 'index']);
+    Route::get('admin/plants/index', [PlantsController::class, 'index'])->name('admin.plants.index');
+   // Route::get('/plants', [PlantsController::class, 'index']);
     Route::post('/plants/create', [PlantsController::class, 'store']);
     Route::get('/plants/{plant}', [PlantsController::class, 'show']);
     Route::put('/plants/update/{plant}', [PlantsController::class, 'update']);
