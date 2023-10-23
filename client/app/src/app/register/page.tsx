@@ -7,16 +7,15 @@ import { valibotResolver } from "@hookform/resolvers/valibot";
 import { SubmitHandler, useForm } from "react-hook-form";
 import {
 	Input as InputVali,
-	ValiError,
 	email,
 	minLength,
 	object,
-	parse,
 	required,
 	string,
 	custom,
 } from "valibot";
 import { Input } from "./Input";
+import Logo from "../../assets/brandLogo.jpg"
 
 /* type inputState = {
 	value: string;
@@ -62,11 +61,11 @@ export default function Register() {
 				message: "Las contraseñas no coinciden",
 			})
 		}
-		console.log("STATE: ", formState.errors)
+		//console.log("STATE: ", formState.errors)
 	};
 
 	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
-		console.log("data",error);
+		//console.log("data",error);
 		if (error.password !== error.repitedPassword || error.repitedPassword.length < 6) {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
@@ -74,17 +73,14 @@ export default function Register() {
 		}
 	};
 
-	/* const handleSubmit = (e:React.SyntheticEvent) => {
-		e.preventDefault();
-	} */
+
 	return (
 		<section className="flex flex-row">
-			<div className="bg-[#104938] hidden lg:flex w-1/2 text-[#FFF] font-Poppins font-medium italic flex-col justify-center items-center ">
-				<p>Logo</p>
+			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center">
+				<Image src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]" />
 				<p>Donde la Naturaleza y la Tecnología Se Unen</p>
 			</div>
 			<div className="flex flex-col w-full lg:w-1/2 registerBgImg">
-				{/* <Image src={registerTop} className="w-[8em]" alt="plant image"/> */}
 				<h1 className="text-center text-4xl font-Poppins font-medium pt-16  pb-14 text-[#61B78E]">
 					Registrarse
 				</h1>
@@ -96,7 +92,6 @@ export default function Register() {
 						placeholder="Nombre y Apellido"
 						label="Nombre y Apellido"
 						inputName="name"
-						/* className="max-w-[90%]" */
 						register={register}
 						name="name"
 						isError={!!errors.name}
@@ -106,7 +101,6 @@ export default function Register() {
 						placeholder="Email"
 						label="Email"
 						inputName="email"
-						/* className="max-w-[90%]" */
 						register={register}
 						name="email"
 						isError={!!errors.email}
@@ -116,7 +110,6 @@ export default function Register() {
 						placeholder="Contraseña"
 						label="Contraseña"
 						inputName="password"
-						/* className="max-w-[90%]" */
 						register={register}
 						name="password"
 						isError={!!errors.password}
@@ -126,7 +119,6 @@ export default function Register() {
 						placeholder="Repetir Contraseña"
 						label="Repetir Contraseña"
 						inputName="consfirmPassword"
-						/* className="max-w-[90%]" */
 						register={register}
 						name="repitedPassword"
 						isError={!!errors.repitedPassword}

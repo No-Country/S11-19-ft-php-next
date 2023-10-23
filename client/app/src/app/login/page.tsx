@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { redirect } from "next/navigation";
+import { useRouter } from 'next/navigation'
 import "./styles.register.css";
 import Image from "next/image";
 import registerFooter from "../../assets/registerFooter2.jpg";
@@ -17,6 +19,8 @@ import {
 	custom,
 } from "valibot";
 import { Input } from "./Input";
+import { AuthContext } from "@/components/authcontext";
+import Logo from "../../assets/brandLogo.jpg"
 
 /* type inputState = {
 	value: string;
@@ -25,17 +29,14 @@ import { Input } from "./Input";
 	valid: boolean;
 }; */
 
-const RegisterSchema = object({
-	name: string([minLength(3, "minimo 3 caracteres")]),
+const LoginSchema = object({
 	email: string([email("email no valido")]),
 	password: string([minLength(6, "minimo 6 caracteres")]),
-	repitedPassword: string([minLength(2, "minimo 2 caracteres")]),
 });
 
-
-
-
 export default function Register() {
+	const router = useRouter()
+
 	const {
 		register,
 		handleSubmit,
@@ -45,45 +46,84 @@ export default function Register() {
 
 		formState: { errors, isSubmitted },
 	} = useForm({
-		resolver: valibotResolver(RegisterSchema),
+		resolver: valibotResolver(LoginSchema),
 
 		defaultValues: {
-			name: "",
 			email: "",
 			password: "",
-			repitedPassword: "",
 		},
 	});
 
+	const {userState, dispatchUser} = useContext(AuthContext)
+	//console.log("userState: ", userState)
+	//console.log("dispatch: ", dispatchUser)
 
-	const onSubmit: SubmitHandler<InputVali<typeof RegisterSchema>> = (data) => {
-		/* console.log("data",data);
-		console.log("en onSubmit")
-		if (data.password !== data.repitedPassword ) {
-			console.log("en if onSubmit")
-			setError("repitedPassword", {
-				message: "Las contraseñas no coinciden",
-			})
-		} */
-		console.log("STATE: ", formState.errors)
-	};
+	/* const {user, handleUser} = useContext(AuthContext)
+	console.log("user: ", user) */
 
-	/* const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
-		console.log("data",error);
-		if (error.password !== error.repitedPassword || error.repitedPassword.length < 6) {
-			setError("repitedPassword", {
-				message: "Las contraseñas no coinciden",
-			})
+	const onSubmit: SubmitHandler<InputVali<typeof LoginSchema>> = (data) => {
+		console.log("data de onSubmit",data);
+		
+		const dataMocked = {
+			name:"Pepe",
+			email:formState.email,
+			img:"ede",
+			token:"1223eijfiri"
 		}
-	}; */
+		/* const URL = "../src/app/login/data.json" */
+		
+    /* fetch(URL)
+		.then(res =>res.json())
+		.then(data => {
+			console.log("data en then: ", data)
+			if (data) {
+				dispatchUser({
+					type:"LOGIN-CREDENTIALS", 
+					payload: data
+				})
+				console.log("ESTADO EN THEN: ", userState )
+				redirect("/plants")
+			}
+			
+		}) */
+		async function getUser() {
 
-	/* const handleSubmit = (e:React.SyntheticEvent) => {
-		e.preventDefault();
-	} */
+			try{
+				const URL = "./data.json"
+				const response = await fetch(URL)
+				const data = await response.json()
+				console.log("data en getUser: ", data)
+				if (data) {
+					await dispatchUser({
+						type:"LOGIN-CREDENTIALS", 
+						payload: data
+					})
+					console.log("ESTADO EN THEN: ", userState )
+					/* redirect("/plants") */
+					router.push("/plants")
+				}
+			}catch(err) {console.log(err)}
+		}
+
+		getUser()
+
+		/* handleUser(dataMocked) */
+		console.log("STATE: ", formState.errors)
+		
+	};
+	// useEffect( () => {
+	// 	/* const URL = "../src/app/login/data.json" */
+	// 	const URL = "./data.json"
+  //   fetch(URL)
+	// 	.then(res =>res.json())
+	// 	.then(data => console.log("data: ", data))
+	// },[] )
+
+	
 	return (
 		<section className="flex flex-row">
-			<div className="bg-[#104938] hidden lg:flex w-1/2 text-[#FFF] font-Poppins font-medium italic flex-col justify-center items-center ">
-				<p>Logo</p>
+			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center">
+				<Image src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]  "/>
 				<p>Donde la Naturaleza y la Tecnología Se Unen</p>
 			</div>
 			<div className="flex flex-col w-full lg:w-1/2 registerBgImg">

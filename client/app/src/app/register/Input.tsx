@@ -1,9 +1,6 @@
 "use client";
 import {
-	HtmlHTMLAttributes,
 	InputHTMLAttributes,
-	useEffect,
-	useState,
 } from "react";
 
 import { clsx } from "clsx";
