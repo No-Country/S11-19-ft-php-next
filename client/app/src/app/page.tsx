@@ -1,37 +1,38 @@
 import Image from "next/image";
 import Header from "@/components/header";
 import CarouselContainer from "@/components/carousel";
-import headerPicture from '@/static/Rectangle-5677.png'
-import addPlantPicture from '@/static/Pebble-People-Plant-3.png'
-import remindersPicture from '@/static/Allura-Clock.png'
-import calendarPicture from '@/static/Hands-Calendar.png'
-import landingSectionPicture from '@/static/landing-second.png'
-import firstAvatarCommentPic from '@/static/Ellipse-313.png'
-import secondAvatarCommentPic from '@/static/Ellipse-315.png'
-import thirdAvatarCommentPic from '@/static/Ellipse-314.png'
+import headerPicture from '@/assets/Rectangle-5677.png'
+import addPlantPicture from '@/assets/Pebble-People-Plant-3.png'
+import remindersPicture from '@/assets/Allura-Clock.png'
+import calendarPicture from '@/assets/Hands-Calendar.png'
+import landingSectionPicture from '@/assets/landing-second.png'
+import firstAvatarCommentPic from '@/assets/Ellipse-313.png'
+import secondAvatarCommentPic from '@/assets/Ellipse-315.png'
+import thirdAvatarCommentPic from '@/assets/Ellipse-314.png'
 export default function Home() {
 	return (
-		<main className="min-h-screen">
+		<main className="min-h-screen bg-slate-100">
 			<Header />
 			<div className="flex flex-col ">
+			
 				<Image src={headerPicture} className="w-full h-60 bg-slate-200 " alt="header" />
-				<p className="mx-7 mt-6 text-button-primary text-sm">
+				<p className="mx-7 mt-6 text-primary text-sm">
 					<strong>Garden Wise </strong>
 					 es la app de <strong>cuidado de plantas</strong>  que revolucionó la forma en que
 					las personas cuidan y mantienen sus <strong>plantas</strong> 
 				</p>
 			</div>
-			<div className="mt-7">
-				<h2 className="text-lg text-center text-text font-bold mb-4">Funciones</h2>
+			<div className="mt-7 ">
+				<h2 className="text-lg text-center text-secondary font-bold mb-4">Funciones</h2>
 				<CarouselContainer>
-					<div className=" flex text-button-primary border-2 border-solid rounded-lg border-text  flex-col justify-center items-center p-2 w-52 h-56 ">
+					<div className=" flex text-primary border-2 border-solid rounded-lg border-secondary  flex-col justify-center items-center p-2 w-52 h-56 ">
 						<Image className="mt-3 w-20 h-20" src={addPlantPicture} alt="agregar-planta" />
-						<h4 className="my-3 text-button-primary">Agregar Planta</h4>
+						<h4 className="my-3 text-primary">Agregar Planta</h4>
 						<p className="text-center text-xs ">
 						Registra y guarda información específica de una nueva planta en tu colección
 						</p>
 					</div>
-					<div className=" flex text-button-primary border-2 border-solid rounded-lg border-text  flex-col justify-center items-center p-2 w-52 h-56 ">
+					<div className=" flex text-primary border-2 border-solid rounded-lg border-secondary  flex-col justify-center items-center p-2 w-52 h-56 ">
 						<Image className="mt-3 w-20 h-20" src={remindersPicture} alt="Recordatorio" />
 						<h4 className="my-3">Recordatorio</h4>
 						<p className="text-center text-xs ">
@@ -39,7 +40,7 @@ export default function Home() {
 						necesidades de cada planta
 						</p>
 					</div>
-					<div className=" flex text-button-primary border-2 border-solid rounded-lg border-text  flex-col justify-center items-center p-2 w-52 h-56 ">
+					<div className=" flex text-primary border-2 border-solid rounded-lg border-secondary  flex-col justify-center items-center p-2 w-52 h-56 ">
 						<Image className="mt-3 w-20 h-20" src={calendarPicture} alt="Calendario" />
 						<h4 className="my-3">Calendario</h4>
 						<p className="text-center text-xs ">
@@ -47,12 +48,12 @@ export default function Home() {
 						</p>
 					</div>
 				</CarouselContainer>
-				<h3 className="flex text-lg text-text mt-7 mb-4 font-bold justify-center">
+				<h3 className="flex text-lg text-secondary mt-7 mb-4 font-bold justify-center">
 					Beneficios
 				</h3>
 				<div className="flex flex-col ">
 					<Image src={landingSectionPicture} className="w-full h-60 bg-slate-200 " alt="header" />
-					<ul className="flex flex-col ml-7 mt-5 text-sm text-button-primary mb-7 gap-5">
+					<ul className="flex flex-col ml-7 mt-5 text-sm text-primary mb-7 gap-5">
 					
 						<li>
 						<svg xmlns="http://www.w3.org/2000/svg" className="inline mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -86,25 +87,25 @@ export default function Home() {
 							</li>
 					</ul>
 				</div>
-				<h3 className="text-lg text-center text-text mb-4  font-bold ">
+				<h3 className="text-lg text-center text-secondary mb-4  font-bold ">
 					Nuestros usuarios <br /> nos recomiendan
 				</h3>
 				<CarouselContainer>
-					<div className="bg-text text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52">
+					<div className="bg-secondary text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52">
 						<Image className="mt-3 w-20 h-20" src={firstAvatarCommentPic} alt="agregar-planta" />
 						<h4 className="my-3">Eduardo Gómez</h4>
 						<p className="text-center text-xs ">
 						¡Esta aplicación ha transformado mi habilidad para cuidar mis plantas!
 						</p>
 					</div>
-					<div className="bg-text text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52">
+					<div className="bg-secondary text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52">
 						<Image className="mt-3 w-20 h-20"  src={secondAvatarCommentPic} alt="agregar-planta" />
 						<h4 className="my-3">Susana Díaz</h4>
 						<p className="text-center text-xs ">
 						La aplicación es muy intuitiva, incluso para alguien sin experiencia
 						</p>
 					</div>
-					<div className="bg-text text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52">
+					<div className="bg-secondary text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52">
 						<Image className="mt-3 w-20 h-20" src={thirdAvatarCommentPic} alt="agregar-planta" />
 						<h4 className="my-3">Pablo Casas</h4>
 						<p className="text-center text-xs ">
@@ -115,7 +116,7 @@ export default function Home() {
 				</CarouselContainer>
 			</div>
 			<footer className="mt-5 bg-background flex flex-col items-center justify-center">
-				<h4 className="text-text my-5">Contactanos</h4>
+				<h4 className="text-secondary my-5">Contactanos</h4>
 				<div className="mt-5 mb-10">
 					<svg className="inline mr-2" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
 						<rect width="40" height="40" rx="20" fill="#61B78E"/>
