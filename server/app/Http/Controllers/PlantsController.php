@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Plant;
 use App\Http\Requests\Plant\StoreRequest;
 use App\Http\Requests\Plant\UpdateRequest;
-use Illuminate\Http\Request;
+use App\Traits\ApiResponse;
 
 class PlantsController extends Controller
 {
+    use ApiResponse;
     public function index()
     {
         $plants = Plant::
@@ -17,79 +18,90 @@ class PlantsController extends Controller
         ->select('plants.id', 'plants.name', 'environments.name as ambient', 'lights.name as light', 'plants.date', 'plants.description', 'plants.image')
         ->where('plants.user_id', '=', auth()->id())
         ->get();
-        return response([
-            "status" => 200,
-            "data" => $plants
-        ],200);
+      
+        if (!$plants) {
+            return response(["message" => 'There are no plants'],200);
+        }
+        return $this->successResponse($plants, 'Plants of the user');
     }
 
     public function store(StoreRequest $request)
     {
-        $plant = new Plant([
-            'name' => $request->name,
-            'environment_id' => $request->environment_id,
-            'light_id' => $request->light_id,
-            'date' => $request->date,
-            'description' => $request->description,
-            // 'image' => $request->image,
-            'user_id' => auth()->id()
-        ]);
-        $plant->save();
+        try {
+            $plant = new Plant([
+                'name' => $request->name,
+                'environment_id' => $request->environment_id,
+                'light_id' => $request->light_id,
+                'date' => $request->date,
+                'description' => $request->description,
+                'image' => $request->image,
+                'user_id' => auth()->id()
+            ]);
+            $plant->save();
+            if ($request->hasfile('image')){
+                $plant->addMediaFromRequest('image')->toMediaCollection('Plants');
+            }
 
-        if ($request->hasfile('image')){
-            $plant->addMediaFromRequest('image')->toMediaCollection('Plants');
+            return $this->successResponse($plant, 'Created plant successfully');
+        } catch (\Throwable $e) {
+            return $this->errorResponse($e->getMessage());
         }
-
-        return response([
-            "status" => 200,
-            "message" => "Created plant successfully",
-            "data" => $plant
-        ],200);
     }
 
-    public function show(Plant $plant)
+    public function show($id)
     {
         $plant = Plant::
         join('environments', 'plants.environment_id', '=', 'environments.id')
         ->join('lights', 'plants.light_id', '=', 'lights.id')
         ->select('plants.id', 'plants.name', 'environments.name as ambient', 'lights.name as light', 'plants.date', 'plants.description', 'plants.image')
         ->where('plants.user_id', '=', auth()->id())
-        ->where('plants.id', '=', $plant->id)
+        ->where('plants.id', '=', $id)
         ->get();
-        return response([
-            "status" => 200,
+        
+        if (count($plant) == null) {
+            return response(["message" => 'Plant not found'],200);
+        }
+
+         return response([
+            "status" => 'success',
             "data" => $plant
-        ],200);
+        ],200);        
     }
 
-    public function update(UpdateRequest $request, Plant $plant)
+    public function update(UpdateRequest $request, $id)
     {
-        $plant->update($request->input());
-        return response([
-            "status" => 200,
-            "message" => "Updated plant successfully",
-            "data" => $plant
-        ],200);
+        try {
+            $plant = Plant::where('id', '=', $id)
+            ->get();
 
-        if ($request->hasfile('image')){
-            if ($plant->hasMedia('Plants')) {
-                $plant->clearMediaCollection('Plants');
+            if (count($plant) == null) {
+                return response(["message" => 'Plant not found'],200);
             }
-            $plant->addMediaFromRequest('image')->toMediaCollection('Plants');
+
+            $plant->update($request->input());
+
+            if ($request->hasfile('image')){
+                if ($plant->hasMedia('Plants')) {
+                    $plant->clearMediaCollection('Plants');
+                }
+                $plant->addMediaFromRequest('image')->toMediaCollection('Plants');
+            }
+
+            return $this->successResponse($plant, 'Updated plant successfully');
+        } catch (\Throwable $e) {
+            return $this->errorResponse($e->getMessage());
         }
     }
 
     public function destroy(Plant $plant)
     {
-        if($plant){
-            $plant->delete();
-            if ($plant->hasMedia('Plants')) {
-                $plant->clearMediaCollection('Plants');
-            }
-            return response([
-                "status" => 200,
-                "message" => "Deleted plant successfully"
-            ],200);            
+        $plant->delete();
+        if ($plant->hasMedia('Plants')) {
+            $plant->clearMediaCollection('Plants');
         }
+        return response([
+            "status" => 200,
+            "message" => "Deleted plant successfully"
+        ],200);
     }
 }
