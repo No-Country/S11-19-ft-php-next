@@ -30,7 +30,7 @@ class UpdateRequest extends FormRequest
             'light_id' => ['required', 'exists:App\Models\Light,id'],
             'date' => ['required'],
             'description' => ['string'],
-            'image' => ['required'],
+            // 'image' => ['required'],
         ];
     }
 
@@ -50,7 +50,7 @@ class UpdateRequest extends FormRequest
             
             'description.string'=>'El valor no es correcto.',
 
-            'image.required'=>'Seleccione una Imagen para su planta.',
+            // 'image.required'=>'Seleccione una Imagen para su planta.',
         ];
     }
 

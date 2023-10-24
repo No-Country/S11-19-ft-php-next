@@ -19,7 +19,7 @@ class Plant extends Model implements HasMedia
         'light_id',
         'date',
         'description',
-        'image',
+        // 'image',
         'user_id',
     ];
 
