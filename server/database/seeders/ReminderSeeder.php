@@ -21,7 +21,7 @@ class ReminderSeeder extends Seeder
             'light_id' => 1,
             'date' => '2023-10-21',
             'description' => 'dasd',
-            'image' => 'asdwadw',
+            // 'image' => 'asdwadw',
             'user_id' => 1,
         ]);
 

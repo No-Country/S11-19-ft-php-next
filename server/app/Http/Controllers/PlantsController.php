@@ -31,10 +31,15 @@ class PlantsController extends Controller
             'light_id' => $request->light_id,
             'date' => $request->date,
             'description' => $request->description,
-            'image' => $request->image,
+            // 'image' => $request->image,
             'user_id' => auth()->id()
         ]);
         $plant->save();
+
+        if ($request->hasfile('image')){
+            $plant->addMediaFromRequest('image')->toMediaCollection('Plants');
+        }
+
         return response([
             "status" => 200,
             "message" => "Created plant successfully",
@@ -65,14 +70,26 @@ class PlantsController extends Controller
             "message" => "Updated plant successfully",
             "data" => $plant
         ],200);
+
+        if ($request->hasfile('image')){
+            if ($plant->hasMedia('Plants')) {
+                $plant->clearMediaCollection('Plants');
+            }
+            $plant->addMediaFromRequest('image')->toMediaCollection('Plants');
+        }
     }
 
     public function destroy(Plant $plant)
     {
-        $plant->delete();
-        return response([
-            "status" => 200,
-            "message" => "Deleted plant successfully"
-        ],200);
+        if($plant){
+            $plant->delete();
+            if ($plant->hasMedia('Plants')) {
+                $plant->clearMediaCollection('Plants');
+            }
+            return response([
+                "status" => 200,
+                "message" => "Deleted plant successfully"
+            ],200);            
+        }
     }
 }
