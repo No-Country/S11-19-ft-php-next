@@ -23,7 +23,8 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             EnvironmentSeeder::class,
-            LightSeeder::class
+            LightSeeder::class,
+            ReminderSeeder::class,
         ]);
     }
 }
