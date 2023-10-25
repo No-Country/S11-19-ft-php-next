@@ -21,6 +21,9 @@ import {
 import { Input } from "./Input";
 import { AuthContext } from "@/components/authcontext";
 import Logo from "../../assets/brandLogo.jpg"
+import Link from "next/link";
+import { useLogin } from "./useLogin";
+
 
 /* type inputState = {
 	value: string;
@@ -36,6 +39,7 @@ const LoginSchema = object({
 
 export default function Register() {
 	const router = useRouter()
+	
 
 	const {
 		register,
@@ -43,11 +47,9 @@ export default function Register() {
 		formState,
 		getValues,
 		setError,
-
 		formState: { errors, isSubmitted },
 	} = useForm({
 		resolver: valibotResolver(LoginSchema),
-
 		defaultValues: {
 			email: "",
 			password: "",
@@ -55,7 +57,7 @@ export default function Register() {
 	});
 
 	const {userState, dispatchUser} = useContext(AuthContext)
-	//console.log("userState: ", userState)
+	console.log("userState: ", userState)
 	//console.log("dispatch: ", dispatchUser)
 
 	/* const {user, handleUser} = useContext(AuthContext)
@@ -71,29 +73,15 @@ export default function Register() {
 			token:"1223eijfiri"
 		}
 		/* const URL = "../src/app/login/data.json" */
-		
-    /* fetch(URL)
-		.then(res =>res.json())
-		.then(data => {
-			console.log("data en then: ", data)
-			if (data) {
-				dispatchUser({
-					type:"LOGIN-CREDENTIALS", 
-					payload: data
-				})
-				console.log("ESTADO EN THEN: ", userState )
-				redirect("/plants")
-			}
-			
-		}) */
+		const {user, loading, error} = useLogin(formState)
 		async function getUser() {
-
 			try{
+				//
 				const URL = "./data.json"
 				const response = await fetch(URL)
 				const data = await response.json()
 				console.log("data en getUser: ", data)
-				if (data) {
+				if (data) {  // cambiar por user cuando tome del customhook
 					await dispatchUser({
 						type:"LOGIN-CREDENTIALS", 
 						payload: data
@@ -104,25 +92,14 @@ export default function Register() {
 				}
 			}catch(err) {console.log(err)}
 		}
-
 		getUser()
-
-		/* handleUser(dataMocked) */
 		console.log("STATE: ", formState.errors)
-		
 	};
-	// useEffect( () => {
-	// 	/* const URL = "../src/app/login/data.json" */
-	// 	const URL = "./data.json"
-  //   fetch(URL)
-	// 	.then(res =>res.json())
-	// 	.then(data => console.log("data: ", data))
-	// },[] )
 
 	
 	return (
 		<section className="flex flex-row">
-			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center">
+			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center min-h-[100vh]">
 				<Image src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]  "/>
 				<p>Donde la Naturaleza y la Tecnología Se Unen</p>
 			</div>
@@ -155,14 +132,15 @@ export default function Register() {
 						isError={!!errors.password}
 						messageError={errors.password?.message}
 					/>
+					<p className="w-80 lg:w-80 max-w-[80vw] text-end">¿no tienes cuenta? <span><Link href={'/register'} className="text-primary">Registrate</Link></span></p>
 					<button
-						className=" w-72 h-10 max-w-[80vw] border-2 bg-[#104938] text-[white] rounded-[50px] mt-5 "
+						className=" w-72 h-10 max-w-[80vw] border-2 bg-primary text-[white] rounded-[50px] mt-5 "
 						type="submit"
 					>
-						Enviar
+						iniciar sesión
 					</button>
 				</form>
-				<Image src={registerFooter} className="w-full pt-2" alt="plant image" />
+				<Image src={registerFooter} className="w-full pt-24" alt="plant image" />
 			</div>
 		</section>
 	);

@@ -2,14 +2,6 @@
 "use client"
 import {  createContext, useReducer,  ReactNode, useState, use,} from "react";
 
-const initialState:stateType = {
-	name:"",
-	email:"",
-	img:"",
-	token:""
-}
-export const AuthContext = createContext(initialState)
-
 type stateType = {
 	name:string,
 	email:string,
@@ -17,19 +9,31 @@ type stateType = {
 	token:string
 }
 
+type contextType = {
+	userState:stateType,
+	dispatchUser:(user:stateType) => void
+}
+export const AuthContext = createContext<contextType | null>(null)
+
+
 export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	
+	const initialState:stateType = {
+		name:"",
+		email:"",
+		img:"",
+		token:""
+	}
 
 type actionType = {
 	type:string,
-	payload:stateType
+	payload?:stateType 
 }
 
 	const authReducer = (state: stateType, action: actionType) => {
-		//console.log("en authReducer", action)
 		switch (action.type) {
 			case "LOGIN-CREDENTIALS":
-				const { name, email, img, token} = action.payload
+				const { name, email, img, token} = action.payload!
 				console.log("EN REDUCTOR, user: ", email)
 				return {
 					...state, 
@@ -46,19 +50,12 @@ type actionType = {
 						img:"",
 						token:""
 					}
+				default: return { ...state}
 		}
 	}
-	const [userState, dispatchUser] = useReducer(authReducer, initialState)
+	const [userState, dispatchUser] = useReducer<any>(authReducer, initialState)
 	const contextValue = {userState, dispatchUser}
 
-
-	/* const [user, setUser] = useState(initialState)
-	const handleUser = (dataMocked) => {
-    setUser({...user, name:dataMocked.name, email:dataMocked.email, img:"", token:dataMocked.token})
-	}
-	const contextValue = {user, handleUser}  */
-
-	/* return <AuthContext.Provider value="dark">{children}</AuthContext.Provider>  */
 	return <AuthContext.Provider value={contextValue} >{children}</AuthContext.Provider>
 }
 

@@ -16,6 +16,7 @@ import {
 } from "valibot";
 import { Input } from "./Input";
 import Logo from "../../assets/brandLogo.jpg"
+import Link from "next/link";
 
 /* type inputState = {
 	value: string;
@@ -53,15 +54,11 @@ export default function Register() {
 
 
 	const onSubmit: SubmitHandler<InputVali<typeof RegisterSchema>> = (data) => {
-		console.log("data",data);
-		console.log("en onSubmit")
 		if (data.password !== data.repitedPassword ) {
-			console.log("en if onSubmit")
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
 			})
 		}
-		//console.log("STATE: ", formState.errors)
 	};
 
 	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
@@ -124,14 +121,15 @@ export default function Register() {
 						isError={!!errors.repitedPassword}
 						messageError={errors.repitedPassword?.message}
 					/>
+					<p className="w-80 lg:w-80 max-w-[80vw] text-end">¿ya tienes cuenta? <span><Link href={'/login'} className="text-primary">Ingresa</Link></span></p>
 					<button
-						className=" w-72 h-10 max-w-[80vw] border-2 bg-[#104938] text-[white] rounded-[50px] mt-5 "
+						className=" w-72 h-10 max-w-[80vw] border-2 bg-primary text-[white] rounded-[50px] mt-5 "
 						type="submit"
 					>
-						Enviar
+						Registrarme
 					</button>
 				</form>
-				<Image src={registerFooter} className="w-full" alt="plant image" />
+				<Image src={registerFooter} className="w-full " alt="plant image" />
 			</div>
 		</section>
 	);
