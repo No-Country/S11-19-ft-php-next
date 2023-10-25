@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Plant;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class StoreRequest extends FormRequest
 {
@@ -49,5 +52,11 @@ class StoreRequest extends FormRequest
 
             'image.required'=>'Seleccione una Imagen para su planta.',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $response = new Response(['error' => $validator->errors()->first()], 422);
+        throw new ValidationException($validator, $response);
     }
 }
