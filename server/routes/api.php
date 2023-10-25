@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlantsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ReminderController;
-
+use App\Http\Controllers\Api\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,7 +27,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('api.registe
 
 /* Rutas que requieren autenticacion */
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('reminder', ReminderController::class)->except('create', 'edit');
+    Route::resource('/reminder', ReminderController::class)->except('create', 'edit');
 
     Route::get('/plants', [PlantsController::class, 'index']);
     Route::post('/plants/create', [PlantsController::class, 'store']);
@@ -35,9 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/plants/update/{plant}', [PlantsController::class, 'update']);
     Route::delete('/plants/delete/{plant}', [PlantsController::class, 'destroy']);
 
-    Route::get('/notifications', [NotificationController::class, 'index']);
-    Route::post('/notifications', [NotificationController::class, 'store']);
-    Route::get('/notifications/{notification}', [NotificationController::class, 'show']);
+    Route::get('/notifications', [NotificationController::class, 'show']);
     Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
-    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
+    Route::post('/notifications', [NotificationController::class, 'store']);
 });

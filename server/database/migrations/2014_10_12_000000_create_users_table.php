@@ -21,6 +21,8 @@ return new class() extends Migration {
             $table->foreignId('role_id');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('has_notifications')->default(true);
+            $table->boolean('email_subscription')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

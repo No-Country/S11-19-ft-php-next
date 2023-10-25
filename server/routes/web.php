@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,7 +39,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/store', [UserController::class, 'store'])->name('admin.users.store'); 
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit'); 
     Route::patch('/users/update/{id}', [UserController::class, 'update'])->name('admin.users.update'); 
+
+
+    /* Notifications admin, todavia falta arreglar esto por eso esta coment */
+    /* 
+        Route::get('/notifications', [NotificationController::class, 'index']);
     
+    Route::get('/notifications/{notification}', [NotificationController::class, 'show']);
+    Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
+    Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
+    */
 });
 
 require __DIR__.'/auth.php';
