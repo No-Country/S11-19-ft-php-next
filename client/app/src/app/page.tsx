@@ -54,7 +54,7 @@ export default function Home() {
 				<div className="flex flex-col md:flex-row md:items-center md:justify-around md:mb-10">
 
 					<Image src={landingSectionPicture} className="w-full md:w-1/2 lg:w-2/5 lg:h-full h-60 bg-slate-200 " alt="header" />
-					<ul className="flex flex-col ml-7 mt-5 text-sm text-primary mb-7 gap-5">
+					<ul className="flex flex-col ml-7 mt-5 text-sm xl:text-xl justify-between xl:space-y-8 text-primary mb-7 gap-5">
 					
 						<li>
 						<svg xmlns="http://www.w3.org/2000/svg" className="inline mr-3" width="24" height="24" viewBox="0 0 24 24" fill="none">

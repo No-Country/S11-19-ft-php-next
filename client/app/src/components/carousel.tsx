@@ -27,7 +27,7 @@ export default function CarouselContainer({
   return (
 		<>
 		{isLongScreen ? (
-			<div className='flex justify-center items-center space-x-10'>{children}</div>
+			<div className='flex justify-center items-center space-x-10 xl:justify-around'>{children}</div>
 			) : (
 
     <Carousel 
