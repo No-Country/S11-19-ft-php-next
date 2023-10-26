@@ -13,46 +13,47 @@ export default function Home() {
 	return (
 		<main className="min-h-screen bg-slate-100">
 			<Header />
-			<div className="flex flex-col ">
+			<div className="flex flex-col md:flex-row-reverse md:items-center lg:justify-between">
 			
-				<Image src={headerPicture} className="w-full h-60 bg-slate-200 " alt="header" />
-				<p className="mx-7 mt-6 text-primary text-sm">
+				<Image src={headerPicture} className="w-full h-60 md:w-1/2 lg:w-2/5 lg:h-full bg-slate-200 " alt="header" />
+				<p className="mx-7 mt-6 md:mt-0 lg:w-1/3 lg:mx-32 lg:text-xl text-primary text-sm">
 					<strong>Garden Wise </strong>
 					 es la app de <strong>cuidado de plantas</strong>  que revolucionó la forma en que
 					las personas cuidan y mantienen sus <strong>plantas</strong> 
 				</p>
 			</div>
 			<div className="mt-7 ">
-				<h2 className="text-lg text-center text-secondary font-bold mb-4">Funciones</h2>
+				<h2 className="text-lg text-center text-secondary font-bold lg:my-14 lg:text-xl mb-4">Funciones</h2>
 				<CarouselContainer>
-					<div className=" flex text-primary border-2 border-solid rounded-lg border-secondary  flex-col justify-center items-center p-2 w-52 h-56 ">
-						<Image className="mt-3 w-20 h-20" src={addPlantPicture} alt="agregar-planta" />
+					<div className=" flex text-primary border-2 border-solid rounded-lg border-secondary  flex-col justify-center items-center p-2 w-52 h-56 lg:w-72 lg:h-80 ">
+						<Image className="mt-3 w-20 h-20 lg:w-24 lg:h-24" src={addPlantPicture} alt="agregar-planta" />
 						<h4 className="my-3 text-primary">Agregar Planta</h4>
-						<p className="text-center text-xs ">
+						<p className="text-center text-xs lg:text-sm">
 						Registra y guarda información específica de una nueva planta en tu colección
 						</p>
 					</div>
-					<div className=" flex text-primary border-2 border-solid rounded-lg border-secondary  flex-col justify-center items-center p-2 w-52 h-56 ">
-						<Image className="mt-3 w-20 h-20" src={remindersPicture} alt="Recordatorio" />
+					<div className=" flex text-primary border-2 border-solid rounded-lg border-secondary  flex-col justify-center items-center p-2 w-52 h-56 lg:w-72 lg:h-80">
+						<Image className="mt-3 w-20 h-20 lg:w-24 lg:h-24" src={remindersPicture} alt="Recordatorio" />
 						<h4 className="my-3">Recordatorio</h4>
-						<p className="text-center text-xs ">
+						<p className="text-center text-xs lg:text-sm">
 						Envía notificaciones y recordatorios personalizados basados en las 
 						necesidades de cada planta
 						</p>
 					</div>
-					<div className=" flex text-primary border-2 border-solid rounded-lg border-secondary  flex-col justify-center items-center p-2 w-52 h-56 ">
-						<Image className="mt-3 w-20 h-20" src={calendarPicture} alt="Calendario" />
+					<div className=" flex text-primary border-2 border-solid rounded-lg border-secondary  flex-col justify-center items-center p-2 w-52 h-56 lg:w-72 lg:h-80">
+						<Image className="mt-3 w-20 h-20 lg:w-24 lg:h-24" src={calendarPicture} alt="Calendario" />
 						<h4 className="my-3">Calendario</h4>
-						<p className="text-center text-xs ">
+						<p className="text-center text-xs lg:text-sm">
 						Muestra tareas programadas y recordatorios de todos los cuidados mensuales
 						</p>
 					</div>
 				</CarouselContainer>
-				<h3 className="flex text-lg text-secondary mt-7 mb-4 font-bold justify-center">
+				<h3 className="flex text-lg lg:text-xl text-secondary mt-7 mb-4 lg:my-14 font-bold justify-center ">
 					Beneficios
 				</h3>
-				<div className="flex flex-col ">
-					<Image src={landingSectionPicture} className="w-full h-60 bg-slate-200 " alt="header" />
+				<div className="flex flex-col md:flex-row md:items-center md:justify-around md:mb-10">
+
+					<Image src={landingSectionPicture} className="w-full md:w-1/2 lg:w-2/5 lg:h-full h-60 bg-slate-200 " alt="header" />
 					<ul className="flex flex-col ml-7 mt-5 text-sm text-primary mb-7 gap-5">
 					
 						<li>
@@ -87,25 +88,25 @@ export default function Home() {
 							</li>
 					</ul>
 				</div>
-				<h3 className="text-lg text-center text-secondary mb-4  font-bold ">
+				<h3 className="text-lg lg:my-14 lg:text-xl text-center text-secondary mb-4  font-bold ">
 					Nuestros usuarios <br /> nos recomiendan
 				</h3>
 				<CarouselContainer>
-					<div className="bg-secondary text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52">
+					<div className="bg-secondary text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52 lg:w-60 lg:h-60">
 						<Image className="mt-3 w-20 h-20" src={firstAvatarCommentPic} alt="agregar-planta" />
 						<h4 className="my-3">Eduardo Gómez</h4>
 						<p className="text-center text-xs ">
 						¡Esta aplicación ha transformado mi habilidad para cuidar mis plantas!
 						</p>
 					</div>
-					<div className="bg-secondary text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52">
+					<div className="bg-secondary text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52 lg:w-60 lg:h-60">
 						<Image className="mt-3 w-20 h-20"  src={secondAvatarCommentPic} alt="agregar-planta" />
 						<h4 className="my-3">Susana Díaz</h4>
 						<p className="text-center text-xs ">
 						La aplicación es muy intuitiva, incluso para alguien sin experiencia
 						</p>
 					</div>
-					<div className="bg-secondary text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52">
+					<div className="bg-secondary text-slate-50 flex rounded-lg flex-col justify-center items-center p-2 w-52 h-52 lg:w-60 lg:h-60">
 						<Image className="mt-3 w-20 h-20" src={thirdAvatarCommentPic} alt="agregar-planta" />
 						<h4 className="my-3">Pablo Casas</h4>
 						<p className="text-center text-xs ">
