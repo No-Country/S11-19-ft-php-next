@@ -28,6 +28,7 @@ class User extends Authenticatable
         'external_id',
         'role_id',
         'email_verified_at',
+        'email_subscription',
     ];
 
     /**

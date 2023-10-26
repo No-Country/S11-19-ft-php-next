@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
+
+
+
 class AuthController extends Controller
 {
     use ApiResponse;
@@ -34,7 +37,6 @@ class AuthController extends Controller
         // Autenticar al usuario
         /** @var \App\Models\User $user * */
         $user = Auth::user();
-
         $data = ['token' => $user->createToken('token')->plainTextToken, 'user' => $user];
 
         return $this->successResponse($data, 'Login success');

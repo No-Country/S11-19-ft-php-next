@@ -9,23 +9,27 @@ class Notification extends Model
 {
     use HasFactory;
 
+    protected $table = 'notifications';
+
     protected $fillable = [
+        'id',
         'type',
-        'description',
-        'is_viewed',
-        'user_id'
-       /*  'event_id' */
+        'notifiable_type',
+        'notifiable_id',
+        'data',
+        'read_at',
+        'user_id',
+        'reminder_id',
+        'reminder_type',
     ];
-    protected $hidden= [
-        'user_id'
-    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-/*     public function event()
+    public function reminder()
     {
-        return $this->belongsTo(Event::class, 'event_id');
-    } */
+        return $this->belongsTo(Reminder::class, 'reminder_id');
+    }
 }
