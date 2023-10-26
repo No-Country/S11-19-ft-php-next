@@ -1,6 +1,6 @@
 FROM richarvey/nginx-php-fpm:1.7.2
 
-FROM php:8.0-fpm
+FROM php:8.1-fpm
 
 COPY . .
 
