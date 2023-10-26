@@ -15,7 +15,7 @@ class PlantsController extends Controller
         $plants = Plant::
         join('environments', 'plants.environment_id', '=', 'environments.id')
         ->join('lights', 'plants.light_id', '=', 'lights.id')
-        ->select('plants.id', 'plants.name', 'environments.name as ambient', 'lights.name as light', 'plants.date', 'plants.description', 'plants.image')
+        ->select('plants.id', 'plants.name', 'environments.name as ambient', 'lights.name as light', 'plants.date', 'plants.description')
         ->where('plants.user_id', '=', auth()->id())
         ->get();
       
@@ -34,7 +34,6 @@ class PlantsController extends Controller
                 'light_id' => $request->light_id,
                 'date' => $request->date,
                 'description' => $request->description,
-                'image' => $request->image,
                 'user_id' => auth()->id()
             ]);
             $plant->save();
@@ -53,7 +52,7 @@ class PlantsController extends Controller
         $plant = Plant::
         join('environments', 'plants.environment_id', '=', 'environments.id')
         ->join('lights', 'plants.light_id', '=', 'lights.id')
-        ->select('plants.id', 'plants.name', 'environments.name as ambient', 'lights.name as light', 'plants.date', 'plants.description', 'plants.image')
+        ->select('plants.id', 'plants.name', 'environments.name as ambient', 'lights.name as light', 'plants.date', 'plants.description')
         ->where('plants.user_id', '=', auth()->id())
         ->where('plants.id', '=', $id)
         ->get();
