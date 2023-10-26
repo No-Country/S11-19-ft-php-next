@@ -38,6 +38,10 @@ class PlantsController extends Controller
                 'user_id' => auth()->id()
             ]);
             $plant->save();
+            if ($request->hasfile('image')){
+                $plant->addMediaFromRequest('image')->toMediaCollection('Plants');
+            }
+
             return $this->successResponse($plant, 'Created plant successfully');
         } catch (\Throwable $e) {
             return $this->errorResponse($e->getMessage());
@@ -67,14 +71,21 @@ class PlantsController extends Controller
     public function update(UpdateRequest $request, $id)
     {
         try {
-            $plant = Plant::where('id', '=', $id)
-            ->get();
+            $plant = Plant::findOrFail($id);
 
-            if (count($plant) == null) {
-                return response(["message" => 'Plant not found'],200);
+            $plant->update([
+                'name' => $request->name,
+                'environment_id' => $request->environment_id,
+                'light_id' => $request->light_id,
+                'date' => $request->date,
+                'description' => $request->description,
+            ]);
+
+            if ($plant->hasMedia('Plants')) {
+                $plant->clearMediaCollection('Plants');
             }
+            $plant->addMediaFromRequest('image')->toMediaCollection('Plants');
 
-            $plant->update($request->input());
             return $this->successResponse($plant, 'Updated plant successfully');
         } catch (\Throwable $e) {
             return $this->errorResponse($e->getMessage());
@@ -84,6 +95,12 @@ class PlantsController extends Controller
     public function destroy(Plant $plant)
     {
         $plant->delete();
-        return response(["message" => "Deleted plant successfully"],200);
+        if ($plant->hasMedia('Plants')) {
+            $plant->clearMediaCollection('Plants');
+        }
+        return response([
+            "status" => 200,
+            "message" => "Deleted plant successfully"
+        ],200);
     }
 }
