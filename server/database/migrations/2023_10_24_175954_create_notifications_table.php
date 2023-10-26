@@ -17,13 +17,17 @@ return new class extends Migration
             $table->morphs('notifiable');
             $table->text('data');
             $table->timestamp('read_at')->nullable();
+/*          
+            intente modificar el modelo pero por lo que lei laravel notification
+            usan un campo especifico para guardar como json la "data" de la notificacion
+
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('reminder_id')->nullable();
             $table->enum("reminder_type",['Irrigation', 'change', 'fertilizer', 'Pruning']);
             $table->index(['user_id', 'reminder_id']);
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('cascade');
+            $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('cascade'); */
             $table->timestamps();
         });
     }

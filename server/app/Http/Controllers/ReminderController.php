@@ -36,7 +36,7 @@ class ReminderController extends Controller
                 'date' => 'required|date',
                 'time' => 'required|date_format:H:i',
                 'type' => 'required|string',
-                'repeat' => 'required|string',
+                'repeat' => 'required|boolean',
                 'plant_id' => 'required|numeric',
             ]);
             $encryptedId = Auth::user()->getAuthIdentifier();

@@ -21,6 +21,9 @@ class Reminder extends Model
     ];
 
     public function Plant(){
-        return $this->belongsTo(Plant::class, 'Plant_id');
+        return $this->belongsTo(Plant::class, 'plant_id');
+    }
+    public function User(){
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

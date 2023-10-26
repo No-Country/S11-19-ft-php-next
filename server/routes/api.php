@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlantsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ReminderController;
-use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -35,7 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/plants/update/{plant}', [PlantsController::class, 'update']);
     Route::delete('/plants/delete/{plant}', [PlantsController::class, 'destroy']);
 
-    Route::get('/notifications', [NotificationController::class, 'show']);
-    Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
-    Route::post('/notifications', [NotificationController::class, 'store']);
+    Route::get('notifications', [NotificationController::class, 'index']); 
+    Route::put('notifications/{id}', [NotificationController::class, 'update']);
+    Route::get('notifications/channel', [NotificationController::class, 'unread']);
+/*     Route::post('/notifications', [NotificationController::class, 'store']); */
 });

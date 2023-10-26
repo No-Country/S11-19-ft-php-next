@@ -19,8 +19,8 @@ return new class extends Migration
             $table->time("time");
             $table->enum("type",['Irrigation', 'change', 'fertilizer', 'Pruning']);
             $table->boolean("repeat");
-            $table->unsignedBigInteger("Plant_id");
-            $table->foreign('Plant_id')
+            $table->unsignedBigInteger("plant_id");
+            $table->foreign('plant_id')
             ->references('id')
             ->on('plants')
             ->onDelete('cascade');            
