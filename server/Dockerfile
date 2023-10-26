@@ -1,6 +1,6 @@
 FROM richarvey/nginx-php-fpm:1.7.2
 
-FROM php:8.2-fpm
+FROM php:8.1-fpm-alpine
 
 RUN composer self-update --2
 
