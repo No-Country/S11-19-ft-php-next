@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { BiEdit, BiTrash } from "react-icons/bi";
+import ButtonDeletePlant from "./buttons/ButtonDeletePlant";
+import ButtonEditPlant from "./buttons/ButtonEditPlant";
 interface PlantCardProps {
 	PlantName: string;
 	PlantImg: string;
@@ -28,14 +30,8 @@ function PlantCard({
 			</div>
 			<div className="flex flex-col mx-2 text-lg mt-3 justify-between ml-7 ">
 				<div className="flex justify-end text-2xl text-primary  ">
-					<Link href="">
-						<BiTrash className="hover:text-secondary ease-in-out duration-300">
-							{" "}
-						</BiTrash>
-					</Link>
-					<Link href="">
-						<BiEdit className="hover:text-secondary ease-in-out duration-300"></BiEdit>
-					</Link>
+					<ButtonDeletePlant />
+					<ButtonEditPlant />
 				</div>
 				<h3 className="text-gray-800 font-medium">{PlantName}</h3>
 				<ul className="text-sm mt-3">
