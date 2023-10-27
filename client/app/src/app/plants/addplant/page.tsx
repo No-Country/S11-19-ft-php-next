@@ -4,14 +4,43 @@ import { useForm } from "react-hook-form";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import Link from "next/link";
 import Header from "@/components/header";
+import { redirect } from "next/navigation";
 function AddPlant() {
-	const { register, handleSubmit } = useForm();
+	const { register, handleSubmit, reset } = useForm();
 	return (
 		<>
 			<Header></Header>
 			<section
-				onSubmit={handleSubmit((data) => {
+				onSubmit={handleSubmit(async (data) => {
+					// const formData = {
+					// 	nombre: data.nombre,
+					// 	ambiente: data.ambiente,
+					// 	luz: data.luz,
+					// 	observaciones: data.observaciones,
+					// };
+
+					const options = {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(data),
+					};
 					console.log(data);
+
+					try {
+						const response = await fetch("URL", options); // Reemplaza "URL_DE_TU_API" con la URL de tu API
+
+						if (response.status === 200) {
+							console.log("Post");
+							reset();
+							redirect("/plants");
+						} else {
+							console.error("Error en la solicitud:", response.statusText);
+						}
+					} catch (error) {
+						console.error("Error", error);
+					}
 				})}
 				className="bg-background flex flex-col items-center  min-h-screen"
 			>
