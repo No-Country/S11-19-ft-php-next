@@ -2,9 +2,11 @@ FROM richarvey/nginx-php-fpm:1.7.2
 
 FROM php:8.1-fpm-alpine
 
-RUN composer self-update --2
+RUN curl -sS [https://getcomposer.org/installer](https://getcomposer.org/installer) | php -- --install-dir=/usr/local/bin --filename=composer
 
 COPY . .
+
+RUN composer self-update --2
 
 # Image config
 ENV SKIP_COMPOSER 1
