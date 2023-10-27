@@ -5,6 +5,7 @@ use App\Http\Controllers\PlantsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
