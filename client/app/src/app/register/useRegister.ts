@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useRegister = (formState) => {
+export const useRegister = (bodyData) => {
 	const [data, setData] = useState("")
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState(false)
@@ -11,7 +11,10 @@ export const useRegister = (formState) => {
 			setLoading(true)
       const response = await fetch(URL, {
 				method: "POST",
-				body:formState // a cambiar cuando se tenga los keys requeridos en el endpoint
+				headers: {
+					"Content-Type":"aplication/json"
+				},
+				body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
 			})
 			const userData = await response.json()
 			setData(userData)
@@ -23,8 +26,9 @@ export const useRegister = (formState) => {
 			setLoading(false)
 		}
 	}
-	useEffect( () => {
+	/* useEffect( () => {
 		getData()
-	})
+	}) */
+	getData()
 	return {data, loading, error}
 }

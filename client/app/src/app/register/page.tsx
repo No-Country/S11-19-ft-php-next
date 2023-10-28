@@ -58,7 +58,30 @@ export default function Register() {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
 			})
+			return
 		}
+		const {name, email, password} = data
+		const bodyData = JSON.stringify({
+				name:name,
+				/* lastName:lastName */
+				email:email,
+				password: password
+			})
+		//const {userData, loading, error} = useRegister(bodyData)
+		/* if (user) {  // 
+      const user = {
+				name: userData.user.name,
+				email:userData.user.email,
+				img:userData.user.img,
+				token:userData.token
+			}
+			await dispatchUser({
+				type:"LOGIN-CREDENTIALS", 
+				payload: user
+			})
+			console.log("ESTADO EN THEN: ", userState )
+			router.push("/plants")
+		} */
 	};
 
 	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
