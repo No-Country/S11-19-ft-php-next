@@ -5,6 +5,7 @@ use App\Http\Controllers\PlantsController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,9 @@ Route::post('/register', [AuthController::class, 'register'])->name('api.registe
 /* Rutas que requieren autenticacion */
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
+    Route::get('/profile/user', [ProfileController::class, 'showProfile']);
+    Route::put('/profile/update', [ProfileController::class, 'updateProfile']);
+    Route::put('/profile/update/password', [ProfileController::class, 'updatePassword']);
     
     Route::resource('/reminder', ReminderController::class)->except('create', 'edit');
 
