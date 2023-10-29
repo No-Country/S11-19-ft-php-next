@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PlantsController;
+use App\Http\Controllers\Admin\PlantsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,6 +35,14 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('admin.index');
     Route::get('/plants/index', [PlantsController::class, 'index'])->name('admin.plants.index');
-});
+    Route::get('/plants/create', [PlantsController::class, 'create'])->name('admin.plants.create');
+    Route::post('/plants/store', [PlantsController::class, 'store'])->name('admin.plants.store');
+    Route::get('/plants/{plant}/edit', [PlantsController::class, 'edit'])->name('admin.plants.edit');
+    Route::get('/plants/{plant}', [PlantsController::class, 'show'])->name('admin.plants.show');
+    Route::put('/plants/{plant}', [PlantsController::class, 'update'])->name('admin.plants.update');
+    
+    Route::delete('/plants/{plant}', [PlantsController::class, 'destroy'])->name('admin.plants.destroy');
+    Route::resource('/light',  App\Http\Controllers\Admin\LightController::class); 
+}); 
 
 require __DIR__.'/auth.php';

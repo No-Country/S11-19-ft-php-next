@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class PlantsController extends Controller
 {
     public function index()
-    { /*
+    { 
         $plants = Plant::
         join('environments', 'plants.environment_id', '=', 'environments.id')
         ->join('lights', 'plants.light_id', '=', 'lights.id')
@@ -22,12 +22,7 @@ class PlantsController extends Controller
             "data" => $plants
         ],200)
         ;
-        */
-
-
-        $plants = Plant::all();
-
-        return view('admin.plants.index', compact('plants'));
+        
     }
 
     public function store(StoreRequest $request)

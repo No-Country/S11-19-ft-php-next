@@ -12,4 +12,5 @@ class Light extends Model
     protected $fillable = [
         'name',
     ];
+    public function plant() {return $this->hasMany('App\Models\Plant','light_id','id'); }
 }

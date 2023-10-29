@@ -9,7 +9,7 @@
 @section('content_header')
     <div class="d-flex justify-content-between px-3">
         <h1>{{ __('Plantas') }}</h1>
-        <button type="button" class="btn btn-success rounded-pill"><i class="fas fa-plus"></i></button>
+        <a  class="btn btn-success rounded-pill"  href="{{route('admin.plants.create')}}"  ><i class="fas fa-plus"></i></a>
     </div>
 
 @stop
@@ -42,16 +42,24 @@
             @foreach ($plants as $plant)
                 <tr>
                     <td>{{$plant->name}} </td>
-                    <td> {{$plant->environments}} </td> 
-                    <td>{{$plant->lights}} </td>
+                    <td> {{$plant->environment->name}} </td> 
+                    <td>{{$plant->light->name}} </td>
                     <td>{{$plant->date}} </td>
                     <td>{{$plant->description}} </td>
                     <td>{{$plant->image}} </td>
                     
                     <td>
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-success rounded-pill mr-1"><i class="fas fa-edit"></i></button>
-                            <button type="button" class="btn btn-danger rounded-pill"><i class="fas fa-trash"></i></button>
+                            <a  class="btn btn-success rounded-pill mr-1" href="{{route('admin.plants.edit', $plant)}}" ><i class="fas fa-edit"></i></a>
+                    </td>
+                    <td> 
+
+                        <div class="d-flex justify-content-between">
+                        <form action="{{route('admin.plants.destroy', $plant->id)}}" method="POST">
+                           @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger rounded-pill" >  <i class="fas fa-trash"></i></button>
+                        </form> 
                         </div>
 
                     </td>

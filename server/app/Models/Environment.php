@@ -12,4 +12,5 @@ class Environment extends Model
     protected $fillable = [
         'name',
     ];
+    public function plant() {return $this->hasMany('App\Models\Plant','environment_id','id');}
 }
