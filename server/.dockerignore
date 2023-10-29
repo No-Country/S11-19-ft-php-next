@@ -1,0 +1,165 @@
+# flyctl launch added from .gitignore
+.phpunit.cache
+node_modules
+public\build
+public\hot
+public\storage
+storage\*.key
+vendor
+**\.env
+**\.env.backup
+**\.env.production
+**\.phpunit.result.cache
+**\Homestead.json
+**\Homestead.yaml
+**\auth.json
+**\npm-debug.log
+**\yarn-error.log
+.fleet
+.idea
+.vscode
+
+# flyctl launch added from bootstrap\cache\.gitignore
+bootstrap\cache\**\*
+!bootstrap\cache\**\.gitignore
+
+# flyctl launch added from database\.gitignore
+database\**\*.sqlite*
+
+# flyctl launch added from storage\app\.gitignore
+storage\app\**\*
+!storage\app\**\public
+!storage\app\**\.gitignore
+
+# flyctl launch added from storage\app\public\.gitignore
+storage\app\public\**\*
+!storage\app\public\**\.gitignore
+
+# flyctl launch added from storage\framework\.gitignore
+storage\framework\**\compiled.php
+storage\framework\**\config.php
+storage\framework\**\down
+storage\framework\**\events.scanned.php
+storage\framework\**\maintenance.php
+storage\framework\**\routes.php
+storage\framework\**\routes.scanned.php
+storage\framework\**\schedule-*
+storage\framework\**\services.json
+
+# flyctl launch added from storage\framework\cache\.gitignore
+storage\framework\cache\**\*
+!storage\framework\cache\**\data
+!storage\framework\cache\**\.gitignore
+
+# flyctl launch added from storage\framework\cache\data\.gitignore
+storage\framework\cache\data\**\*
+!storage\framework\cache\data\**\.gitignore
+
+# flyctl launch added from storage\framework\sessions\.gitignore
+storage\framework\sessions\**\*
+!storage\framework\sessions\**\.gitignore
+
+# flyctl launch added from storage\framework\testing\.gitignore
+storage\framework\testing\**\*
+!storage\framework\testing\**\.gitignore
+
+# flyctl launch added from storage\framework\views\.gitignore
+storage\framework\views\**\*
+!storage\framework\views\**\.gitignore
+
+# flyctl launch added from storage\logs\.gitignore
+storage\logs\**\*
+!storage\logs\**\.gitignore
+
+# flyctl launch added from vendor\almasaeed2010\adminlte\.gitignore
+# System / Log files
+vendor\almasaeed2010\adminlte\**\*.DS_Store
+vendor\almasaeed2010\adminlte\**\*.log
+
+# Archives
+vendor\almasaeed2010\adminlte\**\*.zip
+
+# Sass Cache
+vendor\almasaeed2010\adminlte\**\.sass-cache
+
+# Project files
+vendor\almasaeed2010\adminlte\**\.idea
+vendor\almasaeed2010\adminlte\**\nbproject
+vendor\almasaeed2010\adminlte\**\nbproject\private
+vendor\almasaeed2010\adminlte\**\.vscode
+vendor\almasaeed2010\adminlte\**\.vs
+
+# Node / Bower
+vendor\almasaeed2010\adminlte\**\node_modules
+vendor\almasaeed2010\adminlte\**\bower_components
+
+# Plugins
+vendor\almasaeed2010\adminlte\plugins\**\*.html
+vendor\almasaeed2010\adminlte\plugins\**\*.less
+vendor\almasaeed2010\adminlte\plugins\**\*.md
+vendor\almasaeed2010\adminlte\plugins\**\*.scss
+vendor\almasaeed2010\adminlte\plugins\**\*.ts
+vendor\almasaeed2010\adminlte\plugins\**\bower.json
+vendor\almasaeed2010\adminlte\plugins\**\package.json
+vendor\almasaeed2010\adminlte\plugins\**\webpack.config.js
+vendor\almasaeed2010\adminlte\plugins\**\demo
+vendor\almasaeed2010\adminlte\plugins\**\demos
+vendor\almasaeed2010\adminlte\plugins\**\dev
+vendor\almasaeed2010\adminlte\plugins\**\example
+vendor\almasaeed2010\adminlte\plugins\**\examples
+vendor\almasaeed2010\adminlte\plugins\**\less
+vendor\almasaeed2010\adminlte\plugins\**\test
+vendor\almasaeed2010\adminlte\plugins\**\tests
+vendor\almasaeed2010\adminlte\plugins\daterangepicker\website
+vendor\almasaeed2010\adminlte\plugins\daterangepicker\drp.png
+vendor\almasaeed2010\adminlte\plugins\daterangepicker\moment.min.js
+vendor\almasaeed2010\adminlte\plugins\daterangepicker\package.js
+vendor\almasaeed2010\adminlte\plugins\daterangepicker\website.css
+vendor\almasaeed2010\adminlte\plugins\daterangepicker\website.js
+vendor\almasaeed2010\adminlte\plugins\jquery-ui\AUTHORS.txt
+vendor\almasaeed2010\adminlte\plugins\jquery-ui\external\jquery\jquery.js
+vendor\almasaeed2010\adminlte\plugins\inputmask\bindings
+vendor\almasaeed2010\adminlte\plugins\flot\plugins\jquery*.js
+!vendor\almasaeed2010\adminlte\plugins\flot\plugins\jquery.flot.*.js
+!vendor\almasaeed2010\adminlte\plugins\**\LICENSE.md
+!vendor\almasaeed2010\adminlte\plugins\**\LICENSE.txt
+!vendor\almasaeed2010\adminlte\plugins\**\license.md
+!vendor\almasaeed2010\adminlte\plugins\**\license.txt
+!vendor\almasaeed2010\adminlte\plugins\**\LICENSE
+!vendor\almasaeed2010\adminlte\plugins\**\license
+!vendor\almasaeed2010\adminlte\plugins\**\COPYING
+
+
+# Docs
+vendor\almasaeed2010\adminlte\docs\_site
+vendor\almasaeed2010\adminlte\docs\vendor
+vendor\almasaeed2010\adminlte\docs\.bundle
+vendor\almasaeed2010\adminlte\docs_html
+vendor\almasaeed2010\adminlte\**\.jekyll-cache
+vendor\almasaeed2010\adminlte\**\.jekyll-metadata
+
+# ETC
+vendor\almasaeed2010\adminlte\**\TODO
+vendor\almasaeed2010\adminlte\**\test.html
+vendor\almasaeed2010\adminlte\**\ad.js
+vendor\almasaeed2010\adminlte\.cache
+
+# flyctl launch added from vendor\hamcrest\hamcrest-php\.gitignore
+vendor\hamcrest\hamcrest-php\**\composer.lock
+vendor\hamcrest\hamcrest-php\**\vendor
+
+# flyctl launch added from vendor\psr\container\.gitignore
+vendor\psr\container\**\composer.lock
+vendor\psr\container\**\composer.phar
+vendor\psr\container\vendor
+
+# flyctl launch added from vendor\psr\event-dispatcher\.gitignore
+vendor\psr\event-dispatcher\vendor
+vendor\psr\event-dispatcher\**\composer.lock
+
+# flyctl launch added from vendor\spatie\ignition\resources\compiled\.gitignore
+vendor\spatie\ignition\resources\compiled\**\*
+!vendor\spatie\ignition\resources\compiled\**\.gitignore
+!vendor\spatie\ignition\resources\compiled\**\ignition.css
+!vendor\spatie\ignition\resources\compiled\**\ignition.js
+fly.toml
