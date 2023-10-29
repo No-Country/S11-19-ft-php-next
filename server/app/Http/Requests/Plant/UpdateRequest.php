@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\Plant;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class UpdateRequest extends FormRequest
 {
@@ -27,7 +30,7 @@ class UpdateRequest extends FormRequest
             'light_id' => ['required', 'exists:App\Models\Light,id'],
             'date' => ['required'],
             'description' => ['string'],
-            'image' => ['required'],
+            // 'image' => ['required'],
         ];
     }
 
@@ -47,7 +50,13 @@ class UpdateRequest extends FormRequest
             
             'description.string'=>'El valor no es correcto.',
 
-            'image.required'=>'Seleccione una Imagen para su planta.',
+            // 'image.required'=>'Seleccione una Imagen para su planta.',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $response = new Response(['error' => $validator->errors()->first()], 422);
+        throw new ValidationException($validator, $response);
     }
 }

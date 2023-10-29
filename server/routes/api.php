@@ -1,9 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PlantsController;
-use Illuminate\Database\Query\IndexHint;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,16 +18,27 @@ use Illuminate\Database\Query\IndexHint;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Auth User
+Route::post('/login', [AuthController::class, 'login'])->name('api.login');
+Route::post('/register', [AuthController::class, 'register'])->name('api.register');
 
-/** Plants **/
-Route::middleware('auth')->group(function () {
-    Route::get('/plants', [PlantController::class, 'index']);
-    Route::post('/plants/create', [PlantController::class, 'store']);
-    Route::get('/plants/{plant}', [PlantController::class, 'show']);
-    Route::put('/plants/update/{plant}', [PlantController::class, 'update']);
-    Route::delete('/plants/delete/{plant}', [PlantController::class, 'destroy']);
-});
+/* Rutas que requieren autenticacion */
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
+    Route::get('/profile/user', [ProfileController::class, 'showProfile']);
+    Route::put('/profile/update', [ProfileController::class, 'updateProfile']);
+    Route::put('/profile/update/password', [ProfileController::class, 'updatePassword']);
+    
+    Route::resource('/reminder', ReminderController::class)->except('create', 'edit');
 
+    Route::get('/plants', [PlantsController::class, 'index']);
+    Route::post('/plants/create', [PlantsController::class, 'store']);
+    Route::get('/plants/{plant}', [PlantsController::class, 'show']);
+    Route::put('/plants/update/{plant}', [PlantsController::class, 'update']);
+    Route::delete('/plants/delete/{plant}', [PlantsController::class, 'destroy']);
+
+    Route::get('notifications', [NotificationController::class, 'index']); 
+    Route::put('notifications/{id}', [NotificationController::class, 'update']);
+    Route::get('notifications/channel', [NotificationController::class, 'unread']);
+/*     Route::post('/notifications', [NotificationController::class, 'store']); */
+});

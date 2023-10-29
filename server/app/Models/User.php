@@ -28,6 +28,7 @@ class User extends Authenticatable
         'external_id',
         'role_id',
         'email_verified_at',
+        'email_subscription',
     ];
 
     /**
@@ -48,6 +49,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+    ];
+
+    public static $rules = [
+        'email' => 'unique:users,email,',
+        'name' => 'required',
+        'lastname' => 'required',
+        'img' => 'sometimes|required:NULL',
+        'password' => 'required',
+        'external_id' => 'sometimes|required:NULL',
+        'role_id' => 'sometimes|required|string',
+        'email_verified_at' => 'sometimes|required|date',
     ];
 
     public function role()
