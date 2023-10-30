@@ -5,11 +5,11 @@ on:
       - main
 jobs:
   deploy:
-    name: garden-wise-app
+    name: Deploy App
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl deploy --remote-only
+      - run: flyctl deploy
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
