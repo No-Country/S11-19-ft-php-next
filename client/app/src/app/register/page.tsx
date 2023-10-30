@@ -17,6 +17,10 @@ import {
 import { Input } from "./Input";
 import Logo from "../../assets/brandLogo.jpg"
 import Link from "next/link";
+import { useRegister } from "./useRegister";
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+
 
 /* type inputState = {
 	value: string;
@@ -27,12 +31,18 @@ import Link from "next/link";
 
 const RegisterSchema = object({
 	name: string([minLength(3, "minimo 3 caracteres")]),
+	lastName: string([minLength(3, "minimo 3 caracteres")]),
 	email: string([email("email no valido")]),
 	password: string([minLength(6, "minimo 6 caracteres")]),
 	repitedPassword: string([minLength(6, "minimo 6 caracteres")]),
 });
 
 export default function Register() {
+
+	const [userData, setUserData] = useState("")
+	const [loading, setLoading] = useState(false)
+	const [dataError, setdataError] = useState(false)
+	const router = useRouter()
 	const {
 		register,
 		handleSubmit,
@@ -46,6 +56,7 @@ export default function Register() {
 
 		defaultValues: {
 			name: "",
+			lastName: "",
 			email: "",
 			password: "",
 			repitedPassword: "",
@@ -54,22 +65,75 @@ export default function Register() {
 
 
 	const onSubmit: SubmitHandler<InputVali<typeof RegisterSchema>> = (data) => {
+		console.log("en handleSubmit, onSubmit", data)
 		if (data.password !== data.repitedPassword ) {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
 			})
 			return
 		}
-		const {name, email, password} = data
-		const bodyData = JSON.stringify({
+		const {name,lastName, email, password} = data
+		const bodyData = ({
 				name:name,
-				/* lastName:lastName */
+				lastname:lastName,
 				email:email,
 				password: password
 			})
+
+		const submitRegister = async () => {
+
+			console.log("bodyData: ", bodyData)
+			// fetch("https://garden-wise-app.fly.dev/api/register", {
+			// 		method: "POST", 
+			// 	headers: {
+			// 		"content-type":"aplication/json",
+			// 	},
+			// 	body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
+			// 	})
+			// 	.then(res => res.json())
+			// 	.then(data => console.log("data",data))
+
+
+				/* axios.post("https://garden-wise-app.fly.dev/api/register", {
+					name:name,
+					lastname:lastName,
+					email:email,
+					password: password 
+				})
+				.then(res => res.data)
+				.then(data => console.log("data",data))
+				.catch((error) => { console.log(error)}) */
+
+			try {
+				setLoading(true)
+				const response = await fetch("https://garden-wise-app.fly.dev/api/register", {
+					method: "POST",
+					headers: {
+						"Content-Type":"aplication/json",
+					},
+					body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
+				})
+				const requestedData = await response.json()
+				console.info("userData: ", requestedData)
+				if (requestedData.status === "succsess") {
+					console.log("en success")
+					console.info("userData SUCCSESS: ", requestedData)
+					router.push("/plants")
+				}
+				setUserData(requestedData)
+
+			} catch (err) {
+          console.warn("ERR: ", err)
+			}
+			finally {
+				setLoading(false)
+			}
+		}
+		submitRegister()
 		//const {userData, loading, error} = useRegister(bodyData)
-		/* if (user) {  // 
-      const user = {
+		//console.log("userData en handleSubmit: ",userData)
+		if (userData) {  // 
+      /* const user = {
 				name: userData.user.name,
 				email:userData.user.email,
 				img:userData.user.img,
@@ -79,9 +143,9 @@ export default function Register() {
 				type:"LOGIN-CREDENTIALS", 
 				payload: user
 			})
-			console.log("ESTADO EN THEN: ", userState )
-			router.push("/plants")
-		} */
+			console.log("ESTADO EN THEN: ", userState ) */
+			router.push("/login")
+		}
 	};
 
 	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
@@ -90,6 +154,7 @@ export default function Register() {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
 			})
+			console.error("no coinciden los pass")
 		}
 	};
 
@@ -109,13 +174,22 @@ export default function Register() {
 					className="flex flex-col justify-center items-center w-full"
 				>
 					<Input
-						placeholder="Nombre y Apellido"
-						label="Nombre y Apellido"
+						placeholder="Nombre"
+						label="Nombre"
 						inputName="name"
 						register={register}
 						name="name"
 						isError={!!errors.name}
 						messageError={errors.name?.message}
+					/>
+					<Input
+						placeholder="Apellido"
+						label="Apellido"
+						inputName="lastName"
+						register={register}
+						name="lastName"
+						isError={!!errors.lastName}
+						messageError={errors.lastName?.message}
 					/>
 					<Input
 						placeholder="Email"

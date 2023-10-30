@@ -10,6 +10,10 @@ import firstAvatarCommentPic from '@/assets/Ellipse-313.png'
 import secondAvatarCommentPic from '@/assets/Ellipse-315.png'
 import thirdAvatarCommentPic from '@/assets/Ellipse-314.png'
 export default function Home() {
+
+
+
+	
 	return (
 		<main className="min-h-screen bg-slate-100">
 			<Header />

@@ -34,7 +34,7 @@ type actionType = {
 		switch (action.type) {
 			case "LOGIN-CREDENTIALS":
 				const { name, email, img, token} = action.payload!
-				console.log("EN REDUCTOR, user: ", email)
+				console.log("EN REDUCTOR, user: ", state)
 				return {
 					...state, 
 					name:name,
