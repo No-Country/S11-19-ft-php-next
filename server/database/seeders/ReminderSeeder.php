@@ -16,11 +16,11 @@ class ReminderSeeder extends Seeder
     {
         Plant::create([
             'id' => 1,
-            'name' => 'sasasas',
+            'name' => 'Plant test',
             'environment_id' => 2,
             'light_id' => 1,
             'date' => '2023-10-21',
-            'description' => 'dasd',
+            'description' => 'text example',
             // 'image' => 'asdwadw',
             'user_id' => 1,
         ]);
@@ -32,7 +32,7 @@ class ReminderSeeder extends Seeder
             'time' => '22:00',
             'type' => 'Irrigation',
             'repeat' => False,
-            'Plant_id' => 1,
+            'plant_id' => 1,
             'user_id' => 1,
         ]);
     }
