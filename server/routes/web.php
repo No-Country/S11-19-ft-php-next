@@ -37,9 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/plants/index', [PlantsController::class, 'index'])->name('admin.plants.index');
     Route::get('/plants/create', [PlantsController::class, 'create'])->name('admin.plants.create');
     Route::post('/plants/store', [PlantsController::class, 'store'])->name('admin.plants.store');
-    Route::get('/plants/{plant}/edit', [PlantsController::class, 'edit'])->name('admin.plants.edit');
-    Route::get('/plants/{plant}', [PlantsController::class, 'show'])->name('admin.plants.show');
-    Route::put('/plants/{plant}', [PlantsController::class, 'update'])->name('admin.plants.update');
+    Route::get('/plants/edit/{id}', [PlantsController::class, 'edit'])->name('admin.plants.edit');
+   // Route::get('/plants/{plant}', [PlantsController::class, 'show'])->name('admin.plants.show');
+    Route::put('/plants/update/{id}', [PlantsController::class, 'update'])->name('admin.plants.update');
     
     Route::delete('/plants/{plant}', [PlantsController::class, 'destroy'])->name('admin.plants.destroy');
     Route::resource('/light',  App\Http\Controllers\Admin\LightController::class); 

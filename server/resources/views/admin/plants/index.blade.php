@@ -50,17 +50,13 @@
                     
                     <td>
                         <div class="d-flex justify-content-between">
-                            <a  class="btn btn-success rounded-pill mr-1" href="{{route('admin.plants.edit', $plant)}}" ><i class="fas fa-edit"></i></a>
+                           <button type="button" onclick="window.location.href='{{ route('admin.plants.edit', ['id' => $plant->id]) }}'" class="btn btn-success rounded-pill mr-1"><i class="fas fa-edit"></i></button>
+                           <button type="button" onclick="eliminarPlant({{ $plant->id }})" class="btn btn-danger rounded-pill"><i class="fas fa-trash"></i></button>
+                        </div>
                     </td>
                     <td> 
 
-                        <div class="d-flex justify-content-between">
-                        <form action="{{route('admin.plants.destroy', $plant->id)}}" method="POST">
-                           @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger rounded-pill" >  <i class="fas fa-trash"></i></button>
-                        </form> 
-                        </div>
+                        
 
                     </td>
                 </tr>
@@ -77,8 +73,50 @@
 @section('js')
  
     <script>
-        $('#plantsTable').DataTable({
-  
-});
+      
+        $('#plantsTable').DataTable({});
+        
+        function eliminarPlant(plantId) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: '¡No podrás revertir esto!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sí, eliminarlo'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: `/plants/${plantId}`,
+                        type: 'DELETE',
+                        headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                },
+                        success: function (data) {
+                            if (data.success) {
+                                Swal.fire({
+                                    title: 'Éxito',
+                                    text: 'El usuario ha sido eliminado correctamente.',
+                                    icon: 'success',
+                                    showConfirmButton: false
+                        });
+                                window.location.reload();
+                            } else {
+                                Swal.fire('Error', `Ha ocurrido un error al eliminar ${data.message}`, 'error');
+                            }
+                        },
+                        error: function (e) {
+                            console.log(e)
+                            Swal.fire('Error', `Ha ocurrido un error al eliminar la planta.`, 'error');
+                        }
+                    });
+                }
+            });
+}
+
     </script>
+@section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@ensection
 @stop
