@@ -1,11 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PlantsController;
+use App\Http\Controllers\Api\PlantsController;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\ReminderController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Api\ReminderController;
+use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\ProfileController;
 
 /*
 |--------------------------------------------------------------------------

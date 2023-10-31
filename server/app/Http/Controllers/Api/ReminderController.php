@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Reminder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,9 +10,6 @@ use Illuminate\Validation\ValidationException;
 
 class ReminderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $reminders = Reminder::with("Plant")
@@ -24,9 +22,6 @@ class ReminderController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         try {
@@ -62,9 +57,6 @@ class ReminderController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($user_id)
     {
         $reminder = Reminder::find($user_id)
@@ -78,9 +70,6 @@ class ReminderController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request,$id)
     {
         $reminder = Reminder::find($id);
@@ -122,9 +111,6 @@ class ReminderController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $reminder = Reminder::find($id);
