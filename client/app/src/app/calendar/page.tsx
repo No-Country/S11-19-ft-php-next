@@ -19,7 +19,8 @@ import { es} from 'date-fns/locale';
 
 /* import format from "date-fns/fp/formatWithOptions"; */
 import { Fragment, useState, useContext, useEffect } from 'react'
-import { AuthContext } from '@/components/authcontext';
+import { AuthContext, useAuthContext } from '@/components/authcontext';
+import { redirect } from 'next/navigation';
 
 const meetings = [
   {
@@ -81,8 +82,9 @@ export default function Example() {
   let [currentMonth, setCurrentMonth] = useState(format( today, 'MMM-yyyy'))
   let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
 //console.log("PRUEBA FORMATO 1", format( today, 'MMMM-yyyy', { locale: es }))
-  const { userState} = useContext(AuthContext);
-  const getEvents = async () => {
+  const { userState} = useAuthContext();
+	console.log("USER STATE en calendar: ", userState)
+  /* const getEvents = async () => {
 		try {
 			const response = await fetch("https://garden-wise-app.fly.dev/api/login", {
 				method:"Post",
@@ -103,7 +105,7 @@ export default function Example() {
 			getEvents()
 		}
 	},[])
-  
+   */
 	type User = {
 		name:string,
 		email:string,
@@ -155,7 +157,11 @@ export default function Example() {
 				// pasar el token a un state, para que con un useEffect hacer la peticion con el token como dependencia
 				return userData ? JSON.parse(userData) as User : null;
 			}}
-	
+		const isLogged = retrieveUser()
+		console.log("isLogged: ", isLogged)
+		if (!isLogged?.token) {
+			redirect("/login")
+		} else console.info("not logged");
 	},[])
 	
 

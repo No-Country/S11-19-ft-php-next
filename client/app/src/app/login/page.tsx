@@ -123,13 +123,14 @@ export default function Login() {
 					body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
 				})
 				const requestedData = await response.json()
-				console.info("userData: ", requestedData)
+				console.info("userData BANDERA: ", requestedData)
 				setUserData(requestedData)
 				const user = {
 					name:requestedData.data.user.name,
 					email:requestedData.data.user.email,
 					img:requestedData.data.user.img,
-					token:requestedData.data.token
+					token:requestedData.data.token,
+					id:requestedData.data.user.id
 
 				}
 
@@ -138,7 +139,7 @@ export default function Login() {
 									type:"LOGIN-CREDENTIALS", 
 									payload: user
 								}) */
-								loginUser(user)
+								await loginUser(user)
 								console.log("ESTADO del context EN THEN: ", userState )
 								router.push("/plants")
 				}

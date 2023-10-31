@@ -8,7 +8,7 @@ const Layout = ({ children }: { children: ReactElement }) => {
 	console.log("userState en Layout plants: ", userState);
 	if (!userState.token) {
 		console.log("redirecciona");
-		redirect("/login");
+		redirect("/login")
 	}
 	return (
 		<>

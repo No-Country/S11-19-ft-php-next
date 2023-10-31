@@ -1,11 +1,12 @@
 "use client"
-import {  createContext, ReactNode, useState} from "react";
+import {  createContext, ReactNode, useCallback, useContext, useMemo, useState} from "react";
 
 type stateType = {
 	name:string,
 	email:string,
 	img:string,
-	token:string
+	token:string,
+	id:number | null
 }
 
 type contextType = {
@@ -21,7 +22,8 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 		name:"",
 		email:"",
 		img:"",
-		token:""
+		token:"",
+		id:null
 	}
 
 /* type actionType = {
@@ -29,22 +31,34 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	payload?:stateType 
 } */
   const [userState, setUserState] = useState(initialState)
-  const loginUser = (user:stateType) => {
-		const { name, email, img, token} = user
+  const loginUser =useCallback( (user:stateType) => {
+		const { name, email, img, token, id} = user
 				console.log("loginUser, user: ", user)
 				setUserState ({
 					...userState, 
 					name:name,
           email:email,
 					img:img,
-					token:token
+					token:token,
+					id:id
 				})
 				localStorage.setItem("garden-wise-user", JSON.stringify(user))
-	}
+	},[])
 	
-	const contextValue = {userState, loginUser}
+	/* const contextValue = {userState, loginUser} */
+	const contextValue = useMemo(
+    () => ({
+      loginUser,
+      userState,
+    }),
+    [userState, loginUser]
+  );
 
 	return <AuthContext.Provider value={contextValue} >{children}</AuthContext.Provider>
+}
+
+export function useAuthContext() {
+  return useContext(AuthContext);
 }
 
 
