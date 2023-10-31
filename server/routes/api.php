@@ -29,7 +29,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile/update', [ProfileController::class, 'updateProfile']);
     Route::put('/profile/update/password', [ProfileController::class, 'updatePassword']);
     
-    Route::resource('/reminder', ReminderController::class)->except('create', 'edit');
+    Route::get('/reminder', [ReminderController::class, 'index']);
+    Route::post('/reminder', [ReminderController::class, 'store']);
+    Route::get('/reminder/{reminder}', [ReminderController::class, 'show']);
+    Route::put('/reminder/{reminder}', [ReminderController::class, 'update']);
+    Route::delete('/reminder/{reminder}', [ReminderController::class, 'destroy']);
 
     Route::get('/plants', [PlantsController::class, 'index']);
     Route::post('/plants/create', [PlantsController::class, 'store']);
