@@ -58,7 +58,7 @@ export default function Login() {
 		},
 	});
 
-	const {userState, dispatchUser} = useContext(AuthContext)
+	const {userState, loginUser/* , dispatchUser */} = useContext(AuthContext)
 	console.log("userState: ", userState)
 
 
@@ -134,12 +134,12 @@ export default function Login() {
 				}
 
 				if (requestedData.status === "success") {  // cambiar por user cuando tome del customhook
-								await dispatchUser({
+								/* await dispatchUser({
 									type:"LOGIN-CREDENTIALS", 
 									payload: user
-								})
+								}) */
+								loginUser(user)
 								console.log("ESTADO del context EN THEN: ", userState )
-								/* redirect("/plants") */
 								router.push("/plants")
 				}
 			} catch (err) {

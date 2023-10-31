@@ -1,7 +1,6 @@
 "use client"
-import { Menu, Transition } from '@headlessui/react'
-import { DotsVerticalIcon } from '@heroicons/react/outline'
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid'
+import  { AiOutlineLeft, AiOutlineRight} from 'react-icons/ai'
+
 import {
   add,
   eachDayOfInterval,
@@ -19,7 +18,8 @@ import {
 import { es} from 'date-fns/locale';
 
 /* import format from "date-fns/fp/formatWithOptions"; */
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useContext, useEffect } from 'react'
+import { AuthContext } from '@/components/authcontext';
 
 const meetings = [
   {
@@ -69,17 +69,52 @@ const meetings = [
   },
 ]
 
-function classNames(...classes) {
+function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
   let today = startOfToday()
-  //console.log("TODAY: ", today)
+	//console.log("DATE1: ", today.toUTCString())
+	//console.log("today: ", today.toString())
   let [selectedDay, setSelectedDay] = useState(today)
   let [currentMonth, setCurrentMonth] = useState(format( today, 'MMM-yyyy'))
   let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
 //console.log("PRUEBA FORMATO 1", format( today, 'MMMM-yyyy', { locale: es }))
+  const { userState} = useContext(AuthContext);
+  const getEvents = async () => {
+		try {
+			const response = await fetch("https://garden-wise-app.fly.dev/api/login", {
+				method:"Post",
+				headers: {
+					"Content-Type":"aplication/json",
+					"Authorization":`Barer ${userState.token}`
+				}
+			})
+			const requestedData = await response.json()
+			console.info("userData: ", requestedData)
+		} catch (err) {
+			console.log("ERROR: ", err)
+		}
+	}
+	useEffect( () => {
+		if (userState.token){
+			
+			getEvents()
+		}
+	},[])
+  
+	type User = {
+		name:string,
+		email:string,
+		img:string,
+		token:string
+	}
+	
+
+	//const dataFromLS = retrieveUser()
+  //console.log("USER EN CALENDAR", dataFromLS )
+
   let days = eachDayOfInterval({
     start: firstDayCurrentMonth,
     end: endOfMonth(firstDayCurrentMonth),
@@ -99,15 +134,34 @@ export default function Example() {
     isSameDay(parseISO(meeting.startDatetime), selectedDay)
   )
 
-  const checkEvent = (day) => {
+  const checkEvent = (day:any) => {
+		// esta función compara si el dia actual day es igual a algún dia de meetings
     const check = meetings.some( meeting => isSameDay(parseISO(meeting.startDatetime), day) )
     return check
   }
-  console.log("PRUEBA FECHA: ", format(new Date(2017, 10, 6), 'MMMM', {locale: es}))
+	const sendEvent = (day:any) => {
+		// esta función compara si el dia actual day es igual a algún dia de meetings
+    const dayEvent = meetings.find( meeting => isSameDay(parseISO(meeting.startDatetime), day) )
+    //console.log("dayEvent", dayEvent)// esto retorna solo el primero que encuentra
+		return dayEvent
+  }
+  //console.log("PRUEBA FECHA: ", format(new Date(2017, 10, 6), 'MMMM', {locale: es}))
+
+	useEffect ( () => {
+		const retrieveUser = (): User | null | undefined => {
+			if ( typeof window !== undefined) {
+				const userData = localStorage.getItem("garden-wise-user");
+				// si no existe rdireccionar, aunque seria amejor redireccionar en el layout para evitar flash
+				// pasar el token a un state, para que con un useEffect hacer la peticion con el token como dependencia
+				return userData ? JSON.parse(userData) as User : null;
+			}}
+	
+	},[])
+	
+
 
   return (
     <div className="pt-16">
-      {/* <div className="max-w-md px-4 mx-auto sm:px-7 md:max-w-4xl md:px-6"> */}
       <div className="">
         <div className="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
           <div className="md:pr-14">
@@ -121,7 +175,7 @@ export default function Example() {
                 className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
               >
                 <span className="sr-only">Previous month</span>
-                <ChevronLeftIcon className="w-5 h-5" aria-hidden="true" />
+                <AiOutlineLeft className="w-5 h-5" aria-hidden="true" />
               </button>
               <button
                 onClick={nextMonth}
@@ -129,7 +183,7 @@ export default function Example() {
                 className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
               >
                 <span className="sr-only">Next month</span>
-                <ChevronRightIcon className="w-5 h-5" aria-hidden="true" />
+                <AiOutlineRight className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
             <div className="grid grid-cols-7 mt-10 text-xs leading-6 text-center text-gray-500">
@@ -223,135 +277,27 @@ export default function Example() {
                             'mx-auto flex h-6 w-6 m-2 items-center justify-center rounded-full'
                           )}
                         >
-                          <time dateTime={format(day, 'yyyy-MM-dd')}>
-                            {format(day, 'd')}
+                          <time dateTime={format(day, 'yyyy-MM-dd')}> 
+                            {format(day, 'd')}   {/* este es el  numero de dia del mes */}
+														{/* {checkEvent(day) && day.toString()} */}
+														{/* {checkEvent(day) && format(day, 'yyyy-MM-dd-h-m')  } */}
+														{sendEvent(day)?.startDatetime}
                           </time>
                         </button>
                       </div>
                       
-                  {/*   )} */}
-                  </div>
-
-                    {/* {
-                      meetings.some((meeting) =>(
-                        <div className="w-full h-[100%] bg-yellow "> 
-                        <p className='h-5 w-10'>{meeting}</p>
-                        {meeting}
-                          {isSameDay(parseISO(meeting.startDatetime), day) ? <div className="p-2 w-full h-96 pb-1 rounded-full bg-sky-500">{day}</div>
-                          : 
-                          <p>!!!!</p>
-                          }
-                        </div>
-                      ))
-                    } */}
-                  
-                      
-                    
+                  </div>             
                 </div>
               ))}
             </div>
           </div>
-          {/* <section className="mt-12 md:mt-0 md:pl-14">
-            <h2 className="font-semibold text-gray-900">
-              Schedule for{' '}
-              <time dateTime={format(selectedDay, 'yyyy-MM-dd')}>
-                {format(selectedDay, 'MMM dd, yyy')}
-              </time>
-            </h2>
-            <ol className="mt-4 space-y-1 text-sm leading-6 text-gray-500">
-              {selectedDayMeetings.length > 0 ? (
-                selectedDayMeetings.map((meeting) => (
-                  <Meeting meeting={meeting} key={meeting.id} />
-                ))
-              ) : (
-                <p>No meetings for today.</p>
-              )}
-            </ol>
-          </section> */}
         </div>
       </div>
     </div>
   )
 }
 
-function Meeting({ meeting }) {
-  let startDateTime = parseISO(meeting.startDatetime)
-  let endDateTime = parseISO(meeting.endDatetime)
 
-  return (
-    <li className="flex items-center px-4 py-2 space-x-4 group rounded-xl focus-within:bg-gray-100 hover:bg-gray-100">
-      <img
-        src={meeting.imageUrl}
-        alt=""
-        className="flex-none w-10 h-10 rounded-full"
-      />
-      <div className="flex-auto">
-        <p className="text-gray-900">{meeting.name}</p>
-        <p className="mt-0.5">
-          <time dateTime={meeting.startDatetime}>
-            {format(startDateTime, 'h:mm a')}
-          </time>{' '}
-          -{' '}
-          <time dateTime={meeting.endDatetime}>
-            {format(endDateTime, 'h:mm a')}
-          </time>
-        </p>
-      </div>
-      <Menu
-        as="div"
-        className="relative opacity-0 focus-within:opacity-100 group-hover:opacity-100"
-      >
-        <div>
-          <Menu.Button className="-m-2 flex items-center rounded-full p-1.5 text-gray-500 hover:text-gray-600">
-            <span className="sr-only">Open options</span>
-            <DotsVerticalIcon className="w-6 h-6" aria-hidden="true" />
-          </Menu.Button>
-        </div>
-
-        <Transition
-          as={Fragment}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-          <Menu.Items className="absolute right-0 z-10 mt-2 origin-top-right bg-white rounded-md shadow-lg w-36 ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="py-1">
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Edit
-                  </a>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Cancel
-                  </a>
-                )}
-              </Menu.Item>
-            </div>
-          </Menu.Items>
-        </Transition>
-      </Menu>
-    </li>
-  )
-}
 
 let colStartClasses = [
   '',
