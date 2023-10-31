@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Models\Notification;
 use App\Models\User;
 use App\Traits\ApiResponse;
+
 class NotificationController extends Controller
 {
     use ApiResponse;
@@ -24,7 +24,9 @@ class NotificationController extends Controller
     public function update($id)
     {
         try {
-            $notification = Auth::user()->notifications()->find($id); 
+            $check = Notification::find($id);
+            $notification = Auth::user()->$check;
+            // $notification = Auth::user()->notifications()->find($id); 
     
             if ($notification) {
                 $notification->markAsRead(); 
@@ -36,6 +38,7 @@ class NotificationController extends Controller
             return $this->errorResponse(null, $e->getMessage());
         }
     }
+
     public function unread()
     {
         try {
@@ -43,7 +46,7 @@ class NotificationController extends Controller
             $unreadNotifications = $user->unreadNotifications->count();
             return $this->successResponse($unreadNotifications, 'Notificaciones no leidas');
         } catch (\Exception $e) {
-            return $this->errorResponse(null,$e->getMessage);
+            return $this->errorResponse(null,$e->getMessage());
         }
     }
 }
