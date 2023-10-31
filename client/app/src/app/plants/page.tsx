@@ -2,15 +2,18 @@
 import PlantCard from "@/components/PlantCard";
 import { BsPlusLg } from "react-icons/bs";
 import { HiOutlineDownload, HiOutlineShare } from "react-icons/hi";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import CarouselPlants from "@/components/carrouselPlants";
 import Header from "@/components/header";
 import Link from "next/link";
 import { AuthContext } from "@/components/authcontext";
 
+
+
 function Plants() {
 
 	const { userState } = useContext(AuthContext);
+	
 	console.log("userState en Layout plants: ", userState);
 	return (
 		<>
