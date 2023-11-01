@@ -100,6 +100,19 @@ services:
             - '/dev/shm:/dev/shm'
         networks:
             - sail
+    pgsql:
+        image: postgres:14-alpine
+        ports:
+            - '${FORWARD_DB_PORT:-5432}:5432'
+        volumes:
+           - 'sailpgsql:/var/lib/postgresql/data'
+        networks:
+           - sail   
+        environment:
+             PGPASSWORD: '${DB_PASSWORD:-secret}'
+             POSTGRES_DB: '${DB_DATABASE}'
+             POSTGRES_USER: '${DB_USERNAME}'
+             POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'     
 networks:
     sail:
         driver: bridge
@@ -110,3 +123,5 @@ volumes:
         driver: local
     sail-meilisearch:
         driver: local
+    sailpgsql:
+        driver: local    

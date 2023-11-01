@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             EnvironmentSeeder::class,
             LightSeeder::class,
+            //ReminderSeeder::class,
         ]);
     }
 }
