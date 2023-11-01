@@ -22,7 +22,6 @@ import { Input } from "./Input";
 import { AuthContext } from "@/components/authcontext";
 import Logo from "../../assets/brandLogo.jpg"
 import Link from "next/link";
-import { useLogin } from "./useLogin";
 
 
 /* type inputState = {

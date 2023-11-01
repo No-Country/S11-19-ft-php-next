@@ -17,7 +17,6 @@ import {
 import { Input } from "./Input";
 import Logo from "../../assets/brandLogo.jpg"
 import Link from "next/link";
-import { useRegister } from "./useRegister";
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
@@ -134,26 +133,13 @@ export default function Register() {
 			} */
 		}
 		submitRegister()
-		//const {userData, loading, error} = useRegister(bodyData)
-		//console.log("userData en handleSubmit: ",userData)
-		if (userData) {  // 
-      /* const user = {
-				name: userData.user.name,
-				email:userData.user.email,
-				img:userData.user.img,
-				token:userData.token
-			}
-			await dispatchUser({
-				type:"LOGIN-CREDENTIALS", 
-				payload: user
-			})
-			console.log("ESTADO EN THEN: ", userState ) */
+
+		if (userData) {  
 			router.push("/login")
 		}
 	};
 
 	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
-		//console.log("data",error);
 		if (error.password !== error.repitedPassword || error.repitedPassword.length < 6) {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Header from "@/components/header";
 import { redirect } from "next/navigation";
 import axios from "axios";
+import { useRouter } from "next/navigation"
 
 type User = {
 	name:string,
@@ -26,6 +27,7 @@ function AddPlant() {
 
 	const { register, handleSubmit, reset } = useForm();
 	const [user, setUser] = useState<any>()
+	const router = useRouter()
 	useEffect ( () => {
 		const retrieveUser = (): User | null | undefined => {
 			if ( typeof window !== undefined) {
@@ -75,42 +77,55 @@ function AddPlant() {
 
 	const onSubmit = async (data:any) => {
 
-					const bodyData = {
-						name:data.nombre,
-						environment_id:data.ambiente,
-						light_id:data.luz,
-						date:data.fechaAdquisicion,
-						description:data.observaciones,
-						image:"https://xxxxx",
-						user_id:user.id
-					}
+		console.log("data.nombre: ", data.nombre)
+		console.log("typeof data.file:", typeof data.file )
+		const formData = new FormData();
+    formData.append("name", data.nombre);
+		formData.append("environment_id", data.ambiente);
+		formData.append("light_id", data.luz);
+		formData.append("date", data.fechaAdquisicion);
+		formData.append("description", data.observaciones);
+		formData.append("image", data.file);
+		formData.append("user_id", user.id);
+			const bodyData = {
+				name:data.nombre,
+				environment_id:data.ambiente,
+				light_id:data.luz,
+				date:data.fechaAdquisicion,
+				description:data.observaciones,
+				image:"https://xxxxx",
+				user_id:user.id
+			}
 
-					const options = {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-							"Authorization":`Bearer ${user.token}`
-						},
-						body: JSON.stringify(bodyData),
-					};
-					console.log(data);
-          const URL = "https://garden-wise-app.fly.dev/api/plants/create"
-					try {
-						const response = await fetch(URL, options); 
-            const data = await response.json()
+			const options = {
+				method: "POST",
+				headers: {
+					"Content-Type": "multipart/form-data",
+					"Authorization":`Bearer ${user.token}`
+				},
+				/* body: JSON.stringify(bodyData), */
+				body: formData,
+			};
+			console.log(data);
+			const URL = "https://garden-wise-app.fly.dev/api/plants/create"
+			// try {
+			// 	const response = await fetch(URL, options); 
+			// 	const data = await response.json()
 
-						if (response.status === 200) {
-							console.log("Post");
-							console.log("response", data);
-							reset();
-							redirect("/plants");
-						} else {
-							console.error("Error en la solicitud:", response.statusText);
-						}
-					} catch (error) {
-						console.error("Error", error);
-					}
-				}
+			// 	if (response.status === 200) {
+			// 		console.log("Post");
+			// 		console.log("response", data);
+			// 		reset();
+			// 		/* redirect("/plants"); */
+			// 		router.push("/plants")
+			// 	} else {
+			// 		console.error("Error en la solicitud:", response.statusText);
+			// 	}
+			// } catch (error) {
+			// 	console.error("Error", error);
+			// }
+			router.push("/plants")
+		}
 
 	return (
 

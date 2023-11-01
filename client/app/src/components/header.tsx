@@ -22,18 +22,19 @@ const Header = () => {
 	// 	}
 	// })
 	useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isOpen && menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
+		
+		const handleClickOutside = (event: MouseEvent) => {
+			if (isOpen && menuRef.current && !(menuRef.current as HTMLElement).contains(event.target as HTMLElement)) {
+				setIsOpen(false);
+			}
+		};
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen]);
+
 	const openTheMenu = () => {
 		setIsOpen(true)
 		console.log('isOpenTrue');
