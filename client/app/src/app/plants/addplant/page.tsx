@@ -35,9 +35,9 @@ function AddPlant() {
 			}}
 		const isLogged = retrieveUser()
 		console.log("isLogged: ", isLogged)
-		if (!isLogged?.token) {
+		/* if (!isLogged?.token) {
 			redirect("/login")
-		} else console.info("not logged");
+		} else console.info("not logged"); */
 	},[])
 
 
@@ -48,15 +48,29 @@ function AddPlant() {
 				method: "GET",
 				headers: {
 					"Content-Type": "application/json",
-					"Authorization":`Bearer ${user.token}`
+					/* "Authorization":`Bearer ${user.token}` */
+					"Authorization":`Bearer xxxxxxx`
 				}
 	
 			};
-			fetch("https://garden-wise-app.fly.dev/api/plants/", options)
+			/* fetch("https://garden-wise-app.fly.dev/api/plants/", options)
 			.then(res => res.json())
 			.then(data => console.log("data get plants",data))
 			.catch((err) => console.log(err))
+ */
+
+    axios.get("https://garden-wise-app.fly.dev/api/plants/", 
+		{headers: {
+			"Content-Type": "application/json",
+			"Authorization":`Bearer ${user.token}`
+		}}
+		)
+		.then( response => console.log("RESPUESTA.DATA",response.data.data)) 
+		.catch( err => console.log("ERROR",err.response.data.message)) // Unauthenticated
+
 		} else console.log("FALLA")
+
+
 	},[user])
 
 	const onSubmit = async (data:any) => {
@@ -103,7 +117,6 @@ function AddPlant() {
 		<>
 			<Header></Header>
 			<section
-				
 				className="bg-background flex flex-col items-center  min-h-screen"
 			>
 				<div className="flex flex-col ">

@@ -94,17 +94,21 @@ export default function Register() {
 			// 	.then(data => console.log("data",data))
 
 
-				/* axios.post("https://garden-wise-app.fly.dev/api/register", {
+				axios.post("https://garden-wise-app.fly.dev/api/register", {
 					name:name,
 					lastname:lastName,
 					email:email,
 					password: password 
-				})
+				}, {
+				headers: {
+					"Content-Type":"aplication/json",
+				}})
+					
 				.then(res => res.data)
 				.then(data => console.log("data",data))
-				.catch((error) => { console.log(error)}) */
+				.catch((error) => { console.log(error)})
 
-			try {
+			/* try {
 				setLoading(true)
 				const response = await fetch("https://garden-wise-app.fly.dev/api/register", {
 					method: "POST",
@@ -127,7 +131,7 @@ export default function Register() {
 			}
 			finally {
 				setLoading(false)
-			}
+			} */
 		}
 		submitRegister()
 		//const {userData, loading, error} = useRegister(bodyData)

@@ -13,25 +13,65 @@ type contextType = {
 	userState:stateType,
 	loginUser:()=>{}
 }
+
+
+
+
 export const AuthContext = createContext<any>(null)
 
 
 export const AuthContextProvider = ({children}: {children: ReactNode}) => {
 	
-	const initialState:stateType = {
+	/* const initialState:stateType = {
 		name:"",
 		email:"",
 		img:"",
 		token:"",
 		id:null
-	}
+	} */
+	
 
 /* type actionType = {
 	type:string,
 	payload?:stateType 
 } */
-  const [userState, setUserState] = useState(initialState)
+
+const initialState:stateType = useMemo(
+	() => ({
+		name:"",
+	email:"",
+	img:"",
+	token:"",
+	id:null
+	}),
+	[]
+);
+
+/* let initialUserState:stateType | null;
+	if (typeof window !== 'undefined') {
+		const localStorageData = window.localStorage.getItem("garden-wise-user")
+		if (localStorageData) {
+			initialUserState = JSON.parse(localStorageData)
+		  console.log("initialUserState en profile: ",initialUserState)
+	  }
+	} else {
+		initialUserState = initialState
+		console.log("no token")
+	} */
+	const localStorageData = window.localStorage.getItem("garden-wise-user")
+
+
+  const [userState, setUserState] = useState(localStorageData === null
+		? null
+		: JSON.parse(localStorageData))
+/* 	const [name, setName] = useState("")
+	const [email,setEmail] = useState("")
+	const [img,setImg] = useState("")
+	const [token,setToken] = useState("")
+	const [id,setId] = useState("") */
+
   const loginUser =useCallback( (user:stateType) => {
+		console.log("ejecuta loginUser")
 		const { name, email, img, token, id} = user
 				console.log("loginUser, user: ", user)
 				setUserState ({
@@ -53,6 +93,7 @@ export const AuthContextProvider = ({children}: {children: ReactNode}) => {
     }),
     [userState, loginUser]
   );
+	console.log("data en CONTEXT: ", userState)
 
 	return <AuthContext.Provider value={contextValue} >{children}</AuthContext.Provider>
 }

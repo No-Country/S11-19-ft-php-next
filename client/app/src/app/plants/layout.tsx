@@ -31,7 +31,7 @@ const Layout = ({ children }: { children: ReactElement }) => {
 		console.log("isLogged: ", isLogged)
 		if (!isLogged?.token) {
 			redirect("/login")
-		} else console.info("not logged");
+		} else console.info("logged");
 	},[])
 	return (
 		<>
