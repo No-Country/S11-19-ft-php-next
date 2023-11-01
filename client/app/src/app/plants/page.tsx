@@ -13,6 +13,7 @@ function Plants() {
 	const { userState } = useContext(AuthContext);
 
 	const [plants, setPlants] = useState<Plant[]>([]);
+
 	interface Plant {
 		id: number;
 		imageUrl: string;

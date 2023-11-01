@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import Link from "next/link";
 import Header from "@/components/header";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
 
 type User = {
@@ -25,6 +25,7 @@ const initialState = {
 function AddPlant() {
 	const { register, handleSubmit, reset } = useForm();
 	const [user, setUser] = useState<any>();
+	const router = useRouter();
 	useEffect(() => {
 		const retrieveUser = (): User | null | undefined => {
 			if (typeof window !== undefined) {
@@ -69,7 +70,7 @@ function AddPlant() {
 				console.log("Post");
 				console.log("response", data);
 				reset();
-				redirect("/plants");
+				router.push("/plants");
 			} else {
 				console.error("Error en la solicitud:", response.statusText);
 			}
