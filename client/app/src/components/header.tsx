@@ -5,7 +5,7 @@ import Link from "next/link";
 import Brand from "./brand";
 import profilePicture from '@/assets/Ellipse-313.png'
 const Header = () => {
-	const [isLogged, setIsLogged] = useState(true)
+	const [isLogged, setIsLogged] = useState(false)
 	const [isOpen, setIsOpen] = useState(false)
 	const menuRef = useRef(null)
 	

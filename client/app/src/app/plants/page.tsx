@@ -2,12 +2,36 @@
 import PlantCard from "@/components/PlantCard";
 import { BsPlusLg } from "react-icons/bs";
 import { HiOutlineDownload, HiOutlineShare } from "react-icons/hi";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CarouselPlants from "@/components/carrouselPlants";
 import Header from "@/components/header";
 import Link from "next/link";
+import { AuthContext } from "@/components/authcontext";
+import axiosInstance from "@/services/axiosInstance";
 
 function Plants() {
+	const { userState } = useContext(AuthContext);
+
+	const [plants, setPlants] = useState<Plant[]>([]);
+	interface Plant {
+		id: number;
+		imageUrl: string;
+		description: string;
+		plantingDate: string;
+		name: string;
+	}
+
+	useEffect(() => {
+		axiosInstance
+			.get("/plants/")
+			.then((response) => {
+				setPlants(response.data.data);
+			})
+			.catch((error) => {
+				console.error("Error al obtener datos de plantas:", error);
+			});
+	}, []); // El segundo argumento vacío asegura que el efecto se ejecute solo una vez al montar el componente
+
 	return (
 		<>
 			<Header></Header>
@@ -24,24 +48,15 @@ function Plants() {
 					</div>
 					<div className=" w-full 2xl:w-full  mx-auto">
 						<CarouselPlants>
-							<PlantCard
-								PlantImg="https://images.unsplash.com/photo-1610397648930-477b8c7f0943?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1930"
-								PlantInfo="planta de el living comprada en adad "
-								PlantDate="11/02/2022"
-								PlantName="Orquidia"
-							/>
-							<PlantCard
-								PlantImg="https://images.unsplash.com/photo-1610397648930-477b8c7f0943?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1930"
-								PlantInfo="planta de el living comprada en adad "
-								PlantDate="11/02/2022"
-								PlantName="Flor"
-							/>
-							<PlantCard
-								PlantImg="https://images.unsplash.com/photo-1610397648930-477b8c7f0943?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=1930"
-								PlantInfo=""
-								PlantDate="11/02/2022"
-								PlantName="Rosa"
-							/>
+							{plants.map((plant) => (
+								<PlantCard
+									key={plant.id}
+									PlantImg={plant.imageUrl}
+									PlantInfo={plant.description}
+									PlantDate={plant.plantingDate}
+									PlantName={plant.name}
+								/>
+							))}
 						</CarouselPlants>
 					</div>
 

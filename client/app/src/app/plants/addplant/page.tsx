@@ -1,49 +1,87 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import Link from "next/link";
 import Header from "@/components/header";
 import { redirect } from "next/navigation";
+import axios from "axios";
+
+type User = {
+	name: string;
+	email: string;
+	img: string;
+	token: string;
+	id: number | null;
+};
+const initialState = {
+	name: "",
+	email: "",
+	img: "",
+	token: "",
+	id: null,
+};
+
 function AddPlant() {
 	const { register, handleSubmit, reset } = useForm();
+	const [user, setUser] = useState<any>();
+	useEffect(() => {
+		const retrieveUser = (): User | null | undefined => {
+			if (typeof window !== undefined) {
+				const userData = localStorage.getItem("garden-wise-user");
+				userData && setUser(JSON.parse(userData));
+				return userData ? (JSON.parse(userData) as User) : null;
+			}
+		};
+		const isLogged = retrieveUser();
+		console.log("isLogged: ", isLogged);
+		if (!isLogged?.token) {
+			redirect("/login");
+		} else console.info("not logged");
+	}, []);
+
+	const onSubmit = async (data: any) => {
+		const bodyData = {
+			name: data.nombre,
+			environment_id: data.ambiente,
+			light_id: data.luz,
+			date: data.fechaAdquisicion,
+			description: data.observaciones,
+			image: "https://xxxxx",
+			user_id: user.id,
+		};
+
+		const options = {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${user.token}`,
+			},
+			body: JSON.stringify(bodyData),
+		};
+		console.log(data);
+		const URL = "https://garden-wise-app.fly.dev/api/plants/create";
+		try {
+			const response = await fetch(URL, options);
+			const data = await response.json();
+
+			if (response.status === 200) {
+				console.log("Post");
+				console.log("response", data);
+				reset();
+				redirect("/plants");
+			} else {
+				console.error("Error en la solicitud:", response.statusText);
+			}
+		} catch (error) {
+			console.error("Error", error);
+		}
+	};
+
 	return (
 		<>
 			<Header></Header>
-			<section
-				onSubmit={handleSubmit(async (data) => {
-					// const formData = {
-					// 	nombre: data.nombre,
-					// 	ambiente: data.ambiente,
-					// 	luz: data.luz,
-					// 	observaciones: data.observaciones,
-					// };
-
-					const options = {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(data),
-					};
-					console.log(data);
-
-					try {
-						const response = await fetch("URL", options); // Reemplaza "URL_DE_TU_API" con la URL de tu API
-
-						if (response.status === 200) {
-							console.log("Post");
-							reset();
-							redirect("/plants");
-						} else {
-							console.error("Error en la solicitud:", response.statusText);
-						}
-					} catch (error) {
-						console.error("Error", error);
-					}
-				})}
-				className="bg-background flex flex-col items-center  min-h-screen"
-			>
+			<section className="bg-background flex flex-col items-center  min-h-screen">
 				<div className="flex flex-col ">
 					<div className="flex  mb-16">
 						<div className="flex items-baseline gap-1 text-marron-oscuro">
@@ -59,7 +97,11 @@ function AddPlant() {
 							</h2>
 						</div>
 					</div>
-					<form action="" className="flex flex-col items-center">
+					<form
+						onSubmit={handleSubmit(onSubmit)}
+						action=""
+						className="flex flex-col items-center"
+					>
 						<div className="flex flex-col gap-1">
 							<label htmlFor="nombre">Nombre*</label>
 							<input
@@ -80,8 +122,8 @@ function AddPlant() {
 								required
 								className="px-4 py-3 w-[289px] border-2 rounded-lg border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 							>
-								<option value="interior"> Interior</option>
-								<option value="exterior"> Exterior</option>
+								<option value={1}> Interior</option>
+								<option value={2}> Exterior</option>
 							</select>
 							<label htmlFor="luz">Cantidad de luz*</label>
 							<select
@@ -90,9 +132,9 @@ function AddPlant() {
 								{...register("luz")}
 								className="px-4 py-3 w-[289px] border-2 rounded-lg border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 							>
-								<option value="directa"> Directa</option>
-								<option value="indirecta"> Indirecta</option>
-								<option value="sombra"> Sombra</option>
+								<option value={1}> Directa</option>
+								<option value={2}> Indirecta</option>
+								<option value={3}> Sombra</option>
 							</select>
 
 							<label htmlFor="fecha-adquisicion">Fecha de adquisición</label>

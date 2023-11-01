@@ -21,6 +21,9 @@ import {
 import { Input } from "./Input";
 import { AuthContext } from "@/components/authcontext";
 import Logo from "../../assets/brandLogo.jpg"
+import Link from "next/link";
+import { useLogin } from "./useLogin";
+
 
 /* type inputState = {
 	value: string;
@@ -34,8 +37,11 @@ const LoginSchema = object({
 	password: string([minLength(6, "minimo 6 caracteres")]),
 });
 
-export default function Register() {
+export default function Login() {
 	const router = useRouter()
+	const [userData, setUserData] = useState("")
+	const [loading, setLoading] = useState(false)
+	const [dataError, setdataError] = useState(false)
 
 	const {
 		register,
@@ -43,86 +49,115 @@ export default function Register() {
 		formState,
 		getValues,
 		setError,
-
 		formState: { errors, isSubmitted },
 	} = useForm({
 		resolver: valibotResolver(LoginSchema),
-
 		defaultValues: {
 			email: "",
 			password: "",
 		},
 	});
 
-	const {userState, dispatchUser} = useContext(AuthContext)
-	//console.log("userState: ", userState)
-	//console.log("dispatch: ", dispatchUser)
+	const {userState, loginUser/* , dispatchUser */} = useContext(AuthContext)
+	console.log("userState: ", userState)
 
-	/* const {user, handleUser} = useContext(AuthContext)
-	console.log("user: ", user) */
 
 	const onSubmit: SubmitHandler<InputVali<typeof LoginSchema>> = (data) => {
 		console.log("data de onSubmit",data);
 		
-		const dataMocked = {
+		/* const dataMocked = {
 			name:"Pepe",
 			email:formState.email,
 			img:"ede",
 			token:"1223eijfiri"
-		}
+		} */
 		/* const URL = "../src/app/login/data.json" */
-		
-    /* fetch(URL)
-		.then(res =>res.json())
-		.then(data => {
-			console.log("data en then: ", data)
-			if (data) {
-				dispatchUser({
-					type:"LOGIN-CREDENTIALS", 
-					payload: data
+
+		// async function getUser() {
+		// 	try{
+		// 		//
+		// 		const URL = "./data.json"
+		// 		const response = await fetch(URL)
+		// 		const data = await response.json()
+		// 		console.log("data en getUser: ", data)
+		// 		if (data) {  // cambiar por user cuando tome del customhook
+		// 			await dispatchUser({
+		// 				type:"LOGIN-CREDENTIALS", 
+		// 				payload: data
+		// 			})
+		// 			console.log("ESTADO EN THEN: ", userState )
+		// 			/* redirect("/plants") */
+		// 			router.push("/plants")
+		// 		}
+		// 	}catch(err) {console.log(err)}
+		// }
+		// getUser()
+		// console.log("STATE: ", formState.errors)
+
+		const submitRegister = async () => {
+
+			console.log("bodyData: ", )
+			const { email, password} = data
+		const bodyData = ({
+				email:email,
+				password: password
+			})
+			// fetch("https://garden-wise-app.fly.dev/api/register", {
+			// 		method: "POST", 
+			// 	headers: {
+			// 		"content-type":"aplication/json",
+			// 	},
+			// 	body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
+			// 	})
+			// 	.then(res => res.json())
+			// 	.then(data => console.log("data",data))
+
+
+			try {
+				setLoading(true)
+				const response = await fetch("https://garden-wise-app.fly.dev/api/login", {
+					method:"Post",
+					headers: {
+						"Content-Type":"aplication/json",
+					},
+					body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
 				})
-				console.log("ESTADO EN THEN: ", userState )
-				redirect("/plants")
-			}
-			
-		}) */
-		async function getUser() {
+				const requestedData = await response.json()
+				console.info("userData BANDERA: ", requestedData)
+				setUserData(requestedData)
+				const user = {
+					name:requestedData.data.user.name,
+					email:requestedData.data.user.email,
+					img:requestedData.data.user.img,
+					token:requestedData.data.token,
+					id:requestedData.data.user.id
 
-			try{
-				const URL = "./data.json"
-				const response = await fetch(URL)
-				const data = await response.json()
-				console.log("data en getUser: ", data)
-				if (data) {
-					await dispatchUser({
-						type:"LOGIN-CREDENTIALS", 
-						payload: data
-					})
-					console.log("ESTADO EN THEN: ", userState )
-					/* redirect("/plants") */
-					router.push("/plants")
 				}
-			}catch(err) {console.log(err)}
+
+				if (requestedData.status === "success") {  // cambiar por user cuando tome del customhook
+								/* await dispatchUser({
+									type:"LOGIN-CREDENTIALS", 
+									payload: user
+								}) */
+								await loginUser(user)
+								console.log("ESTADO del context EN THEN: ", userState )
+								router.push("/plants")
+				}
+			} catch (err) {
+          console.warn("ERR: ", err)
+			}
+			finally {
+				setLoading(false)
+			}
 		}
+		submitRegister()
 
-		getUser()
-
-		/* handleUser(dataMocked) */
-		console.log("STATE: ", formState.errors)
-		
 	};
-	// useEffect( () => {
-	// 	/* const URL = "../src/app/login/data.json" */
-	// 	const URL = "./data.json"
-  //   fetch(URL)
-	// 	.then(res =>res.json())
-	// 	.then(data => console.log("data: ", data))
-	// },[] )
 
 	
 	return (
 		<section className="flex flex-row">
-			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center">
+			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center min-h-[100vh]">
 				<Image src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]  "/>
 				<p>Donde la Naturaleza y la Tecnología Se Unen</p>
 			</div>
@@ -155,14 +190,15 @@ export default function Register() {
 						isError={!!errors.password}
 						messageError={errors.password?.message}
 					/>
+					<p className="w-80 lg:w-80 max-w-[80vw] text-end">¿no tienes cuenta? <span><Link href={'/register'} className="text-primary">Registrate</Link></span></p>
 					<button
-						className=" w-72 h-10 max-w-[80vw] border-2 bg-[#104938] text-[white] rounded-[50px] mt-5 "
+						className=" w-72 h-10 max-w-[80vw] border-2 bg-primary text-[white] rounded-[50px] mt-5 "
 						type="submit"
 					>
-						Enviar
+						iniciar sesión
 					</button>
 				</form>
-				<Image src={registerFooter} className="w-full pt-2" alt="plant image" />
+				<Image src={registerFooter} className="w-full pt-24" alt="plant image" />
 			</div>
 		</section>
 	);

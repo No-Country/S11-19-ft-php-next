@@ -8,7 +8,7 @@ export default function CarouselContainer({
 }: {
   children: React.ReactNode
 }) {
-	const [isLongScreen, setIsLongScreen] = useState(window.innerWidth >= 1024)
+	const [isLongScreen, setIsLongScreen] = useState(false)
 	
   const responsive = {
 		desktop: {
