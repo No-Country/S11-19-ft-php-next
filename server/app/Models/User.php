@@ -7,12 +7,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +28,7 @@ class User extends Authenticatable
         'lastname',
         'email',
         'password',
-        'img',
+        // 'img',
         'external_id',
         'role_id',
         'email_verified_at',
@@ -55,7 +59,7 @@ class User extends Authenticatable
         'email' => 'unique:users,email,',
         'name' => 'required',
         'lastname' => 'required',
-        'img' => 'sometimes|required:NULL',
+        // 'img' => 'sometimes|required:NULL',
         'password' => 'required',
         'external_id' => 'sometimes|required:NULL',
         'role_id' => 'sometimes|required|string',
@@ -66,4 +70,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+              ->width(368)
+              ->height(232)
+              ->sharpen(10);
+    }    
 }
