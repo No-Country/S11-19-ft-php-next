@@ -13,21 +13,21 @@ return new class() extends Migration {
         Schema::create('reminders', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('frequency');
+            $table->enum('frequency', ['Semanalmente', 'Quincenalmente', 'Mensualmente', 'Anualmente']);
             $table->date('date');
             $table->time('time');
-            $table->enum('type', ['Irrigation', 'change', 'fertilizer', 'Pruning']);
+            $table->enum('type', ['Riego', 'Cambio de maceta', 'Abono', 'Cambio de lugar', 'Poda']);
             $table->boolean('repeat');
             $table->unsignedBigInteger('plant_id');
-            // $table->foreign('plant_id')
-            // ->references('id')
-            // ->on('plants')
-            // ->onDelete('cascade');
+            $table->foreign('plant_id')
+            ->references('id')
+            ->on('plants')
+            ->onDelete('cascade');
             $table->unsignedBigInteger('user_id');
-            // $table->foreign('user_id')
-            // ->references('id')
-            // ->on('users')
-            // ->onDelete('cascade');
+            $table->foreign('user_id')
+            ->references('id')
+            ->on('users')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }
