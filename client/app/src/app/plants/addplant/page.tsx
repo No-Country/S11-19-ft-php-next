@@ -42,33 +42,28 @@ function AddPlant() {
 	}, []);
 
 	const onSubmit = async (data: any) => {
-		const bodyData = {
-			name: data.nombre,
-			environment_id: data.ambiente,
-			light_id: data.luz,
-			date: data.fechaAdquisicion,
-			description: data.observaciones,
-			image: "https://xxxxx",
-			user_id: user.id,
-		};
+		console.log(data.file[0]);
+		const formData = new FormData();
+		formData.append("image", data.file[0]);
+		formData.append("name", data.nombre);
+		formData.append("environment_id", data.ambiente);
+		formData.append("light_id", data.luz);
+		formData.append("date", data.fechaAdquisicion);
+		formData.append("description", data.observaciones);
+		formData.append("user_id", user.id);
 
-		const options = {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${user.token}`,
-			},
-			body: JSON.stringify(bodyData),
-		};
-		console.log(data);
 		const URL = "https://garden-wise-app.fly.dev/api/plants/create";
 		try {
-			const response = await fetch(URL, options);
-			const data = await response.json();
+			const response = await axios.post(URL, formData, {
+				headers: {
+					"Content-Type": "multipart/form-data", // Asegúrate de que el encabezado sea correcto
+					Authorization: `Bearer ${user.token}`,
+				},
+			});
 
 			if (response.status === 200) {
 				console.log("Post");
-				console.log("response", data);
+				console.log("response", response.data);
 				reset();
 				router.push("/plants");
 			} else {
@@ -78,7 +73,6 @@ function AddPlant() {
 			console.error("Error", error);
 		}
 	};
-
 	return (
 		<>
 			<Header></Header>
@@ -102,6 +96,7 @@ function AddPlant() {
 						onSubmit={handleSubmit(onSubmit)}
 						action=""
 						className="flex flex-col items-center"
+						encType="multipart/form-data"
 					>
 						<div className="flex flex-col gap-1">
 							<label htmlFor="nombre">Nombre*</label>
@@ -166,10 +161,34 @@ function AddPlant() {
 							type="file"
 							{...register("file")}
 							id="file"
-							className=" w-[289px]  bg-gray-400 h-[189px] flex items-center  border-2 rounded-xl   focus:outline-none focus:border-[#2DD4BF]"
+							className="w-[160px] mt-1"
 							name="file"
-							placeholder="Ej: Cambia de color"
+							onChange={(e) => {
+								const fileInput = e.target as HTMLInputElement | null;
+								if (fileInput) {
+									const file = fileInput.files?.[0];
+									if (file) {
+										const reader = new FileReader();
+										reader.onload = (event) => {
+											const imgElement = document.getElementById(
+												"preview-img"
+											) as HTMLImageElement | null;
+											if (imgElement) {
+												imgElement.src = String(event.target?.result);
+											}
+										};
+										reader.readAsDataURL(file);
+									}
+								}
+							}}
 						/>
+						<img
+							id="preview-img"
+							src=""
+							alt=""
+							className="w-[289px] mt-5 h-[289px] object-cover object-center"
+						/>
+
 						<div className="flex justify-center gap-2">
 							<Link
 								href="/plants"

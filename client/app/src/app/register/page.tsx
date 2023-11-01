@@ -15,12 +15,11 @@ import {
 	custom,
 } from "valibot";
 import { Input } from "./Input";
-import Logo from "../../assets/brandLogo.jpg"
+import Logo from "../../assets/brandLogo.jpg";
 import Link from "next/link";
 import { useRegister } from "./useRegister";
-import axios from 'axios'
-import { useRouter } from 'next/navigation'
-
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 /* type inputState = {
 	value: string;
@@ -38,11 +37,10 @@ const RegisterSchema = object({
 });
 
 export default function Register() {
-
-	const [userData, setUserData] = useState("")
-	const [loading, setLoading] = useState(false)
-	const [dataError, setdataError] = useState(false)
-	const router = useRouter()
+	const [userData, setUserData] = useState("");
+	const [loading, setLoading] = useState(false);
+	const [dataError, setdataError] = useState(false);
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
@@ -63,28 +61,26 @@ export default function Register() {
 		},
 	});
 
-
 	const onSubmit: SubmitHandler<InputVali<typeof RegisterSchema>> = (data) => {
-		console.log("en handleSubmit, onSubmit", data)
-		if (data.password !== data.repitedPassword ) {
+		console.log("en handleSubmit, onSubmit", data);
+		if (data.password !== data.repitedPassword) {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
-			})
-			return
+			});
+			return;
 		}
-		const {name,lastName, email, password} = data
-		const bodyData = ({
-				name:name,
-				lastname:lastName,
-				email:email,
-				password: password
-			})
+		const { name, lastName, email, password } = data;
+		const bodyData = {
+			name: name,
+			lastname: lastName,
+			email: email,
+			password: password,
+		};
 
 		const submitRegister = async () => {
-
-			console.log("bodyData: ", bodyData)
+			console.log("bodyData: ", bodyData);
 			// fetch("https://garden-wise-app.fly.dev/api/register", {
-			// 		method: "POST", 
+			// 		method: "POST",
 			// 	headers: {
 			// 		"content-type":"aplication/json",
 			// 	},
@@ -93,8 +89,7 @@ export default function Register() {
 			// 	.then(res => res.json())
 			// 	.then(data => console.log("data",data))
 
-
-				/* axios.post("https://garden-wise-app.fly.dev/api/register", {
+			/* axios.post("https://garden-wise-app.fly.dev/api/register", {
 					name:name,
 					lastname:lastName,
 					email:email,
@@ -105,35 +100,37 @@ export default function Register() {
 				.catch((error) => { console.log(error)}) */
 
 			try {
-				setLoading(true)
-				const response = await fetch("https://garden-wise-app.fly.dev/api/register", {
-					method: "POST",
-					headers: {
-						"Content-Type":"aplication/json",
-					},
-					body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
-				})
-				const requestedData = await response.json()
-				console.info("userData: ", requestedData)
+				setLoading(true);
+				const response = await fetch(
+					"https://garden-wise-app.fly.dev/api/register",
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "aplication/json",
+						},
+						body: JSON.stringify(bodyData), // a cambiar cuando se tenga los keys requeridos en el endpoint
+					}
+				);
+				const requestedData = await response.json();
+				console.info("userData: ", requestedData);
 				if (requestedData.status === "succsess") {
-					console.log("en success")
-					console.info("userData SUCCSESS: ", requestedData)
-					router.push("/plants")
+					console.log("en success");
+					console.info("userData SUCCSESS: ", requestedData);
+					router.push("/plants");
 				}
-				setUserData(requestedData)
-
+				setUserData(requestedData);
 			} catch (err) {
-          console.warn("ERR: ", err)
+				console.warn("ERR: ", err);
+			} finally {
+				setLoading(false);
 			}
-			finally {
-				setLoading(false)
-			}
-		}
-		submitRegister()
+		};
+		submitRegister();
 		//const {userData, loading, error} = useRegister(bodyData)
 		//console.log("userData en handleSubmit: ",userData)
-		if (userData) {  // 
-      /* const user = {
+		if (userData) {
+			//
+			/* const user = {
 				name: userData.user.name,
 				email:userData.user.email,
 				img:userData.user.img,
@@ -144,25 +141,33 @@ export default function Register() {
 				payload: user
 			})
 			console.log("ESTADO EN THEN: ", userState ) */
-			router.push("/login")
+			router.push("/plants");
 		}
 	};
 
-	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
+	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (
+		error
+	) => {
 		//console.log("data",error);
-		if (error.password !== error.repitedPassword || error.repitedPassword.length < 6) {
+		if (
+			error.password !== error.repitedPassword ||
+			error.repitedPassword.length < 6
+		) {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
-			})
-			console.error("no coinciden los pass")
+			});
+			console.error("no coinciden los pass");
 		}
 	};
-
 
 	return (
 		<section className="flex flex-row">
 			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center">
-				<Image src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]" />
+				<Image
+					src={Logo}
+					alt="logo de Garden Wise"
+					className="pb-[2em] w-[15.5em] h-[auto]"
+				/>
 				<p>Donde la Naturaleza y la Tecnología Se Unen</p>
 			</div>
 			<div className="flex flex-col w-full lg:w-1/2 registerBgImg">
@@ -218,7 +223,14 @@ export default function Register() {
 						isError={!!errors.repitedPassword}
 						messageError={errors.repitedPassword?.message}
 					/>
-					<p className="w-80 lg:w-80 max-w-[80vw] text-end">¿ya tienes cuenta? <span><Link href={'/login'} className="text-primary">Ingresa</Link></span></p>
+					<p className="w-80 lg:w-80 max-w-[80vw] text-end">
+						¿ya tienes cuenta?{" "}
+						<span>
+							<Link href={"/login"} className="text-primary">
+								Ingresa
+							</Link>
+						</span>
+					</p>
 					<button
 						className=" w-72 h-10 max-w-[80vw] border-2 bg-primary text-[white] rounded-[50px] mt-5 "
 						type="submit"

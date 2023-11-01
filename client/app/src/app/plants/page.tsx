@@ -18,21 +18,24 @@ function Plants() {
 		id: number;
 		imageUrl: string;
 		description: string;
-		plantingDate: string;
+		date: string;
 		name: string;
+		ambient: string;
+		light: string;
 	}
 
 	useEffect(() => {
 		axiosInstance
 			.get("/plants/")
 			.then((response) => {
+				console.log(response.data.data);
 				setPlants(response.data.data);
 			})
 			.catch((error) => {
 				console.error("Error al obtener datos de plantas:", error);
 			});
-	}, []); // El segundo argumento vacío asegura que el efecto se ejecute solo una vez al montar el componente
-
+	}, []);
+	console.log(plants);
 	return (
 		<>
 			<Header></Header>
@@ -54,8 +57,10 @@ function Plants() {
 									key={plant.id}
 									PlantImg={plant.imageUrl}
 									PlantInfo={plant.description}
-									PlantDate={plant.plantingDate}
+									PlantDate={plant.date}
 									PlantName={plant.name}
+									PlantAmbient={plant.ambient}
+									PlantLight={plant.light}
 								/>
 							))}
 						</CarouselPlants>
