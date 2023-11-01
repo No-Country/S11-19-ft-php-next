@@ -7,16 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
     public function showProfile()
     {
         $user = DB::table('users')
-        ->select(DB::raw("CONCAT(name,' ',lastname) AS name"), 'email', 'img')
+        ->select(DB::raw("CONCAT(name,' ',lastname) AS name"), 'email')//, 'img'
         ->where('id', auth()->id())
         ->get();
         
+        $u = User::findOrFail(auth()->id());
+        if ($u->hasMedia('Users')){
+            $mediaUrl = $u->getMedia('Users')->first()->getUrl('thumb');
+            $user['mediaUrl'] = $mediaUrl;
+        }
+
         return response([
             "message" => 'Profile user',
             "data" => $user
@@ -25,17 +32,27 @@ class ProfileController extends Controller
 
     public function updateProfile(Request $request)
     {
-        // Update name, lastname, email and image
+        // Update name, lastname, email and image (file)###########
         try {
             DB::table('users')
             ->where('id', '=', auth()->id())
-            ->update($request->input());
+            ->update([
+                'name' => $request->name,
+                'lastname' => $request->lastname,
+                'email' => $request->email,
+            ]);
 
             $user = DB::table('users')
-            ->select(DB::raw("CONCAT(name,' ',lastname) AS name"), 'email', 'img')
+            ->select(DB::raw("CONCAT(name,' ',lastname) AS name"), 'email')//, 'img'
             ->where('id', auth()->id())
             ->get();
             
+            $u = User::findOrFail(auth()->id());
+            if ($u->hasMedia('Users')){
+                $u->clearMediaCollection('Users');
+            }
+            $u->addMediaFromRequest('image')->toMediaCollection('Users');
+
             return response([
                 "message" => 'Updated profile successfully',
                 "data" => $user
