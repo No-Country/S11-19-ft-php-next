@@ -23,6 +23,12 @@ class PlantsController extends Controller
         if (!$plants) {
             return response(["message" => 'There are no plants'],200);
         }
+        foreach ($plants as $plant) {
+            if ($plant->hasMedia('Plants')){
+                $mediaUrl = $plant->getMedia('Plants')->first()->getUrl('thumb');
+                $plant['mediaUrl'] = $mediaUrl;
+            }
+        }
         return $this->successResponse($plants, 'Plants of the user');
     }
 
@@ -62,6 +68,12 @@ class PlantsController extends Controller
             return response(["message" => 'Plant not found'],200);
         }
 
+        foreach ($plant as $p) {
+            if ($p->hasMedia('Plants')){
+                $mediaUrl = $p->getMedia('Plants')->first()->getUrl('thumb');
+                $p['mediaUrl'] = $mediaUrl;
+            }
+        }
          return response([
             "status" => 'success',
             "data" => $plant
