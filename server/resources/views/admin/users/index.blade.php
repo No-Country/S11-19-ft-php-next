@@ -9,7 +9,7 @@
 @section('content_header')
     <div class="d-flex justify-content-between px-3">
         <h1>{{ __('Usuarios') }}</h1>
-        <button type="button" class="btn btn-success rounded-pill" onclick="window.location.href='{{ route('admin.users.create') }}'"><i class="fas fa-plus"></i></button>
+        <button type="button" class="btn btn-success rounded-pill" action="{{ route('admin.users.create') }}"><i class="fas fa-plus"></i></button>
     </div>
 
 @stop
