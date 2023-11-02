@@ -7,6 +7,7 @@ import Header from "@/components/header";
 import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
 
+
 type User = {
 	name: string;
 	email: string;

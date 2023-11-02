@@ -4,6 +4,7 @@ import React from "react";
 import { BiEdit, BiTrash } from "react-icons/bi";
 import ButtonDeletePlant from "./buttons/ButtonDeletePlant";
 import ButtonEditPlant from "./buttons/ButtonEditPlant";
+import PlantDraw from "../assets/PlantDraw.jpg"
 interface PlantCardProps {
 	PlantName: string;
 	PlantImg: string;
@@ -21,11 +22,13 @@ function PlantCard({
 	PlantAmbient,
 	PlantLight,
 }: PlantCardProps) {
+
+	let plantSrc = PlantImg? PlantImg : PlantDraw
 	return (
 		<div className="bg-white flex flex-col w-[290px] h-[410px] border-0.5 border-black drop-shadow-lg ">
 			<div className="w-[290px] h-[200px] overflow-hidden">
 				<Image
-					src={PlantImg}
+					src={plantSrc}
 					alt={`Imagen de una${PlantName}`}
 					width={290}
 					height={160}

@@ -8,10 +8,12 @@ import Header from "@/components/header";
 import Link from "next/link";
 import { AuthContext } from "@/components/authcontext";
 import axiosInstance from "@/services/axiosInstance";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function Plants() {
-	const { userState } = useContext(AuthContext);
-
+	const { userState,  logOutUser} = useContext(AuthContext);
+	const router = useRouter()
 	const [plants, setPlants] = useState<Plant[]>([]);
 
 	interface Plant {
@@ -34,7 +36,28 @@ function Plants() {
 			.catch((error) => {
 				console.error("Error al obtener datos de plantas:", error);
 			});
+    /* if ( userState?.token ) {
+			axios.get("https://garden-wise-app.fly.dev/api/plants/", 
+				{
+					headers: {
+					"Content-Type": "application/json",
+					"Authorization":`Bearer ${userState.token}`
+				}
+			})
+		.then( response => {
+			console.log("RESPUESTA.DATA",response.data.data)
+			setPlants(response.data.data)
+		}) 
+		.catch( err => {
+			console.log("ERROR",err.response.data.message)
+			if (err.response.data.message === "Unauthenticated") {
+				logOutUser()
+        router.push("/login")
+			}
+		})  */// Unauthenticated
+
 	}, []);
+
 	console.log(plants);
 	return (
 		<>

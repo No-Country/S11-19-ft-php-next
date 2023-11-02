@@ -17,9 +17,9 @@ import {
 import { Input } from "./Input";
 import Logo from "../../assets/brandLogo.jpg";
 import Link from "next/link";
-import { useRegister } from "./useRegister";
-import axios from "axios";
-import { useRouter } from "next/navigation";
+import axios from 'axios'
+import { useRouter } from 'next/navigation'
+
 
 /* type inputState = {
 	value: string;
@@ -89,30 +89,32 @@ export default function Register() {
 			// 	.then(res => res.json())
 			// 	.then(data => console.log("data",data))
 
-			/* axios.post("https://garden-wise-app.fly.dev/api/register", {
+
+				axios.post("https://garden-wise-app.fly.dev/api/register", {
 					name:name,
 					lastname:lastName,
 					email:email,
 					password: password 
-				})
+				}, {
+				headers: {
+					"Content-Type":"aplication/json",
+				}})
+					
 				.then(res => res.data)
 				.then(data => console.log("data",data))
-				.catch((error) => { console.log(error)}) */
+				.catch((error) => { console.log(error)})
 
-			try {
-				setLoading(true);
-				const response = await fetch(
-					"https://garden-wise-app.fly.dev/api/register",
-					{
-						method: "POST",
-						headers: {
-							"Content-Type": "aplication/json",
-						},
-						body: JSON.stringify(bodyData), // a cambiar cuando se tenga los keys requeridos en el endpoint
-					}
-				);
-				const requestedData = await response.json();
-				console.info("userData: ", requestedData);
+			/* try {
+				setLoading(true)
+				const response = await fetch("https://garden-wise-app.fly.dev/api/register", {
+					method: "POST",
+					headers: {
+						"Content-Type":"aplication/json",
+					},
+					body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
+				})
+				const requestedData = await response.json()
+				console.info("userData: ", requestedData)
 				if (requestedData.status === "succsess") {
 					console.log("en success");
 					console.info("userData SUCCSESS: ", requestedData);
@@ -120,39 +122,21 @@ export default function Register() {
 				}
 				setUserData(requestedData);
 			} catch (err) {
-				console.warn("ERR: ", err);
-			} finally {
-				setLoading(false);
+          console.warn("ERR: ", err)
 			}
-		};
-		submitRegister();
-		//const {userData, loading, error} = useRegister(bodyData)
-		//console.log("userData en handleSubmit: ",userData)
-		if (userData) {
-			//
-			/* const user = {
-				name: userData.user.name,
-				email:userData.user.email,
-				img:userData.user.img,
-				token:userData.token
-			}
-			await dispatchUser({
-				type:"LOGIN-CREDENTIALS", 
-				payload: user
-			})
-			console.log("ESTADO EN THEN: ", userState ) */
-			router.push("/plants");
+			finally {
+				setLoading(false)
+			} */
+		}
+		submitRegister()
+
+		if (userData) {  
+			router.push("/login")
 		}
 	};
 
-	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (
-		error
-	) => {
-		//console.log("data",error);
-		if (
-			error.password !== error.repitedPassword ||
-			error.repitedPassword.length < 6
-		) {
+	const onInvalid: SubmitHandler<InputVali<typeof RegisterSchema>> = (error) => {
+		if (error.password !== error.repitedPassword || error.repitedPassword.length < 6) {
 			setError("repitedPassword", {
 				message: "Las contraseñas no coinciden",
 			});

@@ -22,8 +22,7 @@ import { Input } from "./Input";
 import { AuthContext } from "@/components/authcontext";
 import Logo from "../../assets/brandLogo.jpg"
 import Link from "next/link";
-import { useLogin } from "./useLogin";
-
+import FadeLoader from "react-spinners/FadeLoader";
 
 /* type inputState = {
 	value: string;
@@ -58,7 +57,7 @@ export default function Login() {
 		},
 	});
 
-	const {userState, loginUser/* , dispatchUser */} = useContext(AuthContext)
+	const {userState, loginUser, logOutUser} = useContext(AuthContext)
 	console.log("userState: ", userState)
 
 
@@ -153,10 +152,17 @@ export default function Login() {
 		submitRegister()
 
 	};
-
+	const override = {
+		display: "block",
+		position: "absolute",
+		zIndex:1,
+		bottom: "5em",
+		margin: "0 auto",
+		borderColor: "red",
+	};
 	
 	return (
-		<section className="flex flex-row">
+		<section className="flex flex-row relative">
 			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center min-h-[100vh]">
 				<Image src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]  "/>
 				<p>Donde la Naturaleza y la Tecnología Se Unen</p>
@@ -197,6 +203,7 @@ export default function Login() {
 					>
 						iniciar sesión
 					</button>
+					<FadeLoader loading={loading} className="absolute bottom-[5em] z-10" /* cssOverride={override} */ /> 
 				</form>
 				<Image src={registerFooter} className="w-full pt-24" alt="plant image" />
 			</div>
