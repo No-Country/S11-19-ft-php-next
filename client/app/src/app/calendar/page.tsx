@@ -39,6 +39,7 @@ export default function Example() {
   const [reminders, setReminders] = useState<[reminder] | []>([])
   let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
   const [openModal ,setOpenModal] = useState(false)
+	const [reloadData, setReloadData] = useState(0)
 
 const { userState} = useContext(AuthContext);
   
@@ -51,7 +52,8 @@ const { userState} = useContext(AuthContext);
       .catch((error) => {
           console.error("Error al obtener datos de plantas:", error);
       });
-	},[])
+			console.log("EFFECTO")
+	},[reloadData])
    
 	type User = {
 		name:string,
@@ -68,6 +70,11 @@ const { userState} = useContext(AuthContext);
 		type:string,
 		repeat:number,
 		plant_id:number
+	}
+
+	const handleReloadData = () => {
+		setReloadData(prev => prev +1)
+		console.log("reloadData")
 	}
 
   let days = eachDayOfInterval({
@@ -105,7 +112,7 @@ const { userState} = useContext(AuthContext);
   return (
     <div className=" w-full">
       <Header/>
-      {openModal && <CreateReminderModal setOpenModal={setOpenModal}/>}
+      {openModal && <CreateReminderModal setOpenModal={setOpenModal} handleReloadData={handleReloadData} />}
       <div className="w-full pt-10  px-3">
       <h2 className="text-2xl  my-5 text-center text-marron-oscuro   font-medium">Calendario</h2>
         <div className="flex justify-center items-center  md:divide-x md:divide-gray-200">

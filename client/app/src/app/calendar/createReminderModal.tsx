@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form'
 import { AuthContext } from '@/components/authcontext';
 import { useRouter } from 'next/navigation';
 import axiosInstance from '@/services/axiosInstance';
-export default function CreateReminderModal({setOpenModal}:any) {
+
+export default function CreateReminderModal({setOpenModal, handleReloadData}:any) {
   const { userState} = useContext(AuthContext);
   const {register, handleSubmit, reset} = useForm()
   const [choosedPlant, setChoosedPlant] = useState()
@@ -60,7 +61,10 @@ export default function CreateReminderModal({setOpenModal}:any) {
               console.log(response);
               reset()
               setOpenModal(false)
-              location.reload()
+              if (typeof window !== 'undefined') {
+                window.location.reload()
+              }
+							handleReloadData()
           })
           .catch((error) => {
               console.error("Error al obtener datos de plantas:", error);
