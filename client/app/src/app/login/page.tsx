@@ -126,6 +126,7 @@ export default function Login() {
 				setUserData(requestedData)
 				const user = {
 					name:requestedData.data.user.name,
+					lastname:requestedData.data.user.lastname,
 					email:requestedData.data.user.email,
 					img:requestedData.data.user.img,
 					token:requestedData.data.token,

@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import Link from "next/link";
 import Header from "@/components/header";
 import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
+import { AuthContext } from "@/components/authcontext";
 
 
 type User = {
@@ -30,6 +31,7 @@ function AddPlant() {
 	useEffect(() => {
 		const retrieveUser = (): User | null | undefined => {
 			if (typeof window !== undefined) {
+				console.log("user")
 				const userData = localStorage.getItem("garden-wise-user");
 				userData && setUser(JSON.parse(userData));
 				return userData ? (JSON.parse(userData) as User) : null;
@@ -38,9 +40,11 @@ function AddPlant() {
 		const isLogged = retrieveUser();
 		console.log("isLogged: ", isLogged);
 		if (!isLogged?.token) {
-			redirect("/login");
+			/* redirect("/login"); */
+			/* router.push("/login") */
 		} else console.info("not logged");
 	}, []);
+	const { userState } = useContext(AuthContext);
 
 	const onSubmit = async (data: any) => {
 		console.log(data.file[0]);
@@ -51,14 +55,15 @@ function AddPlant() {
 		formData.append("light_id", data.luz);
 		formData.append("date", data.fechaAdquisicion);
 		formData.append("description", data.observaciones);
-		formData.append("user_id", user.id);
+		formData.append("user_id", userState.id);
 
 		const URL = "https://garden-wise-app.fly.dev/api/plants/create";
 		try {
+			 //if (user) console.log("user: ", user)
 			const response = await axios.post(URL, formData, {
 				headers: {
 					"Content-Type": "multipart/form-data", // Asegúrate de que el encabezado sea correcto
-					Authorization: `Bearer ${user.token}`,
+					Authorization: `Bearer ${userState.token}`,
 				},
 			});
 

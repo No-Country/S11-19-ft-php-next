@@ -27,7 +27,7 @@ function Plants() {
 	}
 
 	useEffect(() => {
-		axiosInstance
+		/* axiosInstance
 			.get("/plants/")
 			.then((response) => {
 				console.log(response.data.data);
@@ -35,8 +35,8 @@ function Plants() {
 			})
 			.catch((error) => {
 				console.error("Error al obtener datos de plantas:", error);
-			});
-    /* if ( userState?.token ) {
+			}); */
+    if ( userState?.token ) {
 			axios.get("https://garden-wise-app.fly.dev/api/plants/", 
 				{
 					headers: {
@@ -44,17 +44,18 @@ function Plants() {
 					"Authorization":`Bearer ${userState.token}`
 				}
 			})
-		.then( response => {
-			console.log("RESPUESTA.DATA",response.data.data)
-			setPlants(response.data.data)
-		}) 
-		.catch( err => {
-			console.log("ERROR",err.response.data.message)
-			if (err.response.data.message === "Unauthenticated") {
-				logOutUser()
-        router.push("/login")
-			}
-		})  */// Unauthenticated
+			.then( response => {
+				console.log("RESPUESTA.DATA",response.data.data)
+				setPlants(response.data.data)
+			}) 
+			.catch( err => {
+				console.log("ERROR",err.response.data.message)
+				if (err.response.data.message === "Unauthenticated") {
+					logOutUser()
+					router.push("/login")
+				}
+			}) 
+		}
 
 	}, []);
 
