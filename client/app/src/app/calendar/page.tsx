@@ -17,58 +17,14 @@ import {
 } from 'date-fns'
 import { es} from 'date-fns/locale';
 
-/* import format from "date-fns/fp/formatWithOptions"; */
 import { Fragment, useState, useContext, useEffect } from 'react'
-import { AuthContext, useAuthContext } from '@/components/authcontext';
+import { AuthContext } from '@/components/authcontext';
 import { redirect } from 'next/navigation';
+import Header from '@/components/header';
+import CreateReminderModal from './createReminderModal';
+import axiosInstance from '@/services/axiosInstance';
 
-const meetings = [
-  {
-    id: 1,
-    name: 'Leslie Alexander',
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2023-10-11T13:00',
-    endDatetime: '2023-10-11T14:30',
-    type:1
-  },
-  {
-    id: 2,
-    name: 'Michael Foster',
-    imageUrl:
-      'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2023-10-20T09:00',
-    endDatetime: '2023-10-20T11:30',
-    type:1,
-  },
-  {
-    id: 3,
-    name: 'Dries Vincent',
-    imageUrl:
-      'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2023-10-20T17:00',
-    endDatetime: '2023-10-20T18:30',
-    type:2
-  },
-  {
-    id: 4,
-    name: 'Leslie Alexander',
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2023-11-09T13:00',
-    endDatetime: '2023-11-09T14:30',
-    type:2
-  },
-  {
-    id: 5,
-    name: 'Michael Foster',
-    imageUrl:
-      'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    startDatetime: '2023-10-13T14:00',
-    endDatetime: '2023-10-13T14:30',
-    type:2
-  },
-]
+
 
 function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
@@ -76,36 +32,27 @@ function classNames(...classes:any) {
 
 export default function Example() {
   let today = startOfToday()
-	//console.log("DATE1: ", today.toUTCString())
-	//console.log("today: ", today.toString())
+
+
   let [selectedDay, setSelectedDay] = useState(today)
   let [currentMonth, setCurrentMonth] = useState(format( today, 'MMM-yyyy'))
+  const [reminders, setReminders] = useState<[reminder] | []>([])
   let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
-//console.log("PRUEBA FORMATO 1", format( today, 'MMMM-yyyy', { locale: es }))
-  const { userState} = useAuthContext();
-	console.log("USER STATE en calendar: ", userState)
-  /* const getEvents = async () => {
-		try {
-			const response = await fetch("https://garden-wise-app.fly.dev/api/login", {
-				method:"Post",
-				headers: {
-					"Content-Type":"aplication/json",
-					"Authorization":`Barer ${userState.token}`
-				}
-			})
-			const requestedData = await response.json()
-			console.info("userData: ", requestedData)
-		} catch (err) {
-			console.log("ERROR: ", err)
-		}
-	}
+  const [openModal ,setOpenModal] = useState(false)
+
+const { userState} = useContext(AuthContext);
+  
 	useEffect( () => {
-		if (userState.token){
-			
-			getEvents()
-		}
+      axiosInstance
+      .get("/reminder/")
+      .then((response) => {
+          setReminders(response.data.Reminder)
+      })
+      .catch((error) => {
+          console.error("Error al obtener datos de plantas:", error);
+      });
 	},[])
-   */
+   
 	type User = {
 		name:string,
 		email:string,
@@ -113,9 +60,15 @@ export default function Example() {
 		token:string
 	}
 	
-
-	//const dataFromLS = retrieveUser()
-  //console.log("USER EN CALENDAR", dataFromLS )
+	type reminder = {
+		name:string,
+		frecuency:string,
+		date:string,
+		time:string,
+		type:string,
+		repeat:number,
+		plant_id:number
+	}
 
   let days = eachDayOfInterval({
     start: firstDayCurrentMonth,
@@ -132,76 +85,62 @@ export default function Example() {
     setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'))
   }
 
-  let selectedDayMeetings = meetings.filter((meeting) =>
-    isSameDay(parseISO(meeting.startDatetime), selectedDay)
-  )
+  // let selectedDayMeetings = meetings.filter((meeting) =>
+  //   isSameDay(parseISO(meeting.startDatetime), selectedDay)
+  // )
 
   const checkEvent = (day:any) => {
 		// esta función compara si el dia actual day es igual a algún dia de meetings
-    const check = meetings.some( meeting => isSameDay(parseISO(meeting.startDatetime), day) )
+    const check = reminders.some( reminder => isSameDay(parseISO(reminder.date), day) )
     return check
   }
 	const sendEvent = (day:any) => {
 		// esta función compara si el dia actual day es igual a algún dia de meetings
-    const dayEvent = meetings.find( meeting => isSameDay(parseISO(meeting.startDatetime), day) )
-    //console.log("dayEvent", dayEvent)// esto retorna solo el primero que encuentra
+    const dayEvent = reminders.find( reminder => isSameDay(parseISO(reminder.date), day) )
+
 		return dayEvent
   }
-  //console.log("PRUEBA FECHA: ", format(new Date(2017, 10, 6), 'MMMM', {locale: es}))
 
-	useEffect ( () => {
-		const retrieveUser = (): User | null | undefined => {
-			if ( typeof window !== undefined) {
-				const userData = localStorage.getItem("garden-wise-user");
-				// si no existe rdireccionar, aunque seria amejor redireccionar en el layout para evitar flash
-				// pasar el token a un state, para que con un useEffect hacer la peticion con el token como dependencia
-				return userData ? JSON.parse(userData) as User : null;
-			}}
-		const isLogged = retrieveUser()
-		console.log("isLogged: ", isLogged)
-		if (!isLogged?.token) {
-			redirect("/login")
-		} else console.info("not logged");
-	},[])
 	
-
-
   return (
-    <div className="pt-16 w-full">
-      <div className="w-full">
-        <div className="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
-          <div className="md:pr-14">
-            <div className="flex items-center">
-              <h2 className="flex-auto font-semibold text-gray-900">
-                {format(firstDayCurrentMonth, 'MMMM', { locale: es })}
-              </h2>
+    <div className=" w-full">
+      <Header/>
+      {openModal && <CreateReminderModal setOpenModal={setOpenModal}/>}
+      <div className="w-full pt-10  px-3">
+      <h2 className="text-2xl  my-5 text-center text-marron-oscuro   font-medium">Calendario</h2>
+        <div className="flex justify-center items-center  md:divide-x md:divide-gray-200">
+          <div className="w-2/3">
+            <div className="flex w-full items-center justify-between bg-secondary">
               <button
                 type="button"
                 onClick={previousMonth}
-                className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-slate-50 hover:text-gray-500"
               >
                 <span className="sr-only">Previous month</span>
                 <AiOutlineLeft className="w-5 h-5" aria-hidden="true" />
               </button>
+              <h2 className=" font-semibold text-slate-50">
+                {format(firstDayCurrentMonth, 'MMMM', { locale: es })}
+              </h2>
               <button
                 onClick={nextMonth}
                 type="button"
-                className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-slate-50 hover:text-gray-500"
               >
                 <span className="sr-only">Next month</span>
                 <AiOutlineRight className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
-            <div className="grid grid-cols-7 mt-10 text-xs leading-6 text-center text-gray-500">
-              <div>Domingo</div>
-              <div>Lunes</div>
-              <div>Martes</div>
-              <div>Miercoles</div>
-              <div>Jueves</div>
-              <div>Viernes</div>
-              <div>Sabado</div>
+            <div className="grid grid-cols-7  text-xs leading-6 text-center text-gray-500">
+              <div className='border border-black'>Domingo</div>
+              <div className='border border-black'>Lunes</div>
+              <div className='border border-black'>Martes</div>
+              <div className='border border-black'>Miercoles</div>
+              <div className='border border-black'>Jueves</div>
+              <div className='border border-black'>Viernes</div>
+              <div className='border border-black'>Sabado</div>
             </div>
-            <div className="grid grid-cols-7 mt-2 text-sm w-[100%]  ">
+            <div className="grid grid-cols-7 text-sm w-[100%]  ">
               {days.map((day, dayIdx) => (
                 <div
                   key={day.toString()}
@@ -215,43 +154,14 @@ export default function Example() {
 
                   }
                 >
-                  {/* <button
-                    type="button"
-                    onClick={() => setSelectedDay(day)}
-                    className={classNames(
-                      isEqual(day, selectedDay) && 'text-white',
-                      !isEqual(day, selectedDay) &&
-                        isToday(day) &&
-                        'text-red-500',
-                      !isEqual(day, selectedDay) &&
-                        !isToday(day) &&
-                        isSameMonth(day, firstDayCurrentMonth) &&
-                        'text-gray-900',
-                      !isEqual(day, selectedDay) &&
-                        !isToday(day) &&
-                        !isSameMonth(day, firstDayCurrentMonth) &&
-                        'text-gray-400',
-                      isEqual(day, selectedDay) && isToday(day) && 'bg-red-500',
-                      isEqual(day, selectedDay) &&
-                        !isToday(day) &&
-                        'bg-gray-900',
-                      !isEqual(day, selectedDay) && 'hover:bg-gray-200',
-                      (isEqual(day, selectedDay) || isToday(day)) &&
-                        'font-semibold',
-                      'mx-auto flex h-6 w-6 m-2 items-center justify-center rounded-full'
-                    )}
-                  >
-                    <time dateTime={format(day, 'yyyy-MM-dd')}>
-                      {format(day, 'd')}
-                    </time>
-                  </button> */}
+                
 
                   <div className="w-[100%] h-[100%]    "> 
                     {/* {meetings.map((meeting) => */}
                       <div className={
                         /* isSameDay(parseISO(meeting.startDatetime), day)? */
                         checkEvent(day)?
-                        "w-full h-[100%] flex items-center justify-center bg-sky-500"
+                        "w-full h-[100%] flex items-center justify-center bg-[#C3D825]"
                         :
                         "w-full h-[100%] flex items-center justify-center "
                       }>
@@ -287,7 +197,7 @@ export default function Example() {
                             {format(day, 'd')}   {/* este es el  numero de dia del mes */}
 														{/* {checkEvent(day) && day.toString()} */}
 														{/* {checkEvent(day) && format(day, 'yyyy-MM-dd-h-m')  } */}
-														{sendEvent(day)?.startDatetime}
+														{sendEvent(day)?.name}
                           </time>
                         </button>
                       </div>
@@ -299,6 +209,15 @@ export default function Example() {
           </div>
         </div>
       </div>
+      <section className='flex justify-center items-center mt-10'>
+
+      <button onClick={() => setOpenModal(true)} className='p-3 bg-secondary text-slate-100 rounded-md m-auto'>
+          Agregar Recordatorio
+          <svg xmlns="http://www.w3.org/2000/svg" className='inline' width="26" height="24" viewBox="0 0 26 24" fill="none">
+            <path d="M13.2344 6V12M13.2344 12V18M13.2344 12H19.4639M13.2344 12H7.00488" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </section>
     </div>
   )
 }

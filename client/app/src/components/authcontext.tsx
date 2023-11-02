@@ -47,10 +47,8 @@ const initialState:stateType = useMemo(
 	let userFromLs;
 	if (typeof window !== 'undefined') {
 		const localStorageData = window.localStorage.getItem("garden-wise-user")
-		console.log("LS: ", localStorageData)
 		if (localStorageData) {
 			userFromLs = JSON.parse(localStorageData)
-		  console.log("userFromLs en profile: ",userFromLs)
 	  }
 	}
 
@@ -59,7 +57,6 @@ const initialState:stateType = useMemo(
 		: userFromLs)
 
   const loginUser =useCallback( (user:stateType) => {
-		console.log("ejecuta loginUser")
 		const { name, email, img, token, id} = user
 				console.log("loginUser, user: ", user)
 				setUserState ({
@@ -72,15 +69,28 @@ const initialState:stateType = useMemo(
 				})
 				localStorage.setItem("garden-wise-user", JSON.stringify(user))
 	},[])
+
+	const logOutUser =useCallback( (user:stateType) => {
+		const { name, email, img, token, id} = user
+				console.log("loginUser, user: ", user)
+				setUserState ({
+					...userState, 
+					name:"",
+          email:"",
+					img:"",
+					token:"",
+					id:null
+				})
+				localStorage.removeItem("garden-wise-user")
+	},[])
 	
 	const contextValue = useMemo(
     () => ({
       loginUser,
       userState,
     }),
-    [userState, loginUser]
+    [userState, loginUser, logOutUser]
   );
-	console.log("data en CONTEXT: ", userState)
 
 	return <AuthContext.Provider value={contextValue} >{children}</AuthContext.Provider>
 }

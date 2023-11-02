@@ -14,7 +14,7 @@ const Header = () => {
 		if (userState?.token) setIsLogged(true)
 
 	},[userState])
-	userState && console.log("userState en Header:",userState)
+
 	// document.addEventListener('click', function(event) {
 	// 	if(isOpen && event.target !== menuRef.current){
 	// 		setIsOpen(false)
