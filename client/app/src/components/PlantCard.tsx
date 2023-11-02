@@ -9,6 +9,8 @@ interface PlantCardProps {
 	PlantImg: string;
 	PlantInfo: string;
 	PlantDate: string;
+	PlantAmbient: string;
+	PlantLight: string;
 }
 
 function PlantCard({
@@ -16,13 +18,15 @@ function PlantCard({
 	PlantImg,
 	PlantInfo,
 	PlantDate,
+	PlantAmbient,
+	PlantLight,
 }: PlantCardProps) {
 	return (
 		<div className="bg-white flex flex-col w-[290px] h-[410px] border-0.5 border-black drop-shadow-lg ">
 			<div className="w-[290px] h-[200px] overflow-hidden">
 				<Image
 					src={PlantImg}
-					alt={PlantName}
+					alt={`Imagen de una${PlantName}`}
 					width={290}
 					height={160}
 					className="object-cover object-center h-full w-full"
@@ -53,14 +57,14 @@ function PlantCard({
 					</li>
 				</ul>
 
-				{/* Contenedor de tags */}
+				{/* Crear  tags dinamicos */}
 				<div className="text-base font-semibold mb-4 text-gray-700 mt-10 flex gap-2">
 					<>
 						<p className="rounded-2xl px-4 py-1 w-fit bg-marron-claro">
-							#interior
+							#{PlantAmbient}
 						</p>
 						<p className="rounded-2xl px-4 py-1 w-fit bg-marron-claro">
-							#exterior
+							#{PlantLight}
 						</p>
 					</>
 				</div>

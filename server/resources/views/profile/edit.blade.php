@@ -1,5 +1,26 @@
-<x-app-layout>
-    <x-slot name="header">
+
+
+@extends('adminlte::page')
+
+@section('title', 'Perfil')
+
+@section('css')
+<link rel="stylesheet" href="/css/admin_custom.css">
+ <!-- Scripts -->
+ @vite(['resources/css/app.css', 'resources/js/app.js'])
+@endsection
+
+@section('content_header')
+   
+      
+        
+  
+
+@stop
+
+@section('content')
+
+ <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Profile') }}
         </h2>
@@ -26,4 +47,9 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@stop
+
+@section('js')
+ 
+   
+@stop

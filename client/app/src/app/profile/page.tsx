@@ -10,7 +10,6 @@ export default function Page() {
 	},[userState]) */
 	let token:string;
 	if (typeof window !== 'undefined') {
-		// Tu lógica de localStorage aquí
 		const localStorageData = window.localStorage.getItem("garden-wise-user")
 		if (localStorageData) {
 			token = JSON.parse(localStorageData)

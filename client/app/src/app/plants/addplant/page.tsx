@@ -4,136 +4,80 @@ import { useForm } from "react-hook-form";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import Link from "next/link";
 import Header from "@/components/header";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
-import { useRouter } from "next/navigation"
+
 
 type User = {
-	name:string,
-	email:string,
-	img:string,
-	token:string,
-	id:number | null
-}
+	name: string;
+	email: string;
+	img: string;
+	token: string;
+	id: number | null;
+};
 const initialState = {
-	name:"",
-	email:"",
-	img:"",
-	token:"",
-	id:null
-}
+	name: "",
+	email: "",
+	img: "",
+	token: "",
+	id: null,
+};
 
 function AddPlant() {
-
 	const { register, handleSubmit, reset } = useForm();
-	const [user, setUser] = useState<any>()
-	const router = useRouter()
-	useEffect ( () => {
+	const [user, setUser] = useState<any>();
+	const router = useRouter();
+	useEffect(() => {
 		const retrieveUser = (): User | null | undefined => {
-			if ( typeof window !== undefined) {
+			if (typeof window !== undefined) {
 				const userData = localStorage.getItem("garden-wise-user");
-				userData && setUser(JSON.parse(userData))
-				return userData ? JSON.parse(userData) as User : null;
-			}}
-		const isLogged = retrieveUser()
-		console.log("isLogged: ", isLogged)
-		/* if (!isLogged?.token) {
-			redirect("/login")
-		} else console.info("not logged"); */
-	},[])
+				userData && setUser(JSON.parse(userData));
+				return userData ? (JSON.parse(userData) as User) : null;
+			}
+		};
+		const isLogged = retrieveUser();
+		console.log("isLogged: ", isLogged);
+		if (!isLogged?.token) {
+			redirect("/login");
+		} else console.info("not logged");
+	}, []);
 
-
-	useEffect( ()=>  {
-		// trae las plantas del user
-		if (user) {
-			const options = {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-					/* "Authorization":`Bearer ${user.token}` */
-					"Authorization":`Bearer xxxxxxx`
-				}
-	
-			};
-			/* fetch("https://garden-wise-app.fly.dev/api/plants/", options)
-			.then(res => res.json())
-			.then(data => console.log("data get plants",data))
-			.catch((err) => console.log(err))
- */
-
-    axios.get("https://garden-wise-app.fly.dev/api/plants/", 
-		{headers: {
-			"Content-Type": "application/json",
-			"Authorization":`Bearer ${user.token}`
-		}}
-		)
-		.then( response => console.log("RESPUESTA.DATA",response.data.data)) 
-		.catch( err => console.log("ERROR",err.response.data.message)) // Unauthenticated
-
-		} else console.log("FALLA")
-
-
-	},[user])
-
-	const onSubmit = async (data:any) => {
-
-		console.log("data.nombre: ", data.nombre)
-		console.log("typeof data.file:", typeof data.file )
+	const onSubmit = async (data: any) => {
+		console.log(data.file[0]);
 		const formData = new FormData();
-    formData.append("name", data.nombre);
+		formData.append("image", data.file[0]);
+		formData.append("name", data.nombre);
 		formData.append("environment_id", data.ambiente);
 		formData.append("light_id", data.luz);
 		formData.append("date", data.fechaAdquisicion);
 		formData.append("description", data.observaciones);
-		formData.append("image", data.file);
 		formData.append("user_id", user.id);
-			const bodyData = {
-				name:data.nombre,
-				environment_id:data.ambiente,
-				light_id:data.luz,
-				date:data.fechaAdquisicion,
-				description:data.observaciones,
-				image:"https://xxxxx",
-				user_id:user.id
-			}
 
-			const options = {
-				method: "POST",
+		const URL = "https://garden-wise-app.fly.dev/api/plants/create";
+		try {
+			const response = await axios.post(URL, formData, {
 				headers: {
-					"Content-Type": "multipart/form-data",
-					"Authorization":`Bearer ${user.token}`
+					"Content-Type": "multipart/form-data", // Asegúrate de que el encabezado sea correcto
+					Authorization: `Bearer ${user.token}`,
 				},
-				/* body: JSON.stringify(bodyData), */
-				body: formData,
-			};
-			console.log(data);
-			const URL = "https://garden-wise-app.fly.dev/api/plants/create"
-			// try {
-			// 	const response = await fetch(URL, options); 
-			// 	const data = await response.json()
+			});
 
-			// 	if (response.status === 200) {
-			// 		console.log("Post");
-			// 		console.log("response", data);
-			// 		reset();
-			// 		/* redirect("/plants"); */
-			// 		router.push("/plants")
-			// 	} else {
-			// 		console.error("Error en la solicitud:", response.statusText);
-			// 	}
-			// } catch (error) {
-			// 	console.error("Error", error);
-			// }
-			router.push("/plants")
+			if (response.status === 200) {
+				console.log("Post");
+				console.log("response", response.data);
+				reset();
+				router.push("/plants");
+			} else {
+				console.error("Error en la solicitud:", response.statusText);
+			}
+		} catch (error) {
+			console.error("Error", error);
 		}
-
+	};
 	return (
-
 		<>
 			<Header></Header>
-			<section
-				className="bg-background flex flex-col items-center  min-h-screen"
-			>
+			<section className="bg-background flex flex-col items-center  min-h-screen">
 				<div className="flex flex-col ">
 					<div className="flex  mb-16">
 						<div className="flex items-baseline gap-1 text-marron-oscuro">
@@ -149,7 +93,12 @@ function AddPlant() {
 							</h2>
 						</div>
 					</div>
-					<form onSubmit={handleSubmit(onSubmit)} action="" className="flex flex-col items-center">
+					<form
+						onSubmit={handleSubmit(onSubmit)}
+						action=""
+						className="flex flex-col items-center"
+						encType="multipart/form-data"
+					>
 						<div className="flex flex-col gap-1">
 							<label htmlFor="nombre">Nombre*</label>
 							<input
@@ -213,10 +162,34 @@ function AddPlant() {
 							type="file"
 							{...register("file")}
 							id="file"
-							className=" w-[289px]  bg-gray-400 h-[189px] flex items-center  border-2 rounded-xl   focus:outline-none focus:border-[#2DD4BF]"
+							className="w-[160px] mt-1"
 							name="file"
-							placeholder="Ej: Cambia de color"
+							onChange={(e) => {
+								const fileInput = e.target as HTMLInputElement | null;
+								if (fileInput) {
+									const file = fileInput.files?.[0];
+									if (file) {
+										const reader = new FileReader();
+										reader.onload = (event) => {
+											const imgElement = document.getElementById(
+												"preview-img"
+											) as HTMLImageElement | null;
+											if (imgElement) {
+												imgElement.src = String(event.target?.result);
+											}
+										};
+										reader.readAsDataURL(file);
+									}
+								}
+							}}
 						/>
+						<img
+							id="preview-img"
+							src=""
+							alt=""
+							className="w-[289px] mt-5 h-[289px] object-cover object-center"
+						/>
+
 						<div className="flex justify-center gap-2">
 							<Link
 								href="/plants"
