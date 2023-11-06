@@ -20,6 +20,7 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<AuthContextProvider>
+				{/* acá poner el Header y pasarle como prop el estado de logeo */}
 				<body className="font-Poppins bg-background">{children}</body>
 			</AuthContextProvider>
 		</html>

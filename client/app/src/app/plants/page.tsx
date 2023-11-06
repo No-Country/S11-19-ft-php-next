@@ -45,21 +45,17 @@ function Plants() {
 				}
 			})
 			.then( response => {
-				console.log("RESPUESTA.DATA",response.data.data)
 				setPlants(response.data.data)
 			}) 
 			.catch( err => {
-				console.log("ERROR",err.response.data.message)
 				if (err.response.data.message === "Unauthenticated") {
 					logOutUser()
 					router.push("/login")
 				}
 			}) 
 		}
-
 	}, []);
 
-	console.log(plants);
 	return (
 		<>
 			<Header></Header>
@@ -89,7 +85,6 @@ function Plants() {
 							))}
 						</CarouselPlants>
 					</div>
-
 					<Link
 						href="/plants/addplant"
 						className="font-semibold justify-center hover:bg-[#427d61] ease-out duration-300 mt-16 w-44 bg-secondary gap-3 items-center flex text-white  px-1 py-2"

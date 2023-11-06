@@ -33,9 +33,11 @@ export default function Page() {
 			setUser(getUser)
 		};
 	},[]) */
-	if (!userState?.token) {
-    router.push("/login")
-	}
+	useEffect( () => {
+		if (!userState?.token) {
+			router.push("/login")
+		}
+	},[])
 	
   return (
     <section className='h-screen '>

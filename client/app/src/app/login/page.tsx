@@ -23,7 +23,9 @@ import { AuthContext } from "@/components/authcontext";
 import Logo from "../../assets/brandLogo.jpg"
 import Link from "next/link";
 import FadeLoader from "react-spinners/FadeLoader";
-
+import BounceLoader from "react-spinners/BounceLoader"
+import BarLoader from "react-spinners/BarLoader"
+import { setCookie } from "cookies-next";
 /* type inputState = {
 	value: string;
 	isError: boolean;
@@ -58,11 +60,8 @@ export default function Login() {
 	});
 
 	const {userState, loginUser, logOutUser} = useContext(AuthContext)
-	console.log("userState: ", userState)
-
 
 	const onSubmit: SubmitHandler<InputVali<typeof LoginSchema>> = (data) => {
-		console.log("data de onSubmit",data);
 		
 		/* const dataMocked = {
 			name:"Pepe",
@@ -122,7 +121,6 @@ export default function Login() {
 					body:JSON.stringify(bodyData) // a cambiar cuando se tenga los keys requeridos en el endpoint
 				})
 				const requestedData = await response.json()
-				console.info("userData BANDERA: ", requestedData)
 				setUserData(requestedData)
 				const user = {
 					name:requestedData.data.user.name,
@@ -134,14 +132,11 @@ export default function Login() {
 
 				}
 
-				if (requestedData.status === "success") {  // cambiar por user cuando tome del customhook
-								/* await dispatchUser({
-									type:"LOGIN-CREDENTIALS", 
-									payload: user
-								}) */
-								await loginUser(user)
-								console.log("ESTADO del context EN THEN: ", userState )
-								router.push("/plants")
+				if (requestedData.status === "success") { 
+					await loginUser(user)
+					setCookie("garden-wise-auth", requestedData.data.token, { maxAge: 60 * 60 * 24 });
+					router.push("/plants")
+				
 				}
 			} catch (err) {
           console.warn("ERR: ", err)
@@ -153,23 +148,25 @@ export default function Login() {
 		submitRegister()
 
 	};
-	const override = {
-		display: "block",
+
+	const override: any = {
+		/* display: "block", */
 		position: "absolute",
-		zIndex:1,
-		bottom: "5em",
+		zIndex:20,
+		bottom:"40%",
+		/* top: "45%",*/
+		/* left:"40%",  */
+		left:"35%", 
 		margin: "0 auto",
-		borderColor: "red",
 	};
 	
 	return (
-		<section className="flex flex-row relative">
+		<section className="flex flex-row ">
 			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center min-h-[100vh]">
 				<Image src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]  "/>
 				<p>Donde la Naturaleza y la Tecnología Se Unen</p>
 			</div>
-			<div className="flex flex-col w-full lg:w-1/2 registerBgImg">
-				{/* <Image src={registerTop} className="w-[8em]" alt="plant image"/> */}
+			<div className="flex flex-col w-full lg:w-1/2 registerBgImg relative ">
 				<h1 className="text-center text-4xl font-Poppins font-medium mt-16 mb-24  text-[#61B78E]">
 					Iniciar sesión
 				</h1>
@@ -186,27 +183,31 @@ export default function Login() {
 						name="email"
 						isError={!!errors.email}
 						messageError={errors.email?.message}
+						className="relative z-0"
 					/>
 					<Input
 						placeholder="Contraseña"
 						label="Contraseña"
 						inputName="password"
-						/* className="max-w-[90%]" */
+						className="relative z-0"
 						register={register}
 						name="password"
 						isError={!!errors.password}
 						messageError={errors.password?.message}
 					/>
-					<p className="w-80 lg:w-80 max-w-[80vw] text-end">¿no tienes cuenta? <span><Link href={'/register'} className="text-primary">Registrate</Link></span></p>
+					<p className="w-80 lg:w-80 max-w-[80vw] text-end  z-0">¿no tienes cuenta? <span><Link href={'/register'} className="text-primary">Registrate</Link></span></p>
+					{/* <FadeLoader loading={loading}  cssOverride={override} width={7} height={72} radius={10} /> */}
+					{/* <BounceLoader loading={loading}  cssOverride={override} width={7} height={72} />
+					 */}
 					<button
-						className=" w-72 h-10 max-w-[80vw] border-2 bg-primary text-[white] rounded-[50px] mt-5 "
+						className=" w-72 h-10 border-2 bg-primary text-[white] rounded-[20px] mt-5 relative z-20 px-1"
 						type="submit"
 					>
 						iniciar sesión
 					</button>
-					<FadeLoader loading={loading} className="absolute bottom-[5em] z-10" /* cssOverride={override} */ /> 
 				</form>
-				<Image src={registerFooter} className="w-full pt-24" alt="plant image" />
+				<BarLoader loading={loading} cssOverride={override} width="30%" height={6}  />
+				<Image src={registerFooter} className="w-full pt-24 relative z-0" alt="plant image" />
 			</div>
 		</section>
 	);

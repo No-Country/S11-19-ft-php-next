@@ -8,7 +8,6 @@ import { redirect, useRouter } from "next/navigation";
 import axios from "axios";
 import { AuthContext } from "@/components/authcontext";
 
-
 type User = {
 	name: string;
 	email: string;
@@ -37,12 +36,11 @@ function AddPlant() {
 				return userData ? (JSON.parse(userData) as User) : null;
 			}
 		};
-		const isLogged = retrieveUser();
-		console.log("isLogged: ", isLogged);
-		if (!isLogged?.token) {
-			/* redirect("/login"); */
-			/* router.push("/login") */
-		} else console.info("not logged");
+		// const isLogged = retrieveUser();
+		// if (!isLogged?.token) {
+		// 	/* redirect("/login"); */
+		// 	/* router.push("/login") */
+		// } else console.info("not logged");
 	}, []);
 	const { userState } = useContext(AuthContext);
 
@@ -59,10 +57,10 @@ function AddPlant() {
 
 		const URL = "https://garden-wise-app.fly.dev/api/plants/create";
 		try {
-			 //if (user) console.log("user: ", user)
+
 			const response = await axios.post(URL, formData, {
 				headers: {
-					"Content-Type": "multipart/form-data", // Asegúrate de que el encabezado sea correcto
+					"Content-Type": "multipart/form-data", 
 					Authorization: `Bearer ${userState.token}`,
 				},
 			});

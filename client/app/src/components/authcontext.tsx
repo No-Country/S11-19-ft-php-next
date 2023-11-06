@@ -18,20 +18,6 @@ type contextType = {
 export const AuthContext = createContext<any>(null)
 
 export const AuthContextProvider = ({children}: {children: ReactNode}) => {
-	
-	/* const initialState:stateType = {
-		name:"",
-		email:"",
-		img:"",
-		token:"",
-		id:null
-	} */
-	
-
-/* type actionType = {
-	type:string,
-	payload?:stateType 
-} */
 
 const initialState:stateType = useMemo(
 	() => ({
@@ -59,7 +45,6 @@ const initialState:stateType = useMemo(
 
   const loginUser =useCallback( (user:stateType) => {
 		const { name, lastname ,email, img, token, id} = user
-				console.log("loginUser, user: ", user)
 				setUserState ({
 					...userState, 
 					name:name,
@@ -74,7 +59,6 @@ const initialState:stateType = useMemo(
 
 	const logOutUser =useCallback( (user:stateType) => {
 		const { name,lastname, email, img, token, id} = user
-				console.log("loginUser, user: ", user)
 				setUserState ({
 					...userState, 
 					name:"",
