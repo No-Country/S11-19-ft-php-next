@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import axiosInstance from '@/services/axiosInstance';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
+import Swal from 'sweetalert2'
 
 export default function CreateReminderModal({setOpenModal}:any) {
   const { userState} = useContext(AuthContext);

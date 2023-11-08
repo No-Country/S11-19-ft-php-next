@@ -32,8 +32,8 @@ const RegisterSchema = object({
 	name: string([minLength(3, "minimo 3 caracteres")]),
 	lastName: string([minLength(3, "minimo 3 caracteres")]),
 	email: string([email("email no valido")]),
-	password: string([minLength(6, "minimo 6 caracteres")]),
-	repitedPassword: string([minLength(6, "minimo 6 caracteres")]),
+	password: string([minLength(8, "minimo 8 caracteres, y debe contener al menos un simbolo y un número")]),
+	repitedPassword: string([minLength(8, "minimo 8 caracteres, y debe contener al menos un simbolo y un número")]),
 });
 
 export default function Register() {
