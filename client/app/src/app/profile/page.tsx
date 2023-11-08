@@ -4,6 +4,7 @@ import Header from '@/components/header'
 import { AuthContext } from '@/components/authcontext';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 /* type User = {
 	name:string,
@@ -13,7 +14,7 @@ import Image from 'next/image';
 	id:number
 } */
 export default function Page() {
-
+  const router = useRouter()
 	const { userState, logOutUser } = useContext(AuthContext);
   /* const [user, setUser] = useState<User | null>(null)*/
 
@@ -35,7 +36,7 @@ export default function Page() {
         <Link className='text-base p-3 px-6 rounded-md bg-primary text-slate-100' href={'/profile/edit-profile'}>
           Editar el perfil
         </Link>
-				<button onClick={logOutUser}>Cerrar sesión</button>
+				<button onClick={() => logOutUser(router.push("/"))}>Cerrar sesión</button>
       </div>
     </section>
   )
