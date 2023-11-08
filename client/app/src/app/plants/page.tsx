@@ -49,8 +49,8 @@ function Plants() {
 			}) 
 			.catch( err => {
 				if (err.response.data.message === "Unauthenticated") {
-					logOutUser()
-					router.push("/login")
+					logOutUser(router.push("/login"))
+					/* router.push("/login") */
 				}
 			}) 
 		}

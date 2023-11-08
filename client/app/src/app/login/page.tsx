@@ -92,7 +92,7 @@ export default function Login() {
 		// getUser()
 		// console.log("STATE: ", formState.errors)
 
-		const submitRegister = async () => {
+		const submitLogin = async () => {
 
 			console.log("bodyData: ", )
 			const { email, password} = data
@@ -134,7 +134,7 @@ export default function Login() {
 
 				if (requestedData.status === "success") { 
 					await loginUser(user)
-					setCookie("garden-wise-auth", requestedData.data.token, { maxAge: 60 * 60 * 24 });
+					setCookie("garden-wise-auth", requestedData.data.token, { maxAge: 60 * 60 * 24, sameSite: "none", secure:true});
 					router.push("/plants")
 				
 				}
@@ -145,7 +145,7 @@ export default function Login() {
 				setLoading(false)
 			}
 		}
-		submitRegister()
+		submitLogin()
 
 	};
 
