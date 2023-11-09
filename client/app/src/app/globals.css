@@ -1,0 +1,17 @@
+/* Poppins Font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* .react-multi-carousel-track{ 
+  width: 100%;
+}
+.react-multi-carousel-track{ 
+  display: flex;
+  flex-direction: row !important;
+  align-items: center !important;
+  align-content: center !important;
+
+} */

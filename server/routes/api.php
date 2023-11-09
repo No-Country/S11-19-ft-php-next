@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\NotificationController;
-use App\Http\Controllers\Api\PlantsController;
-use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\ReminderController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PlantsController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReminderController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,11 +35,7 @@ Route::group(['middleware' => ['cors', 'auth:sanctum']], function () {
     Route::put('/profile/update', [ProfileController::class, 'updateProfile']);
     Route::put('/profile/update/password', [ProfileController::class, 'updatePassword']);
 
-    Route::get('/reminder', [ReminderController::class, 'index']);
-    Route::post('/reminder', [ReminderController::class, 'store']);
-    Route::get('/reminder/{reminder}', [ReminderController::class, 'show']);
-    Route::put('/reminder/{reminder}', [ReminderController::class, 'update']);
-    Route::delete('/reminder/{reminder}', [ReminderController::class, 'destroy']);
+    Route::resource('/reminder', ReminderController::class)->except('create', 'edit');
 
     Route::get('/plants', [PlantsController::class, 'index']);
     Route::post('/plants/create', [PlantsController::class, 'store']);

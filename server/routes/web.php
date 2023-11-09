@@ -1,9 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\ProfileController;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
     Route::patch('/users/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
 
+
     /* Notifications admin, todavia falta arreglar esto por eso esta coment */
     /*
         Route::get('/notifications', [NotificationController::class, 'index']);
@@ -49,15 +49,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
     Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
     */
-});
-
-Route::get('/test-database', function () {
-    try {
-        DB::connection()->getPdo();
-        print_r('Connected successfully to: '.DB::connection()->getDatabaseName());
-    } catch (\Exception $e) {
-        exit('Could not connect to the database.  Please check your configuration. Error:'.$e);
-    }
 });
 
 require __DIR__.'/auth.php';
