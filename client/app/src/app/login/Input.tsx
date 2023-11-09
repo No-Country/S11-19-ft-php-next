@@ -44,9 +44,9 @@ export function Input({
 					{...register(name)}
 					className={clsx(
 						isError &&
-							"relative  w-80 lg:w-80 max-w-[80vw]  border-2 border-[#FF0000] focus:border-[#FF0000] focus:border-[3px] focus:outline-none h-10 rounded-lg px-2",
+							"relative  w-80 lg:w-80 max-w-[80vw]  border-2 border-[#FF0000] focus:border-[#FF0000] focus:border-[3px] focus:outline-none h-10 rounded-lg px-2 z-0",
 						!isError &&
-						  "relative w-80 lg:w-80 max-w-[80vw]  border-2 border-[#000000] focus:border-[#000000] focus:border-[3px] focus:outline-none h-10 rounded-lg px-2",
+						  "relative w-80 lg:w-80 max-w-[80vw]  border-2 border-[#000000] focus:border-[#000000] focus:border-[3px] focus:outline-none h-10 rounded-lg px-2 z-0",
 					)} /* "relative w-80 lg:w-96 max-w-[80vw]  border-2 border-[#000000] focus:border-[#000000] focus:border-[3px] focus:outline-none h-10 rounded-lg px-2", */
 				/>
 				{isValid && (

@@ -63,7 +63,6 @@ function Plants() {
 		}
 	}, []);
 
-	console.log(plants);
 	return (
 		<>
 			<Header></Header>

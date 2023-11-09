@@ -1,7 +1,5 @@
 import { ReactElement } from "react";
 
-
-
 const Layout = ({ children }: { children: ReactElement }) => {
 	return (
 		<>
