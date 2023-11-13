@@ -134,7 +134,7 @@ export default function Login() {
 						id:requestedData?.data.user.id
 					}
 					await loginUser(user)
-					setCookie("garden-wise-auth", requestedData.data.token, { maxAge: 60 * 60 * 24, sameSite: "none", secure:true});
+					setCookie("garden-wise-auth", requestedData.data.token, { maxAge: 60*60*24*365, sameSite: "none", secure:true});
 					router.push("/plants")
 				}
 				if (requestedData.status === "error") { 
@@ -158,12 +158,9 @@ export default function Login() {
 	};
 
 	const override: any = {
-		/* display: "block", */
 		position: "absolute",
 		zIndex:20,
 		bottom:"40%",
-		/* top: "45%",*/
-		/* left:"40%",  */
 		left:"35%", 
 		margin: "0 auto",
 	};
@@ -186,7 +183,6 @@ export default function Login() {
 						placeholder="Email"
 						label="Email"
 						inputName="email"
-						/* className="max-w-[90%]" */
 						register={register}
 						name="email"
 						isError={!!errors.email}
