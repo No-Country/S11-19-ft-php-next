@@ -32,8 +32,8 @@ const RegisterSchema = object({
 	name: string([minLength(3, "minimo 3 caracteres")]),
 	lastName: string([minLength(3, "minimo 3 caracteres")]),
 	email: string([email("email no valido")]),
-	password: string([minLength(6, "minimo 6 caracteres")]),
-	repitedPassword: string([minLength(6, "minimo 6 caracteres")]),
+	password: string([minLength(8, "minimo 8 caracteres, y debe contener al menos un simbolo y un número")]),
+	repitedPassword: string([minLength(8, "minimo 8 caracteres, y debe contener al menos un simbolo y un número")]),
 });
 
 export default function Register() {
@@ -88,9 +88,35 @@ export default function Register() {
 			// 	})
 			// 	.then(res => res.json())
 			// 	.then(data => console.log("data",data))
+      try {
+				const response = await axios.post("https://garden-wise-app.fly.dev/api/register", {
+					name:name,
+					lastname:lastName,
+					email:email,
+					password: password 
+					}, {
+						headers: {
+							"Content-Type":"aplication/json",
+						}
+				})
+		
+					const data= await response.data
+					console.log("data",data)
+					console.log("data.status : ", data.status)
+					if (data.status === "success") {
+						console.log("en success");
 
+						router.push("/login");
+					}
+			}
+				catch(error) {
+				console.log(error)
+			}finally {
+				setLoading(false)
+			}
+			 
 
-				axios.post("https://garden-wise-app.fly.dev/api/register", {
+				/* axios.post("https://garden-wise-app.fly.dev/api/register", {
 					name:name,
 					lastname:lastName,
 					email:email,
@@ -110,6 +136,9 @@ export default function Register() {
 					}
 				})
 				.catch((error) => { console.log(error)})
+				.finally( 
+					setLoading(false)
+				 ) */
 
 			/* try {
 				setLoading(true)

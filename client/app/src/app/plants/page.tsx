@@ -48,10 +48,7 @@ function Plants() {
 				setPlants(response.data.data)
 			}) 
 			.catch( err => {
-				if (err.response.data.message === "Unauthenticated") {
-					logOutUser(router.push("/login"))
-					/* router.push("/login") */
-				}
+				console.log("ERROR en GET: ", err)
 			}) 
 		}
 	}, []);
