@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
 
 export function middleware(req: NextRequest) {
 
@@ -24,17 +23,6 @@ export function middleware(req: NextRequest) {
 			return response;
 		}
 
-	/* 	const urls = [/^\/plants/, /^\/calendar/, /^\/reminders/, , /^\/profile/];
-		if (urls.some((url) => url?.test(req.nextUrl.pathname))) {
-			const response = NextResponse.redirect(new URL("/login", req.url));
-			console.log("(1) req.nextUrl.pathname: ", response)
-			console.log("------------------------------------------------------------")
-			return response;
-		} */
-
-		// if (req.nextUrl.pathname.startsWith("/:path") && authToken) {
-		// 	//console.log("auth en middleware: ", authToken)
-		// }
 		if (authToken && req.nextUrl.pathname.startsWith("/login")) {
 			const response = NextResponse.redirect(new URL("/plants", req.url));
 			console.log("(2)req.nextUrl.pathname: ", response)
