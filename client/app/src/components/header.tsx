@@ -12,7 +12,7 @@ const Header = () => {
 	const { userState } = useContext(AuthContext);
 	useEffect( () => {
 		if (userState?.token) setIsLogged(true)
-    console.log(userState,"  ", userState?.lastName)
+    userState ? console.log("userState:", userState, "  userState.lastname: ", userState?.lastname) : console.log("no hay userState")
 	},[userState])
 
 	// document.addEventListener('click', function(event) {
