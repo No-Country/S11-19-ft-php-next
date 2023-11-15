@@ -26,6 +26,7 @@ import FadeLoader from "react-spinners/FadeLoader";
 import BounceLoader from "react-spinners/BounceLoader"
 import BarLoader from "react-spinners/BarLoader"
 import { setCookie } from "cookies-next";
+import Swal from 'sweetalert2'
 /* type inputState = {
 	value: string;
 	isError: boolean;
@@ -122,21 +123,28 @@ export default function Login() {
 				})
 				const requestedData = await response.json()
 				setUserData(requestedData)
-				const user = {
-					name:requestedData.data.user.name,
-					lastname:requestedData.data.user.lastname,
-					email:requestedData.data.user.email,
-					img:requestedData.data.user.img,
-					token:requestedData.data.token,
-					id:requestedData.data.user.id
-
-				}
-
-				if (requestedData.status === "success") { 
-					await loginUser(user)
-					setCookie("garden-wise-auth", requestedData.data.token, { maxAge: 60 * 60 * 24, sameSite: "none", secure:true});
-					router.push("/plants")
 				
+				if (requestedData.status === "success") { 
+					const user = {
+						name:requestedData?.data.user.name,
+						lastname:requestedData?.data.user.lastname,
+						email:requestedData?.data.user.email,
+						img:requestedData?.data.user.img,
+						token:requestedData?.data.token,
+						id:requestedData?.data.user.id
+					}
+					await loginUser(user)
+					setCookie("garden-wise-auth", requestedData.data.token, { maxAge: 60*60*24*365, sameSite: "none", secure:true});
+					router.push("/plants")
+				}
+				if (requestedData.status === "error") { 
+					Swal.fire({
+						title: 'Error!',
+						text: 'Usuario o contraseña incorrectos',
+						/* icon: 'error', */
+						confirmButtonText: 'cerrar',
+						timer:3000
+					})
 				}
 			} catch (err) {
           console.warn("ERR: ", err)
@@ -150,12 +158,9 @@ export default function Login() {
 	};
 
 	const override: any = {
-		/* display: "block", */
 		position: "absolute",
 		zIndex:20,
 		bottom:"40%",
-		/* top: "45%",*/
-		/* left:"40%",  */
 		left:"35%", 
 		margin: "0 auto",
 	};
@@ -163,7 +168,7 @@ export default function Login() {
 	return (
 		<section className="flex flex-row ">
 			<div className="bg-[#104938] hidden lg:flex lg:flex-col w-1/2 text-[#FFF] font-Poppins font-medium italic pt-[12%]  items-center min-h-[100vh]">
-				<Image src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]  "/>
+				<Image priority src={Logo} alt="logo de Garden Wise" className="pb-[2em] w-[15.5em] h-[auto]  "/>
 				<p>Donde la Naturaleza y la Tecnología Se Unen</p>
 			</div>
 			<div className="flex flex-col w-full lg:w-1/2 registerBgImg relative ">
@@ -178,7 +183,6 @@ export default function Login() {
 						placeholder="Email"
 						label="Email"
 						inputName="email"
-						/* className="max-w-[90%]" */
 						register={register}
 						name="email"
 						isError={!!errors.email}
@@ -207,7 +211,7 @@ export default function Login() {
 					</button>
 				</form>
 				<BarLoader loading={loading} cssOverride={override} width="30%" height={6}  />
-				<Image src={registerFooter} className="w-full pt-24 relative z-0" alt="plant image" />
+				<Image priority src={registerFooter} className="w-full pt-24 relative z-0" alt="plant image" />
 			</div>
 		</section>
 	);

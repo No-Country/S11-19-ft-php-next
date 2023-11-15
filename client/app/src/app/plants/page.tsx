@@ -45,21 +45,16 @@ function Plants() {
 			axios
 				.get("https://garden-wise-app.fly.dev/api/plants/", {
 					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${userState.token}`,
-					},
-				})
-				.then((response) => {
-					console.log("RESPUESTA.DATA", response.data.data);
-					setPlants(response.data.data);
-				})
-				.catch((err) => {
-					console.log("ERROR", err.response.data.message);
-					if (err.response.data.message === "Unauthenticated") {
-						logOutUser();
-						router.push("/login");
-					}
-				});
+					"Content-Type": "application/json",
+					"Authorization":`Bearer ${userState.token}`
+				}
+			})
+			.then( response => {
+				setPlants(response.data.data)
+			}) 
+			.catch( err => {
+				console.log("ERROR en GET: ", err)
+			}) 
 		}
 	}, []);
 
