@@ -25,7 +25,7 @@ export default function RootLayout({
 			<AuthContextProvider>
 				{/* acá poner el Header y pasarle como prop el estado de logeo */}
 				{/* <body className="font-Poppins bg-background">{children}</body> */}
-				<body className={` ${poppins.className} bg-background`}>{children}</body>
+				<body className={` ${poppins.className} bg-background min-h-[100vh] flex flex-col`}>{children}</body>
 			</AuthContextProvider>
 		</html>
 	);

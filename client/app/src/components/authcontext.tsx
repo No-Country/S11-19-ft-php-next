@@ -67,32 +67,49 @@ const initialState:stateType = useMemo(
 				localStorage.setItem("garden-wise-user", JSON.stringify(user))
 	},[])
 
-	const logOutUser =useCallback((router:any) => {
+	const logOutUser =useCallback( async ( router:any) => {
 		
         try{
-					localStorage.removeItem("garden-wise-user")
-					setUserState ({
-						...userState, 
-						name:"",
-						lastname:"",
-						email:"",
-						img:"",
-						token:"",
-						id:null
-					})
-					deleteCookie("garden-wise-auth");
-
-					axios.post("https://garden-wise-app.fly.dev/api/logout/", {
+			
+					const response = await axios.post("https://garden-wise-app.fly.dev/api/logout/","", {
 						headers: {
-						"Content-Type": "application/json",
-						"Authorization":`Bearer ${userState.token}`
+							"Content-Type": "application/json",
+							"Authorization":`Bearer ${userState.token}`
 						}
 					})
+					const data = await response.data
+						if (data) {
+							localStorage.removeItem("garden-wise-user")
+							deleteCookie("garden-wise-auth");
+							setUserState ({
+								...userState, 
+								name:"",
+								lastname:"",
+								email:"",
+								img:"",
+								token:"",
+								id:null
+							})
+						}
+						/* localStorage.removeItem("garden-wise-user")
+						deleteCookie("garden-wise-auth");
+						setUserState ({
+							...userState, 
+							name:"",
+							lastname:"",
+							email:"",
+							img:"",
+							token:"",
+							id:null
+						}) */
+				
+
+					
 					router.push("/login")
 				} catch(err:any){
 					console.log(err.message)
 				}
-	},[])
+	},[userState])
 	
 	const contextValue = useMemo(
     () => ({
