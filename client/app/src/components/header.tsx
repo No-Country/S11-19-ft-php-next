@@ -5,6 +5,7 @@ import Link from "next/link";
 import Brand from "./brand";
 import profilePicture from '@/assets/Ellipse-313.png'
 import { AuthContext } from "./authcontext";
+
 const Header = () => {
 	const [isLogged, setIsLogged] = useState(false)
 	const [isOpen, setIsOpen] = useState(false)
@@ -12,7 +13,7 @@ const Header = () => {
 	const { userState } = useContext(AuthContext);
 	useEffect( () => {
 		if (userState?.token) setIsLogged(true)
-    userState ? console.log("userState:", userState, "  userState.lastname: ", userState?.lastname) : console.log("no hay userState")
+    //userState ? console.log("userState:", userState, "  userState.lastname: ", userState?.lastname) : console.log("no hay userState")
 	},[userState])
 
 	// document.addEventListener('click', function(event) {
@@ -37,11 +38,10 @@ const Header = () => {
 
 	const openTheMenu = () => {
 		setIsOpen(true)
-		console.log('isOpenTrue');
 	}
 	return (
 		<header >
-			<div className="flex justify-between items-center h-20 px-3 bg-primary">
+			<div className="flex justify-between items-center h-[4.5em] px-3 bg-primary">
 			{isLogged ? (
 				<>
 					<button id="hamburgerMenu" className="p-3 border-solid border lg:hidden border-slate-100 rounded-lg" onClick={openTheMenu}>

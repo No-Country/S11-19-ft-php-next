@@ -37,7 +37,6 @@ const initialState:stateType = useMemo(
 
 	let userFromLs;
 	if (typeof window !== 'undefined') {
-		console.log("EN AuthContext")
 		const localStorageData = window.localStorage.getItem("garden-wise-user")
 		const cookieUser = getCookie("garden-wise-auth")
 		if (localStorageData) {
@@ -67,7 +66,6 @@ const initialState:stateType = useMemo(
 				})
 				localStorage.setItem("garden-wise-user", JSON.stringify(user))
 	},[])
-  console.log("userState en context: ", userState)
 
 	const logOutUser =useCallback( async ( router:any) => {
 		

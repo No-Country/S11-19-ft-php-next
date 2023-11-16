@@ -6,36 +6,23 @@ import { valibotResolver } from '@hookform/resolvers/valibot';
 import { SubmitHandler, useForm } from "react-hook-form";
 import {Input as InputVali, minLength, object, required, string, number, minValue} from "valibot";
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
+/* interface ModalProps {
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  getReminders: () => void;
+}
+
+export default function CreateReminderModal({setOpenModal, getReminders}:ModalProps) { */
 export default function CreateReminderModal({setOpenModal, getReminders}:any) {
   const { userState, logOutUser} = useContext(AuthContext);
   /* const {register, handleSubmit, reset} = useForm() */
-  const [choosedPlant, setChoosedPlant] = useState()
-  const [choosedType, setChoosedtype] = useState("Riego")
-  const [choosedTime, setChoosedTime] = useState("Semanalmente")
   const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
-  /* useEffect(() => {
-    axios.get("/plants/")
-        .then((response) => {
-            console.log(response.data);
-            setPlants(response.data.data);
-        })
-        .catch((error) => {
-            console.error("Error al obtener datos de plantas:", error);
-        });
-}, []); */
+
 
 useEffect(() => {
-	/* axiosInstance
-		.get("/plants/")
-		.then((response) => {
-			console.log(response.data.data);
-			setPlants(response.data.data);
-		})
-		.catch((error) => {
-			console.error("Error al obtener datos de plantas:", error);
-		}); */
+
 	if ( userState?.token ) {
 		axios.get("https://garden-wise-app.fly.dev/api/plants/", 
 			{
@@ -50,29 +37,10 @@ useEffect(() => {
 		.catch( err => {
 			if (err.response?.data?.message === "Unauthenticated") {
 				logOutUser(router.push("/login"))
-				/* router.push("/login") */
 			} else console.log("ERR: ", err)
 		}) 
 	}
 }, []);
-
-
-  const handleChange = (newValue:any) => {
-    if(newValue.target.name === 'planta') {
-      console.log("cambia planta")
-			console.log("newValue.target: ", newValue.target)
-			console.log("plants[newValue.target.value].id: ", plants[newValue.target.value].id)
-      setChoosedPlant(plants[newValue.target.value].id)
-    }else if (newValue.target.name === 'tipo'){
-			console.log("cambia tipo ")
-      setChoosedtype(newValue.target.value)
-      
-    }else if (newValue.target.name === 'time'){
-      setChoosedTime(newValue.target.value)
-      console.log(newValue.target.value);
-			console.log("cambia time")
-    }
-  }
 
 	const ReminderSchema = object({
 		name: string([minLength(1)]),
@@ -106,7 +74,6 @@ useEffect(() => {
 
 
 	const onSubmit =  (data:any) => {
-		/* console.log(formState.errors) */
 		console.log(parseInt(data.plant_id))
 		console.log("dataForm: ", data)
 		if (data.name === "" || data.plant_id === "" || data.frequency === "") {
@@ -127,14 +94,25 @@ useEffect(() => {
 		axiosInstance
 		.post("/reminder/", JSON.stringify(formData))
 		.then((response) => {
-				console.log(response.data);
-				/* if (typeof window !== 'undefined') {
-					window.location.reload()
-				} */
-				
-				getReminders()
-				/* reset() */
-				setOpenModal(false)
+				console.log("response: ",response);	
+				if (response.status === 201 || response.status === 200) {
+					getReminders()
+					setOpenModal(false)
+					Swal.fire({
+						title: 'Recordatorio creado',
+						icon: 'success',
+						confirmButtonText: 'cerrar',
+						timer:3000
+					})
+				} else {
+					Swal.fire({
+						title: 'Error!',
+						text: 'No se pudo crear el recordatorio',
+						/* icon: 'error', */
+						confirmButtonText: 'cerrar',
+						timer:3000
+					})
+				}
 		})
 		.catch((error) => {
 				console.error("Error al obtener datos de plantas:", error);
@@ -151,7 +129,7 @@ useEffect(() => {
 
 
   return (
-    <article className='fixed inset-0 py-10  z-50 w-screen flex justify-center items-center content-center bg-black bg-opacity-30'>
+    <article className='fixed inset-0 py-24  z-50 w-screen flex justify-center items-center content-center bg-black bg-opacity-30'>
       <div className='bg-background  px-10 py-10 my-24 rounded-md'>
 				<h2 className='text-marron-oscuro font-semibold text-center   text-xl'>Recordatorios</h2>
 				<form onSubmit={handleSubmit(onSubmit,onErrors )} className='py-96' >
@@ -160,11 +138,7 @@ useEffect(() => {
 					</label>
 					<select
 						id="tipo"
-						/* onChange={handleChange} */
-						/* value={choosedType} */
 						{...register("name",  { required: true })} 
-						/* name="tipo"
-						required */
 						className="px-4 py-3 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
 						<option value="" >Elige una opción</option>
@@ -178,12 +152,8 @@ useEffect(() => {
 						Planta*
 					</label>
 					<select
-					/*  onChange={handleChange} */
-						/* value={choosedPlant} */
 						id="planta"
 						{...register("plant_id",  { required: true })}
-						/* name="planta"
-						required */
 						className="px-4 py-3 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
 						<option value="" >Elige una opción</option> {/* Mueve esta opción fuera del mapeo */}
@@ -201,18 +171,14 @@ useEffect(() => {
 					<input
 						type="date"
 						{...register("date",  { required: true })}
-					/*  required */
 						id="fecha"
 						className="px-4 py-3 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 						placeholder="fecha"
 					/>
 					<label htmlFor="time" className='block mt-5'>Hora*</label>
 					<input 
-						/* onChange={handleChange}
-						value={choosedTime} */
 						{...register("time",  { required: true })}
 						type="time" 
-						/* name="time" */
 						id="hora" 
 						className="px-4 py-3 block w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					/>
@@ -222,8 +188,6 @@ useEffect(() => {
 					<select
 						id="periodicidad"
 						{...register("frequency",  { required: true })}
-						/* name="periodicidad"
-						required */
 						className="px-4 py-3 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
 						<option value="">Elige una opción</option> //  con esto se muestra vacio para que el usuario no asuma preseleccionado
