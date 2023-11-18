@@ -1,6 +1,5 @@
 "use client"
 import  { AiOutlineLeft, AiOutlineRight} from 'react-icons/ai'
-
 import {
   add,
   eachDayOfInterval,
@@ -16,16 +15,11 @@ import {
   startOfToday,
 } from 'date-fns'
 import { es} from 'date-fns/locale';
-
-/* import format from "date-fns/fp/formatWithOptions"; */
-import { Fragment, useState, useContext, useEffect } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { AuthContext } from '@/components/authcontext';
-import { redirect } from 'next/navigation';
 import Header from '@/components/header';
-import CreateReminderModal from './createReminderModal';
 import axiosInstance from '@/services/axiosInstance';
-
-
+import Footer from '@/components/footer';
 
 function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
@@ -47,14 +41,6 @@ type reminder = {
 const { userState} = useContext(AuthContext);
   
 	useEffect( () => {
-      /* axiosInstance
-      .get("/reminder/")
-      .then((response) => {
-          setReminders(response.data.Reminder)
-      })
-      .catch((error) => {
-          console.error("Error al obtener datos de plantas:", error);
-      }); */
 			getReminders()
 	},[])
 	const getReminders = () => {
@@ -67,13 +53,6 @@ const { userState} = useContext(AuthContext);
       .catch((error) => {
           console.error("Error al obtener datos de plantas:", error);
       });
-	}
-
-	type User = {
-		name:string,
-		email:string,
-		img:string,
-		token:string
 	}
 	
   let days = eachDayOfInterval({
@@ -91,9 +70,6 @@ const { userState} = useContext(AuthContext);
     setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'))
   }
 
-  // let selectedDayMeetings = meetings.filter((meeting) =>
-  //   isSameDay(parseISO(meeting.startDatetime), selectedDay)
-  // )
 
   const checkEvent = (day:any) => {
 		// esta función compara si el dia actual day es igual a algún dia de meetings
@@ -113,19 +89,13 @@ const { userState} = useContext(AuthContext);
   return (
 		<div className=" w-full">
 			<Header />
-			{openModal && (
-				<CreateReminderModal
-					setOpenModal={setOpenModal}
-					getReminders={getReminders}
-				/>
-			)}
-			<div className="w-full pt-10  px-3">
+			<div className="w-full pt-10">
 				<h2 className="text-2xl  my-5 text-center text-marron-oscuro   font-medium">
 					Calendario
 				</h2>
-				<div className="flex justify-center items-center  md:divide-x md:divide-gray-200">
+				<div className="flex justify-center items-center  md:divide-x md:divide-gray-200 pb-10">
 					<div className="w-2/3">
-						<div className="flex w-full items-center justify-between bg-secondary">
+						<div className="flex w-full items-center justify-center bg-secondary h-10">
 							<button
 								type="button"
 								onClick={previousMonth}
@@ -134,7 +104,7 @@ const { userState} = useContext(AuthContext);
 								<span className="sr-only">Previous month</span>
 								<AiOutlineLeft className="w-5 h-5" aria-hidden="true" />
 							</button>
-							<h2 className=" font-semibold text-slate-50">
+							<h2 className=" w-24 text-center font-semibold text-slate-50 capitalize">
 								{format(firstDayCurrentMonth, "MMMM", { locale: es })}
 							</h2>
 							<button
@@ -159,34 +129,34 @@ const { userState} = useContext(AuthContext);
 							{days.map((day, dayIdx) => (
 								<div
 									key={day.toString()}
-									/* className={classNames(
-                    dayIdx === 0 && colStartClasses[getDay(day)],
-                    'py-1.5 border-solid border-[black] border-[1px]'
-                  )} */ // Aca da estilos al dia
 									className={
-										`border-solid border-[black] border-[1px] w-[100%] aspect-square
+										`border-solid border-[black] border-[1px] w-[100%] aspect-square bg-white
                     ${dayIdx === 0 && colStartClasses[getDay(day)] && " "}` //aca se puede modigicar bg celda
 									}
 								>
 									<div className="w-[100%] h-[100%]    ">
-										{/* {meetings.map((meeting) => */}
 										<div
 											className={
-												/* isSameDay(parseISO(meeting.startDatetime), day)? */
 												checkEvent(day)
-													? "w-full h-[100%] flex items-center justify-center bg-[#C3D825]"
+													? `w-full h-[100%] flex items-center justify-center bg-[#C3D825] ${
+															sendEvent(day)?.name === "Riego"
+																? "bg-[#C3D825]"
+																: sendEvent(day)?.name === "Cambio de Lugar"
+																? "bg-[#B67132]"
+																: sendEvent(day)?.name === "Poda"
+																? "bg-[#683b11b3]"
+																: sendEvent(day)?.name === "Abono"
+																? "bg-[#2DD4BF]"
+																: null
+													  }`
 													: "w-full h-[100%] flex items-center justify-center "
 											}
 										>
 											<button
 												type="button"
 												onClick={() => setSelectedDay(day)}
-												/* className='mx-auto flex h-8 w-8  items-center justify-center  border-2' */
 												className={classNames(
 													isEqual(day, selectedDay) && "text-white",
-													/*  !isEqual(day, selectedDay) &&
-                              isToday(day) &&
-                              'text-red-500', */
 													!isEqual(day, selectedDay) &&
 														!isToday(day) &&
 														isSameMonth(day, firstDayCurrentMonth) &&
@@ -195,7 +165,6 @@ const { userState} = useContext(AuthContext);
 														!isToday(day) &&
 														!isSameMonth(day, firstDayCurrentMonth) &&
 														"text-gray-400",
-													/* isEqual(day, selectedDay) && isToday(day) && 'bg-red-500', */
 													isEqual(day, selectedDay) &&
 														!isToday(day) &&
 														"bg-gray-900",
@@ -220,31 +189,8 @@ const { userState} = useContext(AuthContext);
 						</div>
 					</div>
 				</div>
+				<Footer />
 			</div>
-			<section className="flex justify-center items-center mt-10">
-				<button
-					onClick={() => setOpenModal(true)}
-					className="p-3 bg-secondary text-slate-100 rounded-md m-auto"
-				>
-					Agregar Recordatorio
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						className="inline"
-						width="26"
-						height="24"
-						viewBox="0 0 26 24"
-						fill="none"
-					>
-						<path
-							d="M13.2344 6V12M13.2344 12V18M13.2344 12H19.4639M13.2344 12H7.00488"
-							stroke="white"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-					</svg>
-				</button>
-			</section>
 		</div>
 	);
 }
