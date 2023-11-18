@@ -59,7 +59,7 @@ class User extends Authenticatable implements HasMedia
         'email' => 'unique:users,email,',
         'name' => 'required',
         'lastname' => 'required',
-        // 'img' => 'sometimes|required:NULL',
+        'img' => 'sometimes|required:NULL',
         'password' => 'required',
         'external_id' => 'sometimes|required:NULL',
         'role_id' => 'sometimes|required|string',
@@ -70,12 +70,4 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->belongsTo(Role::class, 'role_id');
     }
-
-    public function registerMediaConversions(Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-              ->width(368)
-              ->height(232)
-              ->sharpen(10);
-    }    
 }
