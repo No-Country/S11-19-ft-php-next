@@ -21,6 +21,49 @@ function Plants() {
 	const router = useRouter();
 	const [plants, setPlants] = useState<Plant[]>([]);
 
+	// Lógica para eliminar la planta
+	const handleDeletePlant = async (
+		plantId: number,
+		plantName: string
+	): Promise<void> => {
+		const confirmed = confirm(`¿Seguro de eliminar ${plantName}?`);
+
+		if (confirmed) {
+			try {
+				const res = await axios.delete(
+					`https://garden-wise-app.fly.dev/api/plants/delete/${plantId}`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${userState.token}`,
+						},
+					}
+				);
+				console.log(res);
+
+				if (res.status === 200) {
+					router.refresh();
+					console.log(`status res  ${plantId}`);
+				}
+			} catch (error) {
+				console.error("Error al eliminar la planta:", error);
+			}
+		}
+	};
+
+	// const handleEditPlant = (
+	// 	plantId: number,
+	// 	newPlantData: Partial<Plant>
+	// ): void => {
+	// 	// Lógica para editar la planta con el ID proporcionado y los nuevos datos
+	// 	// Esto puede implicar enviar una solicitud al backend o actualizar el estado local, por ejemplo:
+	// 	// Hacer una llamada a la API para editar la planta con plantId y newPlantData
+	// 	console.log(
+	// 		`Editar planta con ID: ${plantId} con los nuevos datos:`,
+	// 		newPlantData
+	// 	);
+	// };
+
 	interface Plant {
 		id: number;
 		imageUrl: string;
@@ -32,15 +75,6 @@ function Plants() {
 	}
 
 	useEffect(() => {
-		/* axiosInstance
-			.get("/plants/")
-			.then((response) => {
-				console.log(response.data.data);
-				setPlants(response.data.data);
-			})
-			.catch((error) => {
-				console.error("Error al obtener datos de plantas:", error);
-			}); */
 		if (userState?.token) {
 			axios
 				.get("https://garden-wise-app.fly.dev/api/plants/", {
@@ -56,7 +90,7 @@ function Plants() {
 					console.log("ERROR en GET: ", err);
 				});
 		}
-	}, []);
+	}, [plants]);
 
 	return (
 		<>
@@ -105,12 +139,14 @@ function Plants() {
 							<SwiperSlide className="mb-10" key={plant.id}>
 								<PlantCard
 									key={plant.id}
+									PlantId={plant.id}
 									PlantImg={plant.imageUrl}
 									PlantInfo={plant.description}
 									PlantDate={plant.date}
 									PlantName={plant.name}
 									PlantAmbient={plant.ambient}
 									PlantLight={plant.light}
+									onDelete={() => handleDeletePlant(plant.id, plant.name)}
 								/>
 							</SwiperSlide>
 						))}
