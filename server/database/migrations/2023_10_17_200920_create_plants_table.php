@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class() extends Migration {
     /**
      * Run the migrations.
      */
@@ -15,14 +14,14 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('environment_id');
-            $table->foreign('environment_id')->references('id')->on('environments');
+            //$table->foreign('environment_id')->references('id')->on('environments');
             $table->unsignedBigInteger('light_id');
             $table->foreign('light_id')->references('id')->on('lights');
             $table->date('date');
             $table->string('description')->nullable();
             // $table->string('image');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            //$table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

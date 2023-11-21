@@ -16,7 +16,7 @@ return new class() extends Migration {
             $table->string('name');
             $table->string('lastname');
             $table->string('email')->unique();
-            $table->string('img')->nullable();
+            // $table->string('img')->nullable();
             $table->string('external_id')->nullable();
             $table->foreignId('role_id');
             $table->timestamp('email_verified_at')->nullable();

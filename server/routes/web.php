@@ -36,15 +36,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('admin.index');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('admin.users.destroy');
     Route::get('/users/create', [UserController::class, 'create'])->name('admin.users.create');
-    Route::post('/users/store', [UserController::class, 'store'])->name('admin.users.store'); 
-    Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit'); 
-    Route::patch('/users/update/{id}', [UserController::class, 'update'])->name('admin.users.update'); 
+    Route::post('/users/store', [UserController::class, 'store'])->name('admin.users.store');
+    Route::get('/users/edit/{id}', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::patch('/users/update/{id}', [UserController::class, 'update'])->name('admin.users.update');
 
 
     /* Notifications admin, todavia falta arreglar esto por eso esta coment */
-    /* 
+    /*
         Route::get('/notifications', [NotificationController::class, 'index']);
-    
+
     Route::get('/notifications/{notification}', [NotificationController::class, 'show']);
     Route::put('/notifications/{notification}', [NotificationController::class, 'update']);
     Route::delete('/notifications/{notification}', [NotificationController::class, 'destroy']);
