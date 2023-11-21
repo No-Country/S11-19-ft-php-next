@@ -1,7 +1,4 @@
-/* import {  ReactNode } from "react"
-interface Props {
-  children: ReactNode;
-} */
+
 const layout = ({children}:{
 	children: React.ReactNode;
 }) => {

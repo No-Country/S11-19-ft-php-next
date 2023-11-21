@@ -70,7 +70,6 @@ const initialState:stateType = useMemo(
 	const logOutUser =useCallback( async ( router:any) => {
 		
         try{
-			
 					const response = await axios.post("https://garden-wise-app.fly.dev/api/logout/","", {
 						headers: {
 							"Content-Type": "application/json",
@@ -102,15 +101,25 @@ const initialState:stateType = useMemo(
 							token:"",
 							id:null
 						}) */
-				
-
-					
 					router.push("/login")
 				} catch(err:any){
 					console.log(err.message)
 				}
 	},[userState])
 	
+	const [selectedReminder, setSelectedReminder] = useState(null)
+	/* const handleSelectReminder =useCallback( (reminder) => {
+		const { name, lastname ,email, img, token, id} = user
+				setUserState ({
+					...userState, 
+					name:name,
+					lastname:lastname,
+          email:email,
+					img:img,
+					token:token,
+					id:id
+				})
+	},[]) */
 	const contextValue = useMemo(
     () => ({
       loginUser,

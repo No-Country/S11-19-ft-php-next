@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { isAuthCheck } from './services/isAuthenticated'
 
 export function middleware(req: NextRequest) {
-
+	let QQQQ = isAuthCheck()
+ console.log("isAuth: ", QQQQ)
 	try {
+		//console.log("req.nextUrl: ", req.nextUrl)
 		const cookieStore = req.cookies.get('garden-wise-auth')
 		const authToken = cookieStore?.value
 		//console.log("cookieStore: ", cookieStore)
@@ -22,7 +25,7 @@ export function middleware(req: NextRequest) {
 			//console.log("req.nextUrl.pathname: ", req.nextUrl.pathname)
 			return response;
 		}
-		if (req.nextUrl.pathname.startsWith("/reminders") && !authToken) {
+		if (req.nextUrl.pathname.startsWith("/reminder") && !authToken) {
 			const response = NextResponse.redirect(new URL("/login", req.url));
 			//console.log("req.nextUrl.pathname: ", req.nextUrl.pathname)
 			return response;

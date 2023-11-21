@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { remindersInterface} from "./models";
+import EditReminderButton from "./EditReminderButton";
 
 
 
-export const ReminderList = ({reminders, additionalStyles}:remindersInterface) => {
+export const ReminderList = ({reminders, additionalStyles, handleEditReminder}:remindersInterface) => {
   const [list,setList] = useState<any>(null)
   
 	useEffect( () => {
@@ -14,7 +15,7 @@ export const ReminderList = ({reminders, additionalStyles}:remindersInterface) =
 	},[reminders])
 
 	return (
-		<section className={`text-lg text-primary ${additionalStyles}`}>
+		<section className={`text-[0.6rem] md:text-lg text-primary ${additionalStyles}`}>
 			<div className='flex row justify-center bg-secondary  '>
 				<div className='w-1/6 text-center border-[1px] border-primary py-1'>
 					<p>Cuidado</p>
@@ -28,11 +29,11 @@ export const ReminderList = ({reminders, additionalStyles}:remindersInterface) =
 				<div className='w-1/6 text-center border-[1px] border-primary py-1'>
 					<p>Hora</p>
 				</div>
-				<div className='w-1/6 text-center border-[1px] border-primary py-1'>
+				<div className='w-3/12 text-center border-[1px] border-primary py-1'>
 					<p>Periodicidad</p>
 				</div>
-				<div className='w-1/6 text-center'> 
-					<p>Edit</p>
+				<div className='w-1/12 flex flex-row justify-center items-center'> 
+				  <BiEdit />
 				</div>
 			</div>
 			{list?.length? list?.map( (el:any) => (
@@ -49,11 +50,11 @@ export const ReminderList = ({reminders, additionalStyles}:remindersInterface) =
 					<div className='w-1/6 text-center border-[1px] border-primary py-1'>
 						<p>{el.time}</p>
 					</div>
-					<div className='w-1/6 text-center border-[1px] border-primary py-1'>
+					<div className='w-3/12 text-center border-[1px] border-primary py-1'>
 						<p>{el.frequency}</p>
 					</div>
-					<div className='w-1/6 flex row justify-center items-center border-[1px] border-primary py-1'>
-					  <BiEdit className="hover:text-secondary ease-in-out duration-300"></BiEdit>
+					<div className='w-1/12 flex row justify-center items-center border-[1px] border-primary py-1'>
+						<EditReminderButton  handleEditReminder={handleEditReminder} element={el} />
 					</div>
 				</div>))
 				:
@@ -70,11 +71,11 @@ export const ReminderList = ({reminders, additionalStyles}:remindersInterface) =
 					<div className='w-1/6 text-center border-[1px] border-primary py-1'>
 						<p>-</p>
 					</div>
-					<div className='w-1/6 text-center border-[1px] border-primary py-1'>
+					<div className='w-3/12 text-center border-[1px] border-primary py-1'>
 						<p>-</p>
 					</div>
-					<div className='w-1/6 text-center border-[1px] border-primary py-1'>
-						edit
+					<div className='w-1/12 text-center border-[1px] border-primary py-1'>
+						<p>-</p>
 					</div>
 				</div>
 			}
