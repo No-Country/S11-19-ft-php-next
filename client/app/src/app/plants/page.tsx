@@ -107,7 +107,7 @@ function Plants() {
 								spaceBetween: 15,
 							},
 							700: {
-								slidesPerView: 2.5,
+								slidesPerView: 2.3,
 								spaceBetween: 15,
 							},
 							1000: {
