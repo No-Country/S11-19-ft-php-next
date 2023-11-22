@@ -105,6 +105,7 @@ useEffect(() => {
 						timer:3000
 					})
 				} else {
+					setOpenModal(false)
 					Swal.fire({
 						title: 'Error!',
 						text: 'No se pudo crear el recordatorio',

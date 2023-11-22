@@ -81,6 +81,7 @@ useEffect(() => {
 
 		}
 		const formData = {
+			_method:"put",
 			name: data.name,
 			frequency: data.frequency,
 			date: data.date,
@@ -90,10 +91,12 @@ useEffect(() => {
 			plant_id: reminder?.plant.id
 		}
 
-		console.log(formData);
-		
-		axiosInstance
-		.put("/reminder/", JSON.stringify(formData)) //put no soportado. head llega ok pero no actualiza datos
+		axios.post("/reminder", formData, {
+			headers: {
+			"Content-Type": "application/json",
+			"Authorization":`Bearer ${userState.token}`
+		}
+	  }) 
 		.then((response) => {
 				console.log("response: ",response);	
 				if (response.status === 201 || response.status === 200) {
