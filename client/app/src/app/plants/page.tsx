@@ -18,10 +18,22 @@ import { Navigation, Pagination } from "swiper/modules";
 
 function Plants() {
 	const { userState, logOutUser } = useContext(AuthContext);
-	const router = useRouter();
 	const [plants, setPlants] = useState<Plant[]>([]);
-
+	const router = useRouter();
+	interface Plant {
+		id: number;
+		imageUrl: string;
+		description: string;
+		date: string;
+		name: string;
+		ambient: string;
+		light: string;
+	}
 	// Lógica para eliminar la planta
+	const updatePlants = (deletedPlantId: number) => {
+		const updatedPlants = plants.filter((plant) => plant.id !== deletedPlantId);
+		setPlants(updatedPlants);
+	};
 	const handleDeletePlant = async (
 		plantId: number,
 		plantName: string
@@ -42,37 +54,14 @@ function Plants() {
 				console.log(res);
 
 				if (res.status === 200) {
-					router.refresh();
-					console.log(`status res  ${plantId}`);
+					updatePlants(plantId);
+					console.log(`se elimino ${plantId}`);
 				}
 			} catch (error) {
 				console.error("Error al eliminar la planta:", error);
 			}
 		}
 	};
-
-	// const handleEditPlant = (
-	// 	plantId: number,
-	// 	newPlantData: Partial<Plant>
-	// ): void => {
-	// 	// Lógica para editar la planta con el ID proporcionado y los nuevos datos
-	// 	// Esto puede implicar enviar una solicitud al backend o actualizar el estado local, por ejemplo:
-	// 	// Hacer una llamada a la API para editar la planta con plantId y newPlantData
-	// 	console.log(
-	// 		`Editar planta con ID: ${plantId} con los nuevos datos:`,
-	// 		newPlantData
-	// 	);
-	// };
-
-	interface Plant {
-		id: number;
-		imageUrl: string;
-		description: string;
-		date: string;
-		name: string;
-		ambient: string;
-		light: string;
-	}
 
 	useEffect(() => {
 		if (userState?.token) {
@@ -90,7 +79,7 @@ function Plants() {
 					console.log("ERROR en GET: ", err);
 				});
 		}
-	}, [plants]);
+	}, []);
 
 	return (
 		<>
