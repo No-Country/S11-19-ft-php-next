@@ -8,11 +8,13 @@ import axios from "axios";
 import { AuthContext } from "@/components/authcontext";
 import { useRouter } from "next/navigation";
 type PlantData = {
-	nombre: string;
-	ambiente: number;
-	luz: number;
-	fechaAdquisicion: string;
-	observaciones: string;
+	id: number;
+	name: string;
+	ambient: any;
+	light: any;
+	date: string;
+	description: string;
+	user_id: number;
 	file: FileList;
 };
 
@@ -37,14 +39,14 @@ function EditPlant({ params }: any) {
 				const plant = response.data.data[0];
 				console.log(plant.name);
 
-				setValue("nombre", plant.name);
-				setValue("ambiente", plant.ambient === "Interior" ? 1 : 2);
+				setValue("name", plant.name);
+				setValue("ambient", plant.ambient === "Interior" ? 1 : 2);
 				setValue(
-					"luz",
+					"light",
 					plant.light === "Directa" ? 1 : plant.light === "Indirecta" ? 2 : 3
 				);
-				setValue("fechaAdquisicion", plant.date);
-				setValue("observaciones", plant.description);
+				setValue("date", plant.date);
+				setValue("description", plant.description);
 			} catch (error) {
 				console.error("Error al obtener los datos de la planta:", error);
 			}
@@ -52,22 +54,36 @@ function EditPlant({ params }: any) {
 		fetchPlantData();
 	}, []);
 	const onSubmit = async (data: PlantData) => {
-		try {
-			const response = await axios.put(
-				`https://garden-wise-app.fly.dev/api/plants/update/${params.id}`, // Reemplaza con tu endpoint de edición de plantas
-				data,
-				{
-					headers: {
-						Authorization: `Bearer ${userState.token}`,
-						"Content-Type": "multipart/form-data",
-					},
-				}
-			);
-			console.log("Planta editada:", response.data);
+		console.log(data);
 
-			router.push("/plants");
+		const formData = new FormData();
+		formData.append("image", data.file[0]);
+		formData.append("Name", data.name);
+		formData.append("ambient", data.ambient);
+		formData.append("light", data.light);
+		formData.append("date", data.date);
+		formData.append("description", data.description);
+		formData.append("user_id", userState.id);
+		console.log(formData);
+
+		const URL = `https://garden-wise-app.fly.dev/api/plants/update/${params.id}`;
+		try {
+			const response = await axios.put(URL, formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${userState.token}`,
+				},
+			});
+
+			if (response.status === 200) {
+				console.log("Post");
+				console.log("response", response.data);
+				router.push("/plants");
+			} else {
+				console.error("Error en la solicitud:", response.statusText);
+			}
 		} catch (error) {
-			console.error("Error al editar la planta:", error);
+			console.error("Error", error);
 		}
 	};
 
@@ -101,7 +117,7 @@ function EditPlant({ params }: any) {
 							<label htmlFor="nombre">Nombre*</label>
 							<input
 								type="name"
-								{...register("nombre")}
+								{...register("name")}
 								required
 								id="nombre"
 								className="px-4 py-3 w-[289px] border-2 rounded-lg border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
@@ -112,7 +128,7 @@ function EditPlant({ params }: any) {
 							</label>
 							<select
 								id="ambiente"
-								{...register("ambiente")}
+								{...register("ambient")}
 								name="ambiente"
 								required
 								className="px-4 py-3 w-[289px] border-2 rounded-lg border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
@@ -124,7 +140,7 @@ function EditPlant({ params }: any) {
 							<select
 								id="luz"
 								required
-								{...register("luz")}
+								{...register("light")}
 								className="px-4 py-3 w-[289px] border-2 rounded-lg border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 							>
 								<option value={1}> Directa</option>
@@ -135,7 +151,7 @@ function EditPlant({ params }: any) {
 							<label htmlFor="fecha-adquisicion">Fecha de adquisición</label>
 							<input
 								type="date"
-								{...register("fechaAdquisicion")}
+								{...register("date")}
 								required
 								id="fechaAdquisicion"
 								className="px-4 py-3 w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
@@ -144,7 +160,7 @@ function EditPlant({ params }: any) {
 							<label htmlFor="observaciones">Observaciones</label>
 							<input
 								type="text"
-								{...register("observaciones")}
+								{...register("description")}
 								className="px-4 py-3 w-[289px] border-2 rounded-lg  border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 								placeholder="Ej: Cambia de color"
 							/>
