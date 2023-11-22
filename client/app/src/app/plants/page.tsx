@@ -3,7 +3,7 @@ import PlantCard from "@/components/PlantCard";
 import { BsPlusLg } from "react-icons/bs";
 import { HiOutlineDownload, HiOutlineShare } from "react-icons/hi";
 import React, { useContext, useEffect, useState } from "react";
-import CarouselPlants from "@/components/carrouselPlants";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Header from "@/components/header";
 import Link from "next/link";
 import { AuthContext } from "@/components/authcontext";
@@ -11,11 +11,15 @@ import axiosInstance from "@/services/axiosInstance";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-function Plants() {
-	const { userState,  logOutUser} = useContext(AuthContext);
-	const router = useRouter()
-	const [plants, setPlants] = useState<Plant[]>([]);
+import "swiper/css";
 
+import "swiper/css/pagination";
+import { Navigation, Pagination } from "swiper/modules";
+
+function Plants() {
+	const { userState, logOutUser } = useContext(AuthContext);
+	const [plants, setPlants] = useState<Plant[]>([]);
+	const router = useRouter();
 	interface Plant {
 		id: number;
 		imageUrl: string;
@@ -25,31 +29,55 @@ function Plants() {
 		ambient: string;
 		light: string;
 	}
+	// Lógica para eliminar la planta
+	const updatePlants = (deletedPlantId: number) => {
+		const updatedPlants = plants.filter((plant) => plant.id !== deletedPlantId);
+		setPlants(updatedPlants);
+	};
+	const handleDeletePlant = async (
+		plantId: number,
+		plantName: string
+	): Promise<void> => {
+		const confirmed = confirm(`¿Seguro de eliminar ${plantName}?`);
+
+		if (confirmed) {
+			try {
+				const res = await axios.delete(
+					`https://garden-wise-app.fly.dev/api/plants/delete/${plantId}`,
+					{
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${userState.token}`,
+						},
+					}
+				);
+				console.log(res);
+
+				if (res.status === 200) {
+					updatePlants(plantId);
+					console.log(`se elimino ${plantId}`);
+				}
+			} catch (error) {
+				console.error("Error al eliminar la planta:", error);
+			}
+		}
+	};
 
 	useEffect(() => {
-		/* axiosInstance
-			.get("/plants/")
-			.then((response) => {
-				console.log(response.data.data);
-				setPlants(response.data.data);
-			})
-			.catch((error) => {
-				console.error("Error al obtener datos de plantas:", error);
-			}); */
-    if ( userState?.token ) {
-			axios.get("https://garden-wise-app.fly.dev/api/plants/", 
-				{
+		if (userState?.token) {
+			axios
+				.get("https://garden-wise-app.fly.dev/api/plants/", {
 					headers: {
-					"Content-Type": "application/json",
-					"Authorization":`Bearer ${userState.token}`
-				}
-			})
-			.then( response => {
-				setPlants(response.data.data)
-			}) 
-			.catch( err => {
-				console.log("ERROR en GET: ", err)
-			}) 
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${userState.token}`,
+					},
+				})
+				.then((response) => {
+					setPlants(response.data.data);
+				})
+				.catch((err) => {
+					console.log("ERROR en GET: ", err);
+				});
 		}
 	}, []);
 
@@ -67,8 +95,52 @@ function Plants() {
 							<HiOutlineShare />
 						</div>
 					</div>
-					<div className=" w-full 2xl:w-full  mx-auto">
-						<CarouselPlants>
+
+					<Swiper
+						pagination={true}
+						modules={[Navigation, Pagination]}
+						className="w-full"
+						spaceBetween={30}
+						breakpoints={{
+							340: {
+								slidesPerView: 1.2,
+								spaceBetween: 15,
+							},
+							700: {
+								slidesPerView: 2.3,
+								spaceBetween: 15,
+							},
+							1000: {
+								slidesPerView: 3,
+								spaceBetween: 15,
+							},
+							1500: {
+								slidesPerView: 4,
+								spaceBetween: 15,
+							},
+							1800: {
+								slidesPerView: 5,
+								spaceBetween: 15,
+							},
+						}}
+					>
+						{plants.map((plant) => (
+							<SwiperSlide className="mb-10" key={plant.id}>
+								<PlantCard
+									key={plant.id}
+									PlantId={plant.id}
+									PlantImg={plant.imageUrl}
+									PlantInfo={plant.description}
+									PlantDate={plant.date}
+									PlantName={plant.name}
+									PlantAmbient={plant.ambient}
+									PlantLight={plant.light}
+									onDelete={() => handleDeletePlant(plant.id, plant.name)}
+								/>
+							</SwiperSlide>
+						))}
+
+						{/* <SwiperSlide>
 							{plants.map((plant) => (
 								<PlantCard
 									key={plant.id}
@@ -80,8 +152,9 @@ function Plants() {
 									PlantLight={plant.light}
 								/>
 							))}
-						</CarouselPlants>
-					</div>
+						</SwiperSlide> */}
+					</Swiper>
+
 					<Link
 						href="/plants/addplant"
 						className="font-semibold justify-center hover:bg-[#427d61] ease-out duration-300 mt-16 w-44 bg-secondary gap-3 items-center flex text-white  px-1 py-2"

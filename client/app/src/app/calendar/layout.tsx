@@ -1,16 +1,10 @@
-"use client"
-import { useContext} from 'react'
-import { AuthContext } from '@/components/authcontext';
-import { useRouter } from 'next/navigation';
-const layout = ({children}:any) => {
-	const { userState} = useContext(AuthContext);
-  const router = useRouter()
 
+const layout = ({children}:{
+	children: React.ReactNode;
+}) => {
 
 	return (
-		<>
-		  {children}
-		</>
+		<div>{children}</div>
 	)
 }
 export default layout

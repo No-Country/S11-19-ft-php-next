@@ -7,6 +7,7 @@ import axiosInstance from '@/services/axiosInstance';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Swal from 'sweetalert2'
+import Image from 'next/image';
 import {
   format,
   getDay,
@@ -24,6 +25,8 @@ import axios from 'axios';
 import BarLoader from 'react-spinners/BarLoader';
 import { reminderType } from './models';
 import CreateReminderModal from './CreateReminderModal';
+import EditReminderModal from './EditReminderModal';
+import Plus from "../../assets/plus.svg"
 
 export default function Reminders() {
   const { userState} = useContext(AuthContext);
@@ -33,6 +36,7 @@ export default function Reminders() {
 	const [loading, setLoading] = useState(false)
   //const {register, handleSubmit, reset} = useForm()
 	const [openModal ,setOpenModal] = useState(false)
+	const [openEditModal ,setEditOpenModal] = useState(false)
 
   //const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
@@ -49,16 +53,18 @@ export default function Reminders() {
 }, []); */
 
 	useEffect( () => {
-		getReminders()
+		if (userState?.token){
+			getReminders()
+		}		
 },[])
 const getReminders = () => {
 	setLoading(true)
 	axios.get("https://garden-wise-app.fly.dev/api/reminder", {
 		headers: {
 		"Content-Type": "application/json",
-		"Authorization":`Bearer ${userState.token}`
+		"Authorization":`Bearer ${userState?.token}`
 	}
-  })
+  })// me trae todos los reminder sean o no del user logeado
 	.then((response) => {
 		console.log("getReminders: ", response.data)
 			setReminders(response.data.Reminder)
@@ -96,40 +102,34 @@ const override: any = {
   getReminders: () => void;
 } */
 interface ModalProps {
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
+	handleEditReminder?: () => void;
   getReminders: () => void;
 }
+
+  const handleEditReminder = () => {
+		console.log("ejecuta handleEditReminders");
+		setEditOpenModal(true);
+	};
 
   return (
     <>
       <Header />
-      <main className='px-24'>
+      <main className='px-3 sm:px-8 md:px-24'>
 			{openModal && (
 				<CreateReminderModal {...{ setOpenModal, getReminders } as ModalProps} /> 
 			)}
-			<div className='flex row '>
-				<h1 className='my-10 text-marron-oscuro text-3xl font-semibold'>Recordatorios</h1>
+			{openEditModal && (
+				<EditReminderModal {...{ setEditOpenModal, getReminders } as ModalProps} /> 
+			)}
+			<div className='flex flex-col md:flex-row justify-center items-start '>
+				<h1 className='my-10 text-marron-oscuro text-2xl md:text-3xl font-semibold'>Recordatorios</h1>
 				<button
 					onClick={() => setOpenModal(true)}
-					className="p-2 bg-secondary text-slate-100 rounded-md m-auto"
+					className="text-md p-2 bg-secondary text-slate-100 rounded-md m-auto flex flex-row"
 				>
 					Agregar Recordatorio
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						className="inline"
-						width="26"
-						height="24"
-						viewBox="0 0 26 24"
-						fill="none"
-					>
-						<path
-							d="M13.2344 6V12M13.2344 12V18M13.2344 12H19.4639M13.2344 12H7.00488"
-							stroke="white"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-						/>
-					</svg>
+					<Image src={Plus} alt="add icon" width={24} />
 				</button>
 			</div>
 				{loading && (
@@ -140,7 +140,7 @@ interface ModalProps {
         {todayReminders? 
 				<>
 					<h2 className='my-10 text-marron-oscuro text-xl'>Hoy</h2>
-					<ReminderList reminders={todayReminders} />
+					<ReminderList reminders={todayReminders} handleEditReminder={handleEditReminder} />
 				</>
 					: 
 					null/* <p>No tienes rerordatorios del hoy</p> */ 
@@ -148,7 +148,7 @@ interface ModalProps {
 				{weekReminders? 
 					<>
 						<h2 className='my-10 text-marron-oscuro text-xl'>Esta semana</h2>
-						<ReminderList reminders={weekReminders} additionalStyles="mb-10" />
+						<ReminderList reminders={weekReminders} additionalStyles="mb-10" handleEditReminder={handleEditReminder} />
 					</>
 						: 
 						null /* <p>No tienes recordatorios esta semana</p> */

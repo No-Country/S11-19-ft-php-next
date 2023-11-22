@@ -1,66 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Technologies
+[![PHP](https://img.shields.io/badge/PHP-8.2-7A86B8?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/) [![Laravel](https://img.shields.io/badge/Laravel-10.30-F9322C?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com/) [![MySQL](https://img.shields.io/badge/MySQL-00758F?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/) [![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/) [![Fly.io](https://img.shields.io/badge/Fly.io-8F32E8?style=for-the-badge)](https://fly.io/) [![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)](https://www.postman.com/) 
 
-## About Laravel
+## Installation
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Before you begin, make sure you have Docker installed on your operating system. You can download it from [Docker](https://www.docker.com/)'s official website.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Start with laravel sail
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. Clone the repository to your local machine:
+    ```bash
+    git clone https://github.com/No-Country/S11-19-ft-php-next.git
+    ```
 
-## Learning Laravel
+2. Navigate to the project folder:
+    ```bash
+    cd server
+    ```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+3. Add the .env file with the necessary environments:
+    - `DB_CONNECTION` Database type, e.g. mysql
+    - `DB_HOST` Database Host, e.g. mysql
+    - `DB_PORT` Connection Port, e.g. 3306
+    - `DB_DATABASE` Database name, e.g. example_app
+    - `DB_USERNAME` User, e.g. sail
+    - `DB_PASSWORD` Password, e.g. password
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+4. Installing composer dependencies for existing applications:
+    ```bash
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/var/www/html" \
+        -w /var/www/html \
+        laravelsail/php82-composer:latest \
+        composer install --ignore-platform-reqs
+    ```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+5. Launch docker containers in the background:
+    ```bash
+    sail up -d
+    ```
 
-## Laravel Sponsors
+6. Generate a key for the application:
+    ```bash
+    sail artisan key:generate
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+7. Install node dependencies:
+    ```bash
+    sail npm i
+    ```
 
-### Premium Partners
+8. Insert migrations:
+    ```bash
+    sail artisan migrate --seed
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Endpoints
 
-## Contributing
+**User**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| TYPE   | DETAIL  | ROUTE                              | SEND                                      |
+| ------ | ------- | ---------------------------------- | ----------------------------------------- |
+| POST  | Login | http://localhost:PORT/api/login      | body: email, password user               |
+| POST  | Register | http://localhost:PORT/api/register | body: accept all user schema            |
+| POST  | Logout | http://localhost:PORT/api/logout     | headers:token      |
+| GET   | Get user | http://localhost:PORT/api/profile/user  | headers:token |
+| PUT | Update | http://localhost:PORT/api/profile/update  | body: accept all user schema, headers:token  |
+| PUT | Update | http://localhost:PORT/api/profile/update/password  | body: password, headers:token |
 
-## Code of Conduct
+**Plant**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| TYPE   | DETAIL  | ROUTE                              | SEND                                      |
+| ------ | ------- | ---------------------------------- | ----------------------------------------- |
+| POST | Create | http://localhost:PORT/api/plants/create | body: accept all plant schema, headers:token |
+| GET  | Get plant | http://localhost:PORT/api/plants | headers:token        |
+| GET  | Get One | http://localhost:PORT/api/plants/{id}  | params: id, headers:token |
+| PUT  | Update | http://localhost:PORT/api/plants/update/{id} | params: id, body: accept all plant schema, headers:token |
+| DELETE | Delete | http://localhost:PORT/api/plants/delete/{id} | params: id, headers:token |
 
-## Security Vulnerabilities
+**Notification**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+| TYPE   | DETAIL  | ROUTE                              | SEND                                      |
+| ------ | ------- | ---------------------------------- | ----------------------------------------- |
+| GET | Get all | http://localhost:PORT/api/notifications  | headers:token |
+| GET | Get all | http://localhost:PORT/api/notifications/channel | headers:token  |
+| PUT | Update | http://localhost:PORT/api/notifications/{id} | params: id, body: accept all plant schema, headers:token |
 
-## License
+**Reminder**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| TYPE   | DETAIL  | ROUTE                              | SEND                                      |
+| ------ | ------- | ---------------------------------- | ----------------------------------------- |
+| POST | Create | http://localhost:PORT/api/reminder    | body: accept all reminder schema, headers:token   |
+| GET | Get all | http://localhost:PORT/api/reminder | headers:token |
+| GET | Get One | http://localhost:PORT/api/reminder/{id}  | params: id, headers:token |
+| PUT | Update | http://localhost:PORT/api/reminder/{id} | params: id, body: accept all reminder Schema, headers:token |
+| DELETE | Delete | http://localhost:PORT/api/reminder/{id}  | params: id, headers:token |

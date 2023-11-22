@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {Input as InputVali, minLength, object, required, string, number, minValue} from "valibot";
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useReminderStore } from './store';
 
 /* interface ModalProps {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,12 +15,12 @@ import Swal from 'sweetalert2';
 }
 
 export default function CreateReminderModal({setOpenModal, getReminders}:ModalProps) { */
-export default function CreateReminderModal({setOpenModal, getReminders}:any) {
+
+export default function EditReminderModal({setEditOpenModal, getReminders}:any) {
   const { userState, logOutUser} = useContext(AuthContext);
-  /* const {register, handleSubmit, reset} = useForm() */
   const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
-
+	const { reminder, selectReminder } = useReminderStore()
 
 useEffect(() => {
 
@@ -61,13 +62,13 @@ useEffect(() => {
 	} = useForm({
 		resolver: valibotResolver(ReminderSchema),
 		defaultValues: {
-			name: "",
-			frequency: "",
-			date: "",
-			time: "",
+			name: reminder?.name,
+			frequency: reminder?.frequency,
+			date: reminder?.date,
+			time: reminder?.time,
 			type: "Irrigation",
 			repeat: 0,
-			plant_id: null
+			plant_id: reminder?.plant.name // name in order to display the name in the select
 		},
 		
 	});
@@ -80,35 +81,37 @@ useEffect(() => {
 
 		}
 		const formData = {
+			_method:"put",
 			name: data.name,
 			frequency: data.frequency,
 			date: data.date,
 			time: data.time,
 			type: "Irrigation",
 			repeat: 0,
-			plant_id: parseInt(data.plant_id)
+			plant_id: reminder?.plant.id
 		}
 
-		console.log(formData);
-		
-		axiosInstance
-		.post("/reminder/", JSON.stringify(formData))
+		axios.post("/reminder", formData, {
+			headers: {
+			"Content-Type": "application/json",
+			"Authorization":`Bearer ${userState.token}`
+		}
+	  }) 
 		.then((response) => {
 				console.log("response: ",response);	
 				if (response.status === 201 || response.status === 200) {
 					getReminders()
-					setOpenModal(false)
+					setEditOpenModal(false)
 					Swal.fire({
-						title: 'Recordatorio creado',
+						title: 'Recordatorio actualizado',
 						icon: 'success',
 						confirmButtonText: 'cerrar',
 						timer:3000
 					})
 				} else {
-					setOpenModal(false)
 					Swal.fire({
 						title: 'Error!',
-						text: 'No se pudo crear el recordatorio',
+						text: 'No se pudo actualizar el recordatorio',
 						/* icon: 'error', */
 						confirmButtonText: 'cerrar',
 						timer:3000
@@ -130,11 +133,11 @@ useEffect(() => {
 
 
   return (
-    <article className='fixed inset-0  z-50 w-screen flex flex-col  items-center   bg-black bg-opacity-30'>
+    <article className='fixed inset-0 z-50 w-screen flex justify-center items-center content-center bg-black bg-opacity-30'>
       <div className='bg-background  px-10 py-2  rounded-md'>
 				<h2 className='text-marron-oscuro font-semibold text-center   text-xl'>Recordatorios</h2>
-				<form onSubmit={handleSubmit(onSubmit,onErrors )} className='mt-2 pb-2' >
-					<label htmlFor="tipo" className="block">
+				<form onSubmit={handleSubmit(onSubmit,onErrors )} className='mt-5' >
+					<label htmlFor="tipo" className="block mt-5">
 						Ambiente*
 					</label>
 					<select
@@ -157,16 +160,9 @@ useEffect(() => {
 						{...register("plant_id",  { required: true })}
 						className="px-4 py-2 w-[289px] border-2 rounded-lg block border-zinc-500 focus:outline-none focus:border-[#2DD4BF]"
 					>
-						<option value="" >Elige una opción</option> {/* Mueve esta opción fuera del mapeo */}
-						{plants.length > 0 ? (
-							plants.map((plant, index) => (
-								<option key={index} value={index} > {/* Usar plant.name para el valor */}
-									{`${plant.name}  ${index}`}
-								</option>
-							))
-						) : (
-							<option value="">No tienes plantas aún</option>
-						)}
+						<option> 
+									{`${reminder?.plant.name}`}
+						</option>
 					</select>
 					<label htmlFor="fecha" className='block mt-5'>Fecha*</label>
 					<input
@@ -199,7 +195,7 @@ useEffect(() => {
 					</select>
 					<div className="flex justify-center gap-2 pb-6">
 								<button
-									onClick={() => setOpenModal(false)}
+									onClick={() => setEditOpenModal(false)}
 									className="font-semibold  justify-center hover:bg-primary ease-out duration-300 mt-16 w-32 bg-transparent border-2 border-primary text-primary gap-3 items-center flex hover:text-white  px-1 py-1"
 								>
 									Cancelar

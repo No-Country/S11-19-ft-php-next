@@ -27,6 +27,7 @@ export type reminderType = {
 export interface remindersInterface { 
 	reminders:Array<reminderType>|null
 	additionalStyles?:string
+	handleEditReminder?: () => void
 }
 
 export type remindersType = Array<reminderType> 
