@@ -68,6 +68,17 @@ useEffect(() => {
 			updated_at:reminder?.updated_at,
 			user_id:reminder?.user_id
 		},
+		/* defaultValues: {
+			date: reminder?.date,
+			frequency: reminder?.frequency,
+			id:reminder?.id,
+			name: reminder?.name,
+			plant:reminder?.plant,
+			plant_id: reminder?.plant.name,
+			repeat: 0,
+			time: reminder?.time,
+			type: "Irrigation",
+		}, */
 		
 	});
 
@@ -77,7 +88,6 @@ useEffect(() => {
 
 		}
 		const formData = {
-			_method:"put",
 			created_at:reminder?.created_at,
 			date: data.date,
 			frequency: data.frequency,
@@ -86,13 +96,13 @@ useEffect(() => {
 			plant:reminder?.plant,
 			plant_id: reminder?.plant.id,
 			repeat: 0,
-			time: data.time,
+			time: data.time.substring(0,5),
 			type: "Irrigation",
 			updated_at:reminder?.updated_at,
 			user_id:reminder?.user_id
 		}
 
-		axios.post("https://garden-wise-app.fly.dev/api/reminder", formData, {
+		axios.put(`https://garden-wise-app.fly.dev/api/reminder/${reminder?.id}`, formData, {
 			headers: {
 			"Content-Type": "application/json",
 			"Authorization":`Bearer ${userState.token}`
