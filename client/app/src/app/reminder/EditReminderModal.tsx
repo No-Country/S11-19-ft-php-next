@@ -9,18 +9,11 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useReminderStore } from './store';
 
-/* interface ModalProps {
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  getReminders: () => void;
-}
-
-export default function CreateReminderModal({setOpenModal, getReminders}:ModalProps) { */
-
 export default function EditReminderModal({setEditOpenModal, getReminders}:any) {
   const { userState, logOutUser} = useContext(AuthContext);
   const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
-	const { reminder, selectReminder } = useReminderStore()
+	const { reminder } = useReminderStore()
 
 useEffect(() => {
 
@@ -62,43 +55,51 @@ useEffect(() => {
 	} = useForm({
 		resolver: valibotResolver(ReminderSchema),
 		defaultValues: {
-			name: reminder?.name,
-			frequency: reminder?.frequency,
+			created_at:reminder?.created_at,
 			date: reminder?.date,
+			frequency: reminder?.frequency,
+			id:reminder?.id,
+			name: reminder?.name,
+			plant:reminder?.plant,
+			plant_id: reminder?.plant.name,
+			repeat: 0,
 			time: reminder?.time,
 			type: "Irrigation",
-			repeat: 0,
-			plant_id: reminder?.plant.name // name in order to display the name in the select
+			updated_at:reminder?.updated_at,
+			user_id:reminder?.user_id
 		},
 		
 	});
 
 
 	const onSubmit =  (data:any) => {
-		console.log(parseInt(data.plant_id))
-		console.log("dataForm: ", data)
 		if (data.name === "" || data.plant_id === "" || data.frequency === "") {
 
 		}
 		const formData = {
 			_method:"put",
-			name: data.name,
-			frequency: data.frequency,
+			created_at:reminder?.created_at,
 			date: data.date,
+			frequency: data.frequency,
+			id:reminder?.id,
+			name: data.name,
+			plant:reminder?.plant,
+			plant_id: reminder?.plant.id,
+			repeat: 0,
 			time: data.time,
 			type: "Irrigation",
-			repeat: 0,
-			plant_id: reminder?.plant.id
+			updated_at:reminder?.updated_at,
+			user_id:reminder?.user_id
 		}
 
-		axios.post("/reminder", formData, {
+		axios.post("https://garden-wise-app.fly.dev/api/reminder", formData, {
 			headers: {
 			"Content-Type": "application/json",
 			"Authorization":`Bearer ${userState.token}`
 		}
 	  }) 
 		.then((response) => {
-				console.log("response: ",response);	
+				console.log("response en edit: ",response);	
 				if (response.status === 201 || response.status === 200) {
 					getReminders()
 					setEditOpenModal(false)
@@ -127,10 +128,8 @@ useEffect(() => {
 		const valores = getValues()
 		console.log("valores: ", valores)
 		console.log("onError data: ",data)
-		console.log("fomrData: ", getValues())
-		console.log("typeof valores.plant_id",typeof valores.plant_id)
 	}
-
+	console.log("reminder en edit", reminder)
 
   return (
     <article className='fixed inset-0 z-50 w-screen flex justify-center items-center content-center bg-black bg-opacity-30'>

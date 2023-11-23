@@ -19,7 +19,7 @@ export default function CreateReminderModal({setOpenModal, getReminders}:any) {
   /* const {register, handleSubmit, reset} = useForm() */
   const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
-
+  console.log("userState en create reminder: ", userState)
 
 useEffect(() => {
 
@@ -41,7 +41,7 @@ useEffect(() => {
 		}) 
 	}
 }, []);
-
+  console.log("plants: ", plants)
 	const ReminderSchema = object({
 		name: string([minLength(1)]),
 		frequency: string([minLength(1)]),
@@ -91,8 +91,12 @@ useEffect(() => {
 
 		console.log(formData);
 		
-		axiosInstance
-		.post("/reminder/", JSON.stringify(formData))
+		axios.post("https://garden-wise-app.fly.dev/api/reminder", formData, {
+			headers: {
+			"Content-Type": "application/json",
+			"Authorization":`Bearer ${userState.token}`
+		}
+	  }) 
 		.then((response) => {
 				console.log("response: ",response);	
 				if (response.status === 201 || response.status === 200) {
@@ -161,7 +165,7 @@ useEffect(() => {
 						{plants.length > 0 ? (
 							plants.map((plant, index) => (
 								<option key={index} value={index} > {/* Usar plant.name para el valor */}
-									{`${plant.name}  ${index}`}
+									{`${plant.name}`}
 								</option>
 							))
 						) : (
