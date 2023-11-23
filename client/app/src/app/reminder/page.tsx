@@ -1,22 +1,14 @@
 "use client"
 import React, {useEffect, useContext, useState} from 'react'
-import { useForm } from 'react-hook-form'
 import { AuthContext } from '@/components/authcontext';
 import { useRouter } from 'next/navigation';
-import axiosInstance from '@/services/axiosInstance';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
 import Swal from 'sweetalert2'
 import Image from 'next/image';
 import {
-  format,
-  getDay,
-  isEqual,
-  isSameDay,
 	isSameWeek,
-  isSameMonth,
   isToday,
-  parse,
   parseISO,
 } from 'date-fns'
 import { es} from 'date-fns/locale';
@@ -34,23 +26,10 @@ export default function Reminders() {
 	const [todayReminders, setTodayReminders] = useState<reminderType[] | null>(null)
 	const [weekReminders, setWeekReminders] = useState<reminderType[] | null>(null)
 	const [loading, setLoading] = useState(false)
-  //const {register, handleSubmit, reset} = useForm()
 	const [openModal ,setOpenModal] = useState(false)
 	const [openEditModal ,setEditOpenModal] = useState(false)
 
-  //const [plants, setPlants] = useState<[any] | []>([])
   const router = useRouter();
- /*  useEffect(() => {
-    axiosInstance
-        .get("/plants/")
-        .then((response) => {
-            //console.log(response);
-            setPlants(response.data.data);
-        })
-        .catch((error) => {
-            console.error("Error al obtener datos de plantas:", error);
-        });
-}, []); */
 
 	useEffect( () => {
 		if (userState?.token){
@@ -97,10 +76,7 @@ const override: any = {
 	flexDirection:"row",
 	justifyContent:"center"
 };
-/* interface ModalProps {
-  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
-  getReminders: () => void;
-} */
+
 interface ModalProps {
   setOpenModal?: React.Dispatch<React.SetStateAction<boolean>>;
 	handleEditReminder?: () => void;
@@ -108,7 +84,6 @@ interface ModalProps {
 }
 
   const handleEditReminder = () => {
-		console.log("ejecuta handleEditReminders");
 		setEditOpenModal(true);
 	};
 

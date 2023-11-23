@@ -21,6 +21,7 @@ import Header from '@/components/header';
 import axiosInstance from '@/services/axiosInstance';
 import Footer from '@/components/footer';
 import { clsx } from "clsx";
+import axios from 'axios';
 
 function classNames(...classes:any) {
   return classes.filter(Boolean).join(' ')
@@ -50,8 +51,13 @@ if (typeof window !== 'undefined') {
 			getReminders()
 	},[])
 	const getReminders = () => {
-		axiosInstance
-      .get("/reminder/")
+		axios.get("https:/garden-wise-app.fly.dev/api/reminder/",
+		{
+			headers: {
+			"Content-Type": "application/json",
+			"Authorization":`Bearer ${userState.token}`
+		}
+	  })
       .then((response) => {
 				console.log("getReminders: ", response.data)
           setReminders(response.data.Reminder)
