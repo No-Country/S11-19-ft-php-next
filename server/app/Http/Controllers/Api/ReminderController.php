@@ -12,7 +12,10 @@ class ReminderController extends Controller
 {
     public function index()
     {
+        $userId = Auth::id();
+
         $reminders = Reminder::with("Plant")
+        ->where('user_id', $userId)
         ->get();
 
         if($reminders){
